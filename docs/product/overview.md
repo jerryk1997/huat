@@ -1,7 +1,7 @@
 # Huat — Product Brain Dump
 
 Everything decided so far about what Huat is and does. Captured from the initial
-design sessions. This is the source of truth for scope; `USER_STORIES.md` turns it
+design sessions. This is the source of truth for scope; `user-stories.md` turns it
 into testable stories.
 
 Last updated: 2026-11-18

@@ -6,29 +6,38 @@ picture of your money.
 
 > **Huat** (發 / 发, Hokkien) — "to prosper". As in *huat ah*.
 
-## Status
+**Status: design phase.** No application code yet. This repo is a working second
+brain for the product — requirements, design exploration and decision history.
 
-**Design phase.** No application code yet. This repo currently holds the product
-definition and visual design exploration.
+## 🤖 If you are an AI assistant
 
-| Path | What it is |
-|---|---|
-| `PRODUCT.md` | Full product brain dump — features, scope, SG-specific rules, architecture decisions |
-| `USER_STORIES.md` | 10 epics of user stories with acceptance criteria |
-| `design/` | Standalone HTML design explorations (open directly in a browser, no build step) |
+**Read [`START_HERE.md`](START_HERE.md), then [`STATUS.md`](STATUS.md).** They explain
+this repository, the read order, and the rules for working in it. Don't start from
+this README.
 
-### Design files
+## If you are a human
 
-| File | Purpose |
-|---|---|
-| `design/index.html` | Main design board / visual design system |
-| `design/variations.html` | Theme variations (round 1) |
-| `design/variations-2.html` | Theme variations (round 2) |
-| `design/tokyo-riso.html` | "Tokyo Riso" visual direction — risograph-print aesthetic |
-| `design/menu.html`, `design/menu-final.html` | Navigation / menu bar exploration |
-| `design/icons.html` | Icon system |
+- **[`STATUS.md`](STATUS.md)** — where the work stands, what's next, what's unresolved
+- **[`docs/product/overview.md`](docs/product/overview.md)** — the full feature scope
+- **[`docs/decisions/`](docs/decisions/)** — what's been settled, and why
 
-`open design/index.html` to view.
+## Layout
+
+```
+START_HERE.md         AI entry point: read order + working rules
+STATUS.md             Living snapshot: phase, next actions, open questions
+CLAUDE.md             Pointer to START_HERE (Claude Code auto-loads this)
+
+docs/
+  product/            Feature scope, user stories, glossary
+  reference/          External figures (CPF rates, ceilings) with as-of dates
+  design/             Design system + HTML prototypes
+  architecture/       Stack and data model
+  decisions/          Numbered ADRs — append-only
+  journal/            Session logs — append-only
+```
+
+Design prototypes have no build step — `open docs/design/prototypes/index.html`.
 
 ## Why Singapore-specific
 
@@ -39,27 +48,15 @@ Wage ceiling. Huat treats that calculation as a first-class feature rather than 
 footnote, and tracks progress toward the CPF milestones that actually change your
 options (BHS, FRS/BRS, the $20k OA investment threshold, top-up tax relief headroom).
 
-The flip side: the product as scoped is for an SG audience. The name won't read
-outside that market either. Both are deliberate for v1.
+The flip side: the product as scoped is for an SG audience, and the name won't read
+outside that market. Both are deliberate for v1 — see
+[`docs/decisions/0005`](docs/decisions/0005-name-huat.md).
 
 ## Planned stack
 
-- **Expo / React Native** — cross-platform from day one
-- **iOS first**, then web, Android on a longer horizon
-- **Local-first**: SQLite on device, nothing leaves the phone in v1
-- Clean data/repository layer so cloud sync can be added later without a rewrite
-- **BYOK for AI**: user connects their own OpenAI / Anthropic / Google key
-
-## Roadmap
-
-1. Finish visual design direction (in progress)
-2. Scaffold the Expo app + data layer
-3. CPF calculator — the core differentiator, build and validate it first
-4. Transactions (manual entry → bank CSV import → AI categorisation)
-5. Budgets with rollover mechanics
-6. Goals
-7. Insurance tracking + document parsing
-8. AI digest and on-demand chat
+Expo / React Native, TypeScript, iOS first, local-first SQLite with no backend in v1,
+and bring-your-own-key for AI. Reasoning in
+[`docs/architecture/stack.md`](docs/architecture/stack.md).
 
 ## History
 
