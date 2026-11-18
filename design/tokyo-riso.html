@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokyo Riso — Tightened</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  background: #211e1a;
+  color: #ece6d2;
+  padding: 50px 40px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.board-header { max-width: 1600px; margin: 0 auto 40px; text-align: center; }
+.board-header .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #ff5c4d;
+  color: #2b2825;
+  margin-bottom: 12px;
+}
+.board-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.board-header p {
+  color: #a89b85;
+  font-size: 13px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.section { max-width: 1600px; margin: 0 auto 50px; }
+.section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff5c4d;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.row { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+
+.phone { width: 320px; flex-shrink: 0; }
+.phone-label {
+  font-size: 10px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a89b85;
+  text-align: center;
+}
+.phone-frame {
+  width: 320px;
+  height: 680px;
+  border-radius: 38px;
+  border: 8px solid #0a0a0a;
+  box-shadow: 0 24px 50px -20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 26px;
+  background: #0c0a09;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+.status-bar {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 22px 0;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.screen { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.screen::-webkit-scrollbar { display: none; }
+
+/* ============== LIGHT ============== */
+.lite { background: #ece6d2; color: #2b2825; }
+.lite .status-bar { color: #2b2825; }
+
+.lite .app-header {
+  padding: 10px 16px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.lite .app-header .month { font-size: 14px; font-weight: 700; letter-spacing: -0.015em; }
+.lite .app-header .avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #2b2825; color: #ffd84d;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.lite .scroll { flex: 1; overflow-y: auto; padding: 0 16px 70px; }
+.lite .scroll::-webkit-scrollbar { display: none; }
+
+.lite .hero {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 0 #2b2825;
+}
+.lite .hero .label {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 4px; opacity: 0.55;
+}
+.lite .hero .amount {
+  font-size: 32px; font-weight: 700;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.lite .hero .amount .accent { color: #ff5c4d; }
+.lite .hero .row { display: flex; gap: 6px; }
+.lite .hero .stat {
+  flex: 1; border: 1.5px solid #2b2825;
+  border-radius: 7px;
+  padding: 5px 8px;
+  background: #ffd84d;
+}
+.lite .hero .stat.b { background: #4dd9c8; }
+.lite .hero .stat .l { font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.lite .hero .stat .v { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.015em; margin-top: 1px; }
+
+.lite .section-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 16px 0 8px;
+}
+.lite .section-row h3 { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.lite .section-row .more { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.45; }
+
+.lite .b-card {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-bottom: 5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.lite .b-card.shadow { box-shadow: 2px 2px 0 #2b2825; margin-bottom: 7px; }
+.lite .b-card .em {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  background: #ffd84d;
+  flex-shrink: 0;
+}
+.lite .b-card .em.b { background: #4dd9c8; }
+.lite .b-card .em.c { background: #ff5c4d; }
+.lite .b-card .em.d { background: #b8a4ff; }
+.lite .b-card .info { flex: 1; min-width: 0; }
+.lite .b-card .nm { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.lite .b-card .ml { font-size: 10px; opacity: 0.55; margin-top: 1px; font-weight: 500; }
+.lite .b-card .bal {
+  font-size: 13px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-align: right;
+}
+.lite .b-card .bal .of { font-size: 9px; opacity: 0.5; font-weight: 500; display: block; margin-top: 1px; }
+
+.lite .b-mini-bar {
+  width: 32px; height: 3px;
+  background: #2b2825;
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+.lite .b-mini-bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: #ffd84d;
+}
+.lite .b-mini-bar.b::after { background: #4dd9c8; }
+.lite .b-mini-bar.c::after { background: #ff5c4d; width: 100%; }
+.lite .b-mini-bar.d::after { background: #b8a4ff; }
+
+.lite .goal-card {
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  color: #2b2825;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 7px;
+  box-shadow: 3px 3px 0 #2b2825;
+}
+.lite .goal-card.alt { background: #4dd9c8; }
+.lite .goal-card.alt2 { background: #ffd84d; }
+.lite .goal-card .top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.lite .goal-card .lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.lite .goal-card .pct { font-size: 10px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.lite .goal-card .nm { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.lite .goal-card .figs {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
+}
+.lite .goal-card .saved { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; }
+.lite .goal-card .of { font-size: 10px; font-weight: 600; opacity: 0.75; }
+.lite .goal-card .bar { height: 4px; background: #2b2825; border-radius: 100px; overflow: hidden; position: relative; }
+.lite .goal-card .bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: #f5f1e0;
+}
+.lite .goal-card.p52 .bar::after { width: 52%; }
+.lite .goal-card.p25 .bar::after { width: 25%; }
+.lite .goal-card .eta { font-size: 9px; font-weight: 600; opacity: 0.7; margin-top: 6px; letter-spacing: 0.02em; }
+
+.lite .fab {
+  position: absolute; bottom: 78px; right: 16px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #ff5c4d; color: #2b2825;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 500;
+  box-shadow: 2px 2px 0 #2b2825;
+  z-index: 5;
+}
+.lite .tab-bar {
+  height: 60px;
+  background: #ece6d2;
+  border-top: 1.5px solid #2b2825;
+  display: flex; justify-content: space-around; padding-top: 8px;
+  flex-shrink: 0;
+}
+.lite .tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-size: 9px; font-weight: 600;
+  color: #a89b85;
+}
+.lite .tab .ic { font-size: 14px; }
+.lite .tab.active { color: #2b2825; }
+.lite .tab.active .ic {
+  background: #ffd84d;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1.5px solid #2b2825;
+  margin-bottom: -2px;
+}
+
+/* Transactions */
+.lite .txn-search {
+  display: flex; gap: 6px;
+  padding: 4px 16px 12px;
+}
+.lite .search-pill {
+  flex: 1; height: 32px;
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 8px;
+  padding: 0 10px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600;
+  color: #6b6256;
+}
+.lite .filter-btn {
+  width: 32px; height: 32px;
+  background: #ffd84d;
+  border: 1.5px solid #2b2825;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+
+.lite .nav-pills {
+  display: flex; gap: 5px; overflow-x: auto;
+  margin: 0 -16px 10px; padding: 0 16px 4px;
+}
+.lite .nav-pills::-webkit-scrollbar { display: none; }
+.lite .nav-pill {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.lite .nav-pill.active { background: #2b2825; color: #ffd84d; }
+
+.lite .txn-day {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 12px 2px 6px;
+  display: flex; justify-content: space-between;
+}
+.lite .txn-day .ttl { opacity: 0.75; }
+.lite .txn-day .sub { color: #6b6256; font-variant-numeric: tabular-nums; }
+
+.lite .txn-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(43,40,37,0.12);
+  display: flex; align-items: center; gap: 10px;
+}
+.lite .txn-item:last-child { border-bottom: none; }
+.lite .txn-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.lite .ic-food { background: #ffd84d; }
+.lite .ic-coffee { background: #ff5c4d; }
+.lite .ic-tpt { background: #4dd9c8; }
+.lite .ic-shop { background: #b8a4ff; }
+.lite .ic-bill { background: #f5f1e0; }
+.lite .ic-inc { background: #4dd9c8; }
+.lite .txn-name { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
+.lite .txn-meta { font-size: 10px; opacity: 0.5; margin-top: 1px; font-weight: 500; }
+.lite .txn-amount {
+  font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+.lite .txn-amount.inc { color: #1a8470; }
+
+/* Insurance */
+.lite .ins-card {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 6px;
+}
+.lite .ins-card.shadow { box-shadow: 2px 2px 0 #2b2825; margin-bottom: 8px; }
+.lite .type-chip {
+  display: inline-block;
+  padding: 2px 7px;
+  background: #4dd9c8;
+  border: 1.5px solid #2b2825;
+  border-radius: 100px;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.lite .type-chip.health { background: #b8a4ff; }
+.lite .type-chip.life { background: #ffd84d; }
+.lite .ins-card .nm-ins { font-size: 12px; font-weight: 700; letter-spacing: -0.015em; margin-top: 6px; }
+.lite .ins-card .insurer { font-size: 10px; opacity: 0.55; margin-top: 1px; font-weight: 500; }
+.lite .ins-card .row-ins {
+  display: flex; justify-content: space-between;
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid rgba(43,40,37,0.12);
+  font-size: 10px;
+}
+.lite .ins-card .col .l { opacity: 0.55; }
+.lite .ins-card .col .v {
+  font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+  margin-top: 1px;
+}
+
+.lite .coverage-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 6px; margin-bottom: 10px;
+}
+.lite .cov-cell {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 8px;
+  padding: 8px;
+}
+.lite .cov-cell .l { font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.6; }
+.lite .cov-cell .v {
+  font-size: 13px; font-weight: 700; margin-top: 3px;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.lite .cov-cell .badge {
+  display: inline-block;
+  font-size: 7px; font-weight: 700;
+  padding: 1px 5px;
+  border: 1.5px solid #2b2825;
+  border-radius: 100px;
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: #4dd9c8;
+}
+.lite .cov-cell .badge.warn { background: #ffd84d; }
+.lite .cov-cell .badge.danger { background: #ff5c4d; }
+
+/* CPF strip */
+.lite .cpf-strip {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.lite .cpf-strip .badge {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  background: #b8a4ff;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+}
+.lite .cpf-strip .info { flex: 1; }
+.lite .cpf-strip .ttl { font-size: 11px; font-weight: 700; letter-spacing: -0.01em; }
+.lite .cpf-strip .sub { font-size: 9px; opacity: 0.55; margin-top: 1px; font-weight: 500; }
+.lite .cpf-strip .v { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+
+/* ============== DARK ============== */
+.dark { background: #211e1a; color: #ece6d2; }
+.dark .status-bar { color: #ece6d2; }
+
+.dark .app-header {
+  padding: 10px 16px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.dark .app-header .month { font-size: 14px; font-weight: 700; letter-spacing: -0.015em; }
+.dark .app-header .avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #ffd84d; color: #211e1a;
+  border: 1.5px solid #ece6d2;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.dark .scroll { flex: 1; overflow-y: auto; padding: 0 16px 70px; }
+.dark .scroll::-webkit-scrollbar { display: none; }
+
+.dark .hero {
+  background: #2d2925;
+  border: 1.5px solid #ece6d2;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 0 #ff5c4d;
+}
+.dark .hero .label {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 4px; opacity: 0.5;
+}
+.dark .hero .amount {
+  font-size: 32px; font-weight: 700;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.dark .hero .amount .accent { color: #ff5c4d; }
+.dark .hero .row { display: flex; gap: 6px; }
+.dark .hero .stat {
+  flex: 1; border: 1.5px solid #ece6d2;
+  border-radius: 7px;
+  padding: 5px 8px;
+}
+.dark .hero .stat.a { background: #ffd84d; color: #211e1a; border-color: #211e1a; }
+.dark .hero .stat.b { background: #4dd9c8; color: #211e1a; border-color: #211e1a; }
+.dark .hero .stat .l { font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.dark .hero .stat .v { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.015em; margin-top: 1px; }
+
+.dark .section-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 16px 0 8px;
+}
+.dark .section-row h3 { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.dark .section-row .more { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.45; }
+
+.dark .b-card {
+  background: #2d2925;
+  border: 1.5px solid #ece6d2;
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-bottom: 5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.dark .b-card.shadow1 { box-shadow: 2px 2px 0 #ffd84d; margin-bottom: 7px; }
+.dark .b-card.shadow2 { box-shadow: 2px 2px 0 #4dd9c8; margin-bottom: 7px; }
+.dark .b-card.shadow3 { box-shadow: 2px 2px 0 #ff5c4d; margin-bottom: 7px; }
+.dark .b-card.shadow4 { box-shadow: 2px 2px 0 #b8a4ff; margin-bottom: 7px; }
+.dark .b-card .em {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid #ece6d2;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  background: #ffd84d;
+  flex-shrink: 0;
+}
+.dark .b-card .em.b { background: #4dd9c8; }
+.dark .b-card .em.c { background: #ff5c4d; }
+.dark .b-card .em.d { background: #b8a4ff; }
+.dark .b-card .info { flex: 1; min-width: 0; }
+.dark .b-card .nm { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.dark .b-card .ml { font-size: 10px; opacity: 0.5; margin-top: 1px; font-weight: 500; }
+.dark .b-card .bal {
+  font-size: 13px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-align: right;
+}
+.dark .b-card .bal .of { font-size: 9px; opacity: 0.45; font-weight: 500; display: block; margin-top: 1px; }
+
+.dark .goal-card {
+  background: #ff5c4d;
+  border: 1.5px solid #ece6d2;
+  color: #211e1a;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 7px;
+  box-shadow: 3px 3px 0 #ece6d2;
+}
+.dark .goal-card.alt { background: #4dd9c8; }
+.dark .goal-card.alt2 { background: #ffd84d; }
+.dark .goal-card .top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.dark .goal-card .lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.dark .goal-card .pct { font-size: 10px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dark .goal-card .nm { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.dark .goal-card .figs {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 6px;
+}
+.dark .goal-card .saved { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; }
+.dark .goal-card .of { font-size: 10px; font-weight: 600; opacity: 0.75; }
+.dark .goal-card .bar { height: 4px; background: #211e1a; border-radius: 100px; overflow: hidden; position: relative; }
+.dark .goal-card .bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: #ece6d2;
+}
+.dark .goal-card.p52 .bar::after { width: 52%; }
+.dark .goal-card.p25 .bar::after { width: 25%; }
+.dark .goal-card .eta { font-size: 9px; font-weight: 600; opacity: 0.7; margin-top: 6px; letter-spacing: 0.02em; }
+
+.dark .fab {
+  position: absolute; bottom: 78px; right: 16px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #ffd84d; color: #211e1a;
+  border: 1.5px solid #ece6d2;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 500;
+  box-shadow: 2px 2px 0 #ece6d2;
+  z-index: 5;
+}
+.dark .tab-bar {
+  height: 60px;
+  background: #211e1a;
+  border-top: 1.5px solid #ece6d2;
+  display: flex; justify-content: space-around; padding-top: 8px;
+  flex-shrink: 0;
+}
+.dark .tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-size: 9px; font-weight: 600;
+  color: #6b6256;
+}
+.dark .tab .ic { font-size: 14px; }
+.dark .tab.active { color: #ffd84d; }
+.dark .tab.active .ic {
+  background: #2d2925;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1.5px solid #ffd84d;
+  margin-bottom: -2px;
+}
+
+.dark .txn-search { display: flex; gap: 6px; padding: 4px 16px 12px; }
+.dark .search-pill {
+  flex: 1; height: 32px;
+  background: #2d2925;
+  border: 1.5px solid #ece6d2;
+  border-radius: 8px;
+  padding: 0 10px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600;
+  color: #a89b85;
+}
+.dark .filter-btn {
+  width: 32px; height: 32px;
+  background: #ffd84d;
+  border: 1.5px solid #ece6d2;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  color: #211e1a;
+}
+
+.dark .nav-pills { display: flex; gap: 5px; overflow-x: auto; margin: 0 -16px 10px; padding: 0 16px 4px; }
+.dark .nav-pills::-webkit-scrollbar { display: none; }
+.dark .nav-pill {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  background: #2d2925;
+  border: 1.5px solid #ece6d2;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.dark .nav-pill.active { background: #ffd84d; color: #211e1a; border-color: #211e1a; }
+
+.dark .txn-day {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 12px 2px 6px;
+  display: flex; justify-content: space-between;
+}
+.dark .txn-day .ttl { opacity: 0.75; }
+.dark .txn-day .sub { color: #a89b85; font-variant-numeric: tabular-nums; }
+
+.dark .txn-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(236,230,210,0.1);
+  display: flex; align-items: center; gap: 10px;
+}
+.dark .txn-item:last-child { border-bottom: none; }
+.dark .txn-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid #ece6d2;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.dark .ic-food { background: #ffd84d; }
+.dark .ic-coffee { background: #ff5c4d; }
+.dark .ic-tpt { background: #4dd9c8; }
+.dark .ic-shop { background: #b8a4ff; }
+.dark .ic-bill { background: #2d2925; }
+.dark .ic-inc { background: #4dd9c8; }
+.dark .txn-name { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
+.dark .txn-meta { font-size: 10px; opacity: 0.5; margin-top: 1px; font-weight: 500; }
+.dark .txn-amount {
+  font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+.dark .txn-amount.inc { color: #4dd9c8; }
+
+.dark .ins-card {
+  background: #2d2925;
+  border: 1.5px solid #ece6d2;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 6px;
+}
+.dark .ins-card.shadow { box-shadow: 2px 2px 0 #ff5c4d; margin-bottom: 8px; }
+.dark .type-chip {
+  display: inline-block;
+  padding: 2px 7px;
+  background: #4dd9c8;
+  border: 1.5px solid #211e1a;
+  border-radius: 100px;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: #211e1a;
+}
+.dark .type-chip.health { background: #b8a4ff; }
+.dark .type-chip.life { background: #ffd84d; }
+.dark .ins-card .nm-ins { font-size: 12px; font-weight: 700; letter-spacing: -0.015em; margin-top: 6px; }
+.dark .ins-card .insurer { font-size: 10px; opacity: 0.5; margin-top: 1px; font-weight: 500; }
+.dark .ins-card .row-ins {
+  display: flex; justify-content: space-between;
+  margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid rgba(236,230,210,0.1);
+  font-size: 10px;
+}
+.dark .ins-card .col .l { opacity: 0.5; }
+.dark .ins-card .col .v {
+  font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+  margin-top: 1px;
+}
+
+.dark .coverage-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 6px; margin-bottom: 10px;
+}
+.dark .cov-cell {
+  background: #2d2925;
+  border: 1.5px solid #ece6d2;
+  border-radius: 8px;
+  padding: 8px;
+}
+.dark .cov-cell .l { font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.55; }
+.dark .cov-cell .v {
+  font-size: 13px; font-weight: 700; margin-top: 3px;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.dark .cov-cell .badge {
+  display: inline-block;
+  font-size: 7px; font-weight: 700;
+  padding: 1px 5px;
+  border: 1.5px solid #211e1a;
+  border-radius: 100px;
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: #4dd9c8;
+  color: #211e1a;
+}
+.dark .cov-cell .badge.warn { background: #ffd84d; }
+.dark .cov-cell .badge.danger { background: #ff5c4d; }
+
+.dark .cpf-strip {
+  background: #2d2925;
+  border: 1.5px solid #ece6d2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.dark .cpf-strip .badge {
+  width: 32px; height: 32px;
+  border-radius: 7px;
+  background: #b8a4ff;
+  border: 1.5px solid #ece6d2;
+  color: #211e1a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+}
+.dark .cpf-strip .info { flex: 1; }
+.dark .cpf-strip .ttl { font-size: 11px; font-weight: 700; letter-spacing: -0.01em; }
+.dark .cpf-strip .sub { font-size: 9px; opacity: 0.5; margin-top: 1px; font-weight: 500; }
+.dark .cpf-strip .v { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+</style>
+</head>
+<body>
+
+<div class="board-header">
+  <div class="tag">Tokyo Riso · v3</div>
+  <h1>Tighter, denser, more grown-up</h1>
+  <p>Smaller type, tighter borders (1.5px), shorter offset shadows (2–3px), more content per screen. The brutalist character is preserved but it reads like a magazine spread instead of a sticker pack.</p>
+</div>
+
+
+<!-- HOME -->
+<div class="section">
+  <div class="section-title">Home — Daily View</div>
+  <div class="row">
+
+    <div class="phone">
+      <div class="phone-label">Light</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen lite">
+          <div class="app-header">
+            <div class="month">Jun '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat"><div class="l">In</div><div class="v">$4,820</div></div>
+                <div class="stat b"><div class="l">Out</div><div class="v">$2,341</div></div>
+              </div>
+            </div>
+
+            <div class="cpf-strip">
+              <div class="badge">CPF</div>
+              <div class="info">
+                <div class="ttl">June contribution</div>
+                <div class="sub">You $1,200 · Employer $1,020</div>
+              </div>
+              <div class="v">$2,220</div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em">🍱</div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$163 left · rollover</div>
+              </div>
+              <div class="b-mini-bar"><span></span></div>
+              <div class="bal">$182<span class="of">/345</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em b">🚇</div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left</div>
+              </div>
+              <div class="b-mini-bar b"></div>
+              <div class="bal">$85<span class="of">/150</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em c">🛍</div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#c93a2b;">Over by $20</div>
+              </div>
+              <div class="b-mini-bar c"></div>
+              <div class="bal" style="color:#c93a2b;">$420<span class="of" style="color:#c93a2b;">/400</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em d">☕</div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">$36 left</div>
+              </div>
+              <div class="b-mini-bar d"></div>
+              <div class="bal">$74<span class="of">/110</span></div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">All →</span></div>
+            <div class="goal-card p52">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">52%</div>
+              </div>
+              <div class="nm">MacBook Pro 14"</div>
+              <div class="figs">
+                <div class="saved">$1,820</div>
+                <div class="of">of $3,500</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">8 months to go · on track</div>
+            </div>
+            <div class="goal-card alt p25">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">25%</div>
+              </div>
+              <div class="nm">Japan Trip</div>
+              <div class="figs">
+                <div class="saved">$500</div>
+                <div class="of">of $2,000</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">15 months · paused this month</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-label">Dark</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen dark">
+          <div class="app-header">
+            <div class="month">Jun '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat a"><div class="l">In</div><div class="v">$4,820</div></div>
+                <div class="stat b"><div class="l">Out</div><div class="v">$2,341</div></div>
+              </div>
+            </div>
+
+            <div class="cpf-strip">
+              <div class="badge">CPF</div>
+              <div class="info">
+                <div class="ttl">June contribution</div>
+                <div class="sub">You $1,200 · Employer $1,020</div>
+              </div>
+              <div class="v">$2,220</div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em">🍱</div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$163 left · rollover</div>
+              </div>
+              <div class="bal">$182<span class="of">/345</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em b">🚇</div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left</div>
+              </div>
+              <div class="bal">$85<span class="of">/150</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em c">🛍</div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#ff5c4d;">Over by $20</div>
+              </div>
+              <div class="bal" style="color:#ff5c4d;">$420<span class="of" style="color:#ff5c4d;">/400</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em d">☕</div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">$36 left</div>
+              </div>
+              <div class="bal">$74<span class="of">/110</span></div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">All →</span></div>
+            <div class="goal-card p52">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">52%</div>
+              </div>
+              <div class="nm">MacBook Pro 14"</div>
+              <div class="figs">
+                <div class="saved">$1,820</div>
+                <div class="of">of $3,500</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">8 months to go · on track</div>
+            </div>
+            <div class="goal-card alt p25">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">25%</div>
+              </div>
+              <div class="nm">Japan Trip</div>
+              <div class="figs">
+                <div class="saved">$500</div>
+                <div class="of">of $2,000</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">15 months · paused this month</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- TRANSACTIONS -->
+<div class="section">
+  <div class="section-title">Transactions & Insurance</div>
+  <div class="row">
+
+    <div class="phone">
+      <div class="phone-label">Light · Transactions</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen lite">
+          <div class="app-header">
+            <div class="month">Spending</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="txn-search">
+            <div class="search-pill">⌕ Search</div>
+            <div class="filter-btn">≡</div>
+          </div>
+          <div class="scroll" style="padding-top:0;">
+            <div class="nav-pills">
+              <div class="nav-pill active">All</div>
+              <div class="nav-pill">Food</div>
+              <div class="nav-pill">Transport</div>
+              <div class="nav-pill">Shop</div>
+              <div class="nav-pill">Bills</div>
+            </div>
+            <div class="txn-day"><span class="ttl">Today, Wed 17 Jun</span><span class="sub">−$48.20</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-food">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS · Marina Sq</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-coffee">☕</div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Cash</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-tpt">🚇</div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo Top Up</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Tue 16 Jun</span><span class="sub">−$96.80</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-shop">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-food">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-bill">⚡</div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO · recurring</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Mon 15 Jun</span><span class="sub">−$42.30</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-food">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Toast Box</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-shop">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Shopee</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$35.50</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Sun 14 Jun · payday</span><span class="sub" style="color:#1a8470;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-inc">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta">Income · DBS</div>
+              </div>
+              <div class="txn-amount inc">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-label">Dark · Transactions</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen dark">
+          <div class="app-header">
+            <div class="month">Spending</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="txn-search">
+            <div class="search-pill">⌕ Search</div>
+            <div class="filter-btn">≡</div>
+          </div>
+          <div class="scroll" style="padding-top:0;">
+            <div class="nav-pills">
+              <div class="nav-pill active">All</div>
+              <div class="nav-pill">Food</div>
+              <div class="nav-pill">Transport</div>
+              <div class="nav-pill">Shop</div>
+              <div class="nav-pill">Bills</div>
+            </div>
+            <div class="txn-day"><span class="ttl">Today, Wed 17 Jun</span><span class="sub">−$48.20</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-food">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS · Marina Sq</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-coffee">☕</div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Cash</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-tpt">🚇</div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo Top Up</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Tue 16 Jun</span><span class="sub">−$96.80</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-shop">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-food">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-bill">⚡</div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO · recurring</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Mon 15 Jun</span><span class="sub">−$42.30</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-food">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Toast Box</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon ic-shop">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Shopee</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$35.50</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Sun 14 Jun · payday</span><span class="sub" style="color:#4dd9c8;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="txn-icon ic-inc">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta">Income · DBS</div>
+              </div>
+              <div class="txn-amount inc">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="phone-label">Dark · Insurance</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen dark">
+          <div class="app-header">
+            <div class="month">Insurance</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero" style="box-shadow: 3px 3px 0 #4dd9c8;">
+              <div class="label">Annual premiums</div>
+              <div class="amount">$<span class="accent">3,420</span></div>
+              <div style="font-size:10px; font-weight:600; opacity:0.6;">5.9% of income · healthy range</div>
+            </div>
+
+            <div class="section-row"><h3>Coverage</h3><span class="more">Details →</span></div>
+            <div class="coverage-grid">
+              <div class="cov-cell">
+                <div class="l">Hospital</div>
+                <div class="v">$1M</div>
+                <div class="badge">Yes</div>
+              </div>
+              <div class="cov-cell">
+                <div class="l">Life</div>
+                <div class="v">$500K</div>
+                <div class="badge">Yes</div>
+              </div>
+              <div class="cov-cell">
+                <div class="l">CI</div>
+                <div class="v">$150K</div>
+                <div class="badge warn">Light</div>
+              </div>
+              <div class="cov-cell">
+                <div class="l">DI</div>
+                <div class="v">—</div>
+                <div class="badge danger">No</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Policies</h3><span class="more">All →</span></div>
+            <div class="ins-card">
+              <div class="type-chip health">Hospital</div>
+              <div class="nm-ins">AIA HealthShield Gold</div>
+              <div class="insurer">AIA · A12345</div>
+              <div class="row-ins">
+                <div class="col">
+                  <div class="l">Annual</div>
+                  <div class="v">$1,820</div>
+                </div>
+                <div class="col" style="text-align:right;">
+                  <div class="l">Next due</div>
+                  <div class="v">15 Aug</div>
+                </div>
+              </div>
+            </div>
+            <div class="ins-card">
+              <div class="type-chip life">Life</div>
+              <div class="nm-ins">Manulife ReadyBuilder</div>
+              <div class="insurer">Manulife · M67890</div>
+              <div class="row-ins">
+                <div class="col">
+                  <div class="l">Annual</div>
+                  <div class="v">$890</div>
+                </div>
+                <div class="col" style="text-align:right;">
+                  <div class="l">Next due</div>
+                  <div class="v">22 Jun</div>
+                </div>
+              </div>
+            </div>
+            <div class="ins-card">
+              <div class="type-chip">Critical</div>
+              <div class="nm-ins">NTUC LifeSecure</div>
+              <div class="insurer">NTUC · N24680</div>
+              <div class="row-ins">
+                <div class="col">
+                  <div class="l">Annual</div>
+                  <div class="v">$710</div>
+                </div>
+                <div class="col" style="text-align:right;">
+                  <div class="l">Next due</div>
+                  <div class="v">3 Sep</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab active"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

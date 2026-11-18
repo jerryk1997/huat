@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huat — Theme Variations</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  background: #0a0a0a;
+  color: #f5f5f4;
+  padding: 60px 40px 120px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.board-header {
+  max-width: 1500px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+.board-header h1 {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #fb7185, #fbbf24, #34d399, #60a5fa, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.board-header p {
+  color: #a8a29e;
+  font-size: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.variation {
+  max-width: 1500px;
+  margin: 0 auto 100px;
+  padding: 40px;
+  border-radius: 24px;
+}
+
+.theme-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.theme-info h2 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+}
+.theme-info .tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.theme-info p { font-size: 14px; line-height: 1.5; max-width: 480px; }
+
+.palette {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.swatch .color {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+}
+.swatch .hex {
+  font-size: 10px;
+  font-family: "SF Mono", Menlo, monospace;
+  letter-spacing: -0.02em;
+}
+.swatch .name {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.phone {
+  width: 320px;
+  flex-shrink: 0;
+}
+.phone-label {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.phone-frame {
+  width: 320px;
+  height: 680px;
+  border-radius: 38px;
+  border: 8px solid #0a0a0a;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.4);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 26px;
+  background: #0c0a09;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+.status-bar {
+  height: 38px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 24px 0;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.screen { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.screen::-webkit-scrollbar { display: none; }
+
+.app-header {
+  padding: 12px 20px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app-header .month {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.app-header .avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 80px;
+}
+.scroll::-webkit-scrollbar { display: none; }
+
+.tab-bar {
+  height: 72px;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+  flex-shrink: 0;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 500;
+}
+.tab .ic { font-size: 18px; }
+
+.fab {
+  position: absolute;
+  bottom: 86px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 300;
+  z-index: 5;
+}
+
+/* ============== V1 — SUNSET EDITORIAL ============== */
+.v1 { background: #1a0e0a; }
+.v1 .theme-info .tag { background: #f97316; color: #1a0e0a; }
+.v1 .theme-info h2, .v1 .theme-info p { color: #faf6f1; }
+.v1 .phone-frame { background: #faf6f1; }
+.v1 .screen { background: #faf6f1; color: #1a1612; }
+
+.v1 .hero {
+  background: linear-gradient(135deg, #7c2d12, #ea580c);
+  color: #fff7ed;
+  border-radius: 22px;
+  padding: 24px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.v1 .hero::after {
+  content: '';
+  position: absolute;
+  top: -40%; right: -20%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(250,204,21,0.3), transparent 70%);
+  border-radius: 50%;
+}
+.v1 .hero .label {
+  font-family: "Charter", "Georgia", serif;
+  font-size: 13px;
+  font-style: italic;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+.v1 .hero .lead {
+  font-family: "Charter", "Georgia", serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+.v1 .hero .amount {
+  font-family: "Charter", "Georgia", serif;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 14px;
+  line-height: 1;
+}
+.v1 .hero .meta {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  opacity: 0.8;
+}
+.v1 .hero .meta b { display: block; font-size: 14px; font-weight: 700; opacity: 1; margin-bottom: 2px; }
+
+.v1 .section-row { display:flex; justify-content:space-between; align-items:center; margin: 24px 0 12px; }
+.v1 .section-row h3 { font-family: "Charter", "Georgia", serif; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; }
+.v1 .section-row .more { font-size: 11px; opacity: 0.5; }
+
+.v1 .b-card {
+  background: #fff;
+  border: 1px solid #e7dfd2;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.v1 .b-card .em {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: #fef3c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.v1 .b-card .info { flex: 1; }
+.v1 .b-card .nm { font-size: 13px; font-weight: 600; }
+.v1 .b-card .ml { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+.v1 .b-card .bal { font-family: "Charter", "Georgia", serif; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.v1 .goal-card {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #422006;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.v1 .goal-card.alt { background: linear-gradient(135deg, #fecaca, #fda4af); color: #500724; }
+.v1 .goal-card .lbl { font-size: 11px; font-style: italic; opacity: 0.8; }
+.v1 .goal-card .nm { font-family: "Charter", "Georgia", serif; font-size: 16px; font-weight: 700; margin: 2px 0 12px; }
+.v1 .goal-card .row-g { display: flex; justify-content: space-between; align-items: baseline; }
+.v1 .goal-card .saved { font-family: "Charter", "Georgia", serif; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.v1 .goal-card .target { font-size: 11px; opacity: 0.7; }
+.v1 .goal-card .bar { height: 4px; background: rgba(0,0,0,0.1); border-radius: 2px; margin-top: 10px; overflow:hidden; }
+.v1 .goal-card .fill { height: 100%; background: #7c2d12; border-radius: 2px; }
+.v1 .fab { background: #7c2d12; color: #fef3c7; box-shadow: 0 10px 24px rgba(124,45,18,0.4); }
+.v1 .tab-bar { background: rgba(250,246,241,0.92); backdrop-filter: blur(16px); border-top: 1px solid #e7dfd2; }
+.v1 .tab { color: #92816a; }
+.v1 .tab.active { color: #7c2d12; }
+.v1 .app-header .avatar { background: #7c2d12; color: #fef3c7; }
+
+.v1 .txn-day { font-family: "Charter", "Georgia", serif; font-size: 12px; font-style: italic; padding: 16px 0 6px; opacity: 0.7; display:flex; justify-content:space-between; }
+.v1 .txn-item { display: flex; align-items:center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #e7dfd2; }
+.v1 .txn-item:last-child { border-bottom: none; }
+.v1 .txn-icon { width: 38px; height: 38px; border-radius: 12px; display:flex; align-items:center; justify-content:center; font-size:16px; background:#fef3c7; }
+.v1 .txn-icon.b { background:#fed7aa; }
+.v1 .txn-icon.c { background:#fecaca; }
+.v1 .txn-icon.d { background:#fef9c3; }
+.v1 .txn-name { font-size: 14px; font-weight: 600; }
+.v1 .txn-meta { font-size: 11px; opacity: 0.5; margin-top: 2px; }
+.v1 .txn-amount { font-family: "Charter", "Georgia", serif; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ============== V2 — MIDNIGHT MERCURY ============== */
+.v2 { background: #050514; }
+.v2 .theme-info .tag { background: #a78bfa; color: #1e1b4b; }
+.v2 .theme-info h2, .v2 .theme-info p { color: #f1f1ff; }
+.v2 .phone-frame { background: #0a0a1f; }
+.v2 .screen { background: #0a0a1f; color: #e0e0f5; }
+
+.v2 .hero {
+  background: linear-gradient(135deg, #1e1b4b 0%, #14142b 100%);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: 22px;
+  padding: 24px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.v2 .hero::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -30%;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(167,139,250,0.25), transparent 60%);
+}
+.v2 .hero .label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; margin-bottom: 8px; font-weight: 600; position: relative; }
+.v2 .hero .amount {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 14px;
+  position: relative;
+  background: linear-gradient(135deg, #f1f1ff, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v2 .hero .progress {
+  height: 3px;
+  background: rgba(167,139,250,0.15);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  position: relative;
+}
+.v2 .hero .pfill { height:100%; background: linear-gradient(90deg, #a78bfa, #f472b6); border-radius: 2px; }
+.v2 .hero .meta { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.6; position: relative; }
+
+.v2 .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.v2 .stat {
+  background: #14142b;
+  border: 1px solid rgba(167,139,250,0.1);
+  border-radius: 14px;
+  padding: 14px;
+}
+.v2 .stat .l { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; }
+.v2 .stat .v {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-top: 4px;
+  letter-spacing: -0.015em;
+}
+.v2 .stat .delta { font-size: 10px; color: #34d399; font-weight: 600; margin-top: 2px; }
+.v2 .stat .delta.neg { color: #f472b6; }
+
+.v2 .section-row { display:flex; justify-content:space-between; align-items:center; margin: 24px 0 10px; }
+.v2 .section-row h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.6; }
+.v2 .section-row .more { font-size: 11px; color: #a78bfa; font-weight: 600; }
+
+.v2 .b-card {
+  background: #14142b;
+  border: 1px solid rgba(167,139,250,0.1);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.v2 .b-card .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.v2 .b-card .nm { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.v2 .b-card .dot { width:8px; height:8px; border-radius:50%; background:#a78bfa; }
+.v2 .b-card .dot.b { background:#34d399; }
+.v2 .b-card .dot.c { background:#f472b6; }
+.v2 .b-card .dot.d { background:#60a5fa; }
+.v2 .b-card .amt {
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.v2 .b-card .amt .l { opacity: 0.5; font-weight: 500; font-size: 11px; }
+.v2 .b-card .bar { height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+.v2 .b-card .fill { height:100%; background: linear-gradient(90deg, #a78bfa, #c084fc); border-radius: 2px; }
+.v2 .b-card .fill.b { background: linear-gradient(90deg, #34d399, #10b981); }
+.v2 .b-card .fill.c { background: linear-gradient(90deg, #f472b6, #ec4899); }
+.v2 .b-card .fill.d { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+.v2 .b-card .meta { display:flex; justify-content:space-between; margin-top: 8px; font-size: 10px; opacity: 0.5; }
+
+.v2 .fab { background: linear-gradient(135deg, #a78bfa, #c084fc); color: #1e1b4b; box-shadow: 0 10px 30px rgba(167,139,250,0.4); }
+.v2 .tab-bar { background: rgba(10,10,31,0.9); backdrop-filter: blur(16px); border-top: 1px solid rgba(167,139,250,0.1); }
+.v2 .tab { color: #6b6b8f; }
+.v2 .tab.active { color: #a78bfa; }
+.v2 .app-header .avatar { background: linear-gradient(135deg, #a78bfa, #c084fc); color: #1e1b4b; }
+
+.v2 .txn-day { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; padding: 18px 0 8px; display:flex; justify-content:space-between; font-weight: 600; }
+.v2 .txn-item { display: flex; align-items:center; gap: 12px; padding: 12px 0; }
+.v2 .txn-icon { width:36px; height:36px; border-radius: 11px; display:flex; align-items:center; justify-content:center; font-size:14px; background:rgba(167,139,250,0.12); color: #a78bfa; }
+.v2 .txn-icon.b { background:rgba(52,211,153,0.12); color:#34d399; }
+.v2 .txn-icon.c { background:rgba(244,114,182,0.12); color:#f472b6; }
+.v2 .txn-icon.d { background:rgba(96,165,250,0.12); color:#60a5fa; }
+.v2 .txn-name { font-size: 13px; font-weight: 600; }
+.v2 .txn-meta { font-size: 11px; opacity: 0.5; margin-top: 2px; }
+.v2 .txn-amount { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.v2 .txn-amount.in { color: #34d399; }
+
+/* ============== V3 — CITRUS POP ============== */
+.v3 { background: #d4ff00; }
+.v3 .theme-info .tag { background: #0c0a09; color: #d4ff00; }
+.v3 .theme-info h2 { color: #0c0a09; }
+.v3 .theme-info p { color: #1c1917; }
+.v3 .phone-frame { background: #fffef7; }
+.v3 .screen { background: #fffef7; color: #0c0a09; }
+
+.v3 .hero {
+  background: #0c0a09;
+  color: #fff;
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+}
+.v3 .hero .blob {
+  position: absolute;
+  top: -30%; right: -20%;
+  width: 200px; height: 200px;
+  background: #d4ff00;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.4;
+}
+.v3 .hero .label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; margin-bottom: 8px; font-weight: 700; position: relative; }
+.v3 .hero .amount {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.v3 .hero .amount em { font-style: normal; color: #d4ff00; }
+.v3 .hero .sub { font-size: 11px; opacity: 0.6; position: relative; margin-bottom: 16px; }
+.v3 .hero .pill-row { display:flex; gap: 8px; position: relative; }
+.v3 .hero .pill {
+  background: #d4ff00;
+  color: #0c0a09;
+  padding: 8px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.v3 .hero .pill.alt { background: rgba(255,255,255,0.1); color: white; }
+.v3 .hero .pill b { font-variant-numeric: tabular-nums; }
+
+.v3 .section-row { display:flex; justify-content:space-between; align-items:center; margin: 24px 0 12px; }
+.v3 .section-row h3 { font-size: 17px; font-weight: 800; letter-spacing: -0.015em; }
+.v3 .section-row .more { font-size: 11px; font-weight: 600; opacity: 0.5; }
+
+.v3 .h-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; margin: 0 -20px; padding-left: 20px; padding-right: 20px; }
+.v3 .h-scroll::-webkit-scrollbar { display: none; }
+
+.v3 .b-card {
+  flex-shrink: 0;
+  width: 150px;
+  background: #d4ff00;
+  border-radius: 18px;
+  padding: 16px;
+}
+.v3 .b-card.b { background: #fbbf24; }
+.v3 .b-card.c { background: #fb7185; color: white; }
+.v3 .b-card.d { background: #0c0a09; color: #d4ff00; }
+.v3 .b-card .emoji { font-size: 22px; margin-bottom: 16px; }
+.v3 .b-card .nm { font-size: 11px; font-weight: 700; opacity: 0.7; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+.v3 .b-card .amt { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; line-height: 1; }
+.v3 .b-card .sub { font-size: 10px; opacity: 0.6; margin-top: 4px; font-weight: 600; }
+.v3 .b-card .bar { height: 4px; background: rgba(0,0,0,0.15); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.v3 .b-card .fill { height:100%; background:#0c0a09; border-radius: 2px; }
+.v3 .b-card.d .bar { background: rgba(212,255,0,0.2); }
+.v3 .b-card.d .fill { background: #d4ff00; }
+.v3 .b-card.c .bar { background: rgba(255,255,255,0.25); }
+.v3 .b-card.c .fill { background: white; }
+
+.v3 .goal-card {
+  background: #0c0a09;
+  color: #d4ff00;
+  border-radius: 22px;
+  padding: 18px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.v3 .goal-card .emo {
+  position: absolute;
+  top: 16px; right: 18px;
+  font-size: 28px;
+}
+.v3 .goal-card .nm { font-size: 11px; font-weight: 700; opacity: 0.6; letter-spacing: 0.08em; text-transform: uppercase; }
+.v3 .goal-card .ttl { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; margin: 4px 0 12px; color: white; }
+.v3 .goal-card .saved { font-size: 28px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; line-height: 1; }
+.v3 .goal-card .of { font-size: 12px; opacity: 0.7; margin-left: 4px; }
+.v3 .goal-card .bar { height: 4px; background: rgba(212,255,0,0.15); border-radius: 2px; margin-top: 14px; overflow:hidden; }
+.v3 .goal-card .fill { height:100%; background: #d4ff00; border-radius: 2px; }
+.v3 .goal-card .meta { display:flex; justify-content:space-between; margin-top: 8px; font-size:10px; opacity: 0.6; font-weight: 600; }
+
+.v3 .fab { background: #0c0a09; color: #d4ff00; }
+.v3 .tab-bar { background: rgba(255,254,247,0.95); backdrop-filter: blur(16px); border-top: 1px solid #e7e5e4; }
+.v3 .tab { color: #a8a29e; }
+.v3 .tab.active { color: #0c0a09; }
+.v3 .tab.active .ic {
+  background: #d4ff00;
+  width: 28px; height: 28px;
+  border-radius: 10px;
+  display: flex; align-items:center; justify-content:center;
+  margin-bottom: -4px;
+}
+.v3 .app-header .avatar { background: #0c0a09; color: #d4ff00; }
+.v3 .app-header .month { font-weight: 800; letter-spacing: -0.02em; }
+
+.v3 .txn-day { font-size: 11px; font-weight: 700; padding: 18px 0 8px; display:flex; justify-content:space-between; }
+.v3 .txn-day b { color: #0c0a09; }
+.v3 .txn-day .total { font-variant-numeric: tabular-nums; opacity: 0.5; }
+.v3 .txn-item { display: flex; align-items:center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f5f0e0; }
+.v3 .txn-item:last-child { border-bottom: none; }
+.v3 .txn-icon { width:40px; height:40px; border-radius: 12px; display:flex; align-items:center; justify-content:center; font-size:18px; background: #d4ff00; }
+.v3 .txn-icon.b { background:#fbbf24; }
+.v3 .txn-icon.c { background:#fb7185; }
+.v3 .txn-icon.d { background:#0c0a09; }
+.v3 .txn-name { font-size: 14px; font-weight: 700; }
+.v3 .txn-meta { font-size: 11px; opacity: 0.5; margin-top: 2px; font-weight: 500; }
+.v3 .txn-amount { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.015em; }
+
+/* ============== V4 — SOFT GLASS ============== */
+.v4 { background: linear-gradient(135deg, #2a1e3a, #1a1e3a); }
+.v4 .theme-info .tag { background: #f0abfc; color: #2a1e3a; }
+.v4 .theme-info h2, .v4 .theme-info p { color: #faf5ff; }
+.v4 .phone-frame {
+  background: linear-gradient(135deg, #fce7f3 0%, #ede9fe 50%, #dbeafe 100%);
+}
+.v4 .screen {
+  background: linear-gradient(135deg, #fce7f3 0%, #ede9fe 50%, #dbeafe 100%);
+  color: #1e1b4b;
+}
+
+.v4 .hero {
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 24px;
+  padding: 22px;
+  margin-bottom: 16px;
+  position: relative;
+}
+.v4 .hero .label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.5; font-weight: 600; margin-bottom: 6px; }
+.v4 .hero .amount {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, #831843, #6b21a8, #1e3a8a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+.v4 .hero .bar { height:6px; background: rgba(255,255,255,0.5); border-radius: 3px; overflow:hidden; margin-bottom: 10px; }
+.v4 .hero .fill { height:100%; background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6); border-radius: 3px; }
+.v4 .hero .meta { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.6; font-weight: 500; }
+
+.v4 .pill-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.v4 .pill-stat {
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 18px;
+  padding: 14px;
+}
+.v4 .pill-stat .l { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.5; font-weight: 600; }
+.v4 .pill-stat .v { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 4px; letter-spacing: -0.015em; }
+.v4 .pill-stat .delta { font-size: 10px; color: #059669; font-weight: 600; margin-top: 2px; }
+
+.v4 .section-row { display:flex; justify-content:space-between; align-items:center; margin: 22px 0 10px; }
+.v4 .section-row h3 { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.v4 .section-row .more { font-size: 11px; opacity: 0.5; }
+
+.v4 .b-card {
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 18px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.v4 .b-card .top { display: flex; justify-content: space-between; align-items: baseline; }
+.v4 .b-card .nm { font-size: 13px; font-weight: 600; }
+.v4 .b-card .nm .em { margin-right: 4px; }
+.v4 .b-card .amt { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.v4 .b-card .amt .l { opacity: 0.5; font-weight: 500; font-size: 11px; }
+.v4 .b-card .bar { height: 6px; background: rgba(255,255,255,0.5); border-radius: 3px; margin-top: 10px; overflow:hidden; }
+.v4 .b-card .fill { height:100%; background: linear-gradient(90deg, #ec4899, #8b5cf6); border-radius: 3px; }
+.v4 .b-card .fill.b { background: linear-gradient(90deg, #8b5cf6, #3b82f6); }
+.v4 .b-card .fill.c { background: linear-gradient(90deg, #f97316, #ec4899); }
+.v4 .b-card .fill.d { background: linear-gradient(90deg, #06b6d4, #8b5cf6); }
+
+.v4 .goal-card {
+  background: linear-gradient(135deg, rgba(236,72,153,0.85), rgba(139,92,246,0.85));
+  backdrop-filter: blur(16px);
+  color: white;
+  border-radius: 22px;
+  padding: 20px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.v4 .goal-card.alt { background: linear-gradient(135deg, rgba(59,130,246,0.85), rgba(168,85,247,0.85)); }
+.v4 .goal-card .lbl { font-size: 11px; opacity: 0.8; font-weight: 600; }
+.v4 .goal-card .nm { font-size: 18px; font-weight: 700; margin: 4px 0 14px; letter-spacing: -0.015em; }
+.v4 .goal-card .saved { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; line-height: 1; }
+.v4 .goal-card .of { font-size: 11px; opacity: 0.7; margin-left: 4px; }
+.v4 .goal-card .bar { height: 4px; background: rgba(255,255,255,0.25); border-radius: 2px; margin-top: 12px; overflow:hidden; }
+.v4 .goal-card .fill { height:100%; background: white; border-radius: 2px; }
+.v4 .goal-card .eta { font-size: 11px; opacity: 0.85; margin-top: 8px; }
+
+.v4 .fab {
+  background: linear-gradient(135deg, #ec4899, #8b5cf6);
+  color: white;
+  box-shadow: 0 10px 30px rgba(139,92,246,0.4);
+}
+.v4 .tab-bar {
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255,255,255,0.5);
+}
+.v4 .tab { color: #6b6b8f; }
+.v4 .tab.active { color: #8b5cf6; }
+.v4 .app-header .avatar { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: white; }
+
+.v4 .txn-day { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.5; padding: 14px 0 6px; display:flex; justify-content:space-between; font-weight: 600; }
+.v4 .txn-item {
+  display: flex; align-items:center; gap: 12px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 16px;
+  margin-bottom: 6px;
+}
+.v4 .txn-icon { width:36px; height:36px; border-radius: 12px; display:flex; align-items:center; justify-content:center; font-size:15px; background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+.v4 .txn-icon.b { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+.v4 .txn-icon.c { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+.v4 .txn-icon.d { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+.v4 .txn-name { font-size: 13px; font-weight: 600; }
+.v4 .txn-meta { font-size: 11px; opacity: 0.5; margin-top: 1px; }
+.v4 .txn-amount { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+</style>
+</head>
+<body>
+
+<div class="board-header">
+  <h1>Theme Variations</h1>
+  <p>Four directions, same product. Each variation defines a complete colour palette, typography feel, and surface treatment — applied to the same screens (Home, Budgets, Transactions) so you can compare like-for-like.</p>
+</div>
+
+
+<!-- ============== V1 ============== -->
+<div class="variation v1">
+  <div class="theme-header">
+    <div class="theme-info">
+      <div class="tag">Variation 1</div>
+      <h2>Sunset Editorial</h2>
+      <p>Warm cream paper, terracotta-burgundy accent, serif headlines for money. Feels like a personal finance journal — mature, considered, and human. Inspired by editorial magazine layouts and Things 3's typographic restraint.</p>
+    </div>
+    <div class="palette">
+      <div class="swatch"><div class="color" style="background:#faf6f1"></div><div class="hex">#FAF6F1</div><div class="name">Paper</div></div>
+      <div class="swatch"><div class="color" style="background:#1a1612"></div><div class="hex">#1A1612</div><div class="name">Ink</div></div>
+      <div class="swatch"><div class="color" style="background:#7c2d12"></div><div class="hex">#7C2D12</div><div class="name">Burgundy</div></div>
+      <div class="swatch"><div class="color" style="background:#ea580c"></div><div class="hex">#EA580C</div><div class="name">Terracotta</div></div>
+      <div class="swatch"><div class="color" style="background:#fef3c7"></div><div class="hex">#FEF3C7</div><div class="name">Buttercream</div></div>
+      <div class="swatch"><div class="color" style="background:#fecaca"></div><div class="hex">#FECACA</div><div class="name">Rosewater</div></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- V1 Home -->
+    <div class="phone">
+      <div class="phone-label">Home</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">June 2026</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="lead">June, day 17</div>
+              <div class="label">You have</div>
+              <div class="amount">$2,479</div>
+              <div class="meta">
+                <div><b>$4,820</b>Take-home</div>
+                <div><b>$2,341</b>Spent so far</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">See all</span></div>
+            <div class="b-card">
+              <div class="em">🍱</div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$118 left · 53% used</div>
+              </div>
+              <div class="bal">$182</div>
+            </div>
+            <div class="b-card">
+              <div class="em" style="background:#fed7aa;">🚇</div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left · 57% used</div>
+              </div>
+              <div class="bal">$85</div>
+            </div>
+            <div class="b-card">
+              <div class="em" style="background:#fecaca;">🛍</div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#dc2626;">Over by $20</div>
+              </div>
+              <div class="bal" style="color:#dc2626;">$420</div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">See all</span></div>
+            <div class="goal-card">
+              <div class="lbl">Saving toward</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <div class="row-g">
+                <div class="saved">$1,820</div>
+                <div class="target">of $3,500</div>
+              </div>
+              <div class="bar"><div class="fill" style="width:52%"></div></div>
+            </div>
+            <div class="goal-card alt">
+              <div class="lbl">Saving toward</div>
+              <div class="nm">Japan Trip</div>
+              <div class="row-g">
+                <div class="saved">$500</div>
+                <div class="target">of $2,000</div>
+              </div>
+              <div class="bar"><div class="fill" style="width:25%"></div></div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V1 Transactions -->
+    <div class="phone">
+      <div class="phone-label">Transactions</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month" style="font-family: 'Charter', Georgia, serif; font-size:24px;">Transactions</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="txn-day"><span>Today, Tue 17 Jun</span><span>−$48.20</span></div>
+            <div class="txn-item">
+              <div class="txn-icon">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS Multiplier</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon b">☕</div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Manual</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon c">🚇</div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo Top Up</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+            <div class="txn-day"><span>Mon 16 Jun</span><span>−$96.80</span></div>
+            <div class="txn-item">
+              <div class="txn-icon d">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon b">⚡</div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+            <div class="txn-day"><span>Sun 15 Jun</span><span style="color:#059669;">+$4,820.00</span></div>
+            <div class="txn-item">
+              <div class="txn-icon" style="background:#fde68a;">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme Pte Ltd</div>
+                <div class="txn-meta">Income</div>
+              </div>
+              <div class="txn-amount" style="color:#059669;">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============== V2 ============== -->
+<div class="variation v2">
+  <div class="theme-header">
+    <div class="theme-info">
+      <div class="tag">Variation 2</div>
+      <h2>Midnight Mercury</h2>
+      <p>Deep navy black with electric violet gradient accents. Feels premium and fintech-forward, like Mercury Bank or Linear. Subtle gradients on numbers, dot indicators on categories, and emphasis on data density.</p>
+    </div>
+    <div class="palette">
+      <div class="swatch"><div class="color" style="background:#0a0a1f"></div><div class="hex">#0A0A1F</div><div class="name">Midnight</div></div>
+      <div class="swatch"><div class="color" style="background:#14142b"></div><div class="hex">#14142B</div><div class="name">Surface</div></div>
+      <div class="swatch"><div class="color" style="background:#a78bfa"></div><div class="hex">#A78BFA</div><div class="name">Violet</div></div>
+      <div class="swatch"><div class="color" style="background:#34d399"></div><div class="hex">#34D399</div><div class="name">Mint</div></div>
+      <div class="swatch"><div class="color" style="background:#f472b6"></div><div class="hex">#F472B6</div><div class="name">Hot Pink</div></div>
+      <div class="swatch"><div class="color" style="background:#60a5fa"></div><div class="hex">#60A5FA</div><div class="name">Sky</div></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- V2 Home -->
+    <div class="phone">
+      <div class="phone-label">Home</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span style="color:#f1f1ff;">9:41</span><span style="color:#f1f1ff;">●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">June 2026</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining this month</div>
+              <div class="amount">$2,479.00</div>
+              <div class="progress"><div class="pfill" style="width:48%"></div></div>
+              <div class="meta">
+                <span>48% spent</span>
+                <span>14 days left</span>
+              </div>
+            </div>
+            <div class="stat-grid">
+              <div class="stat">
+                <div class="l">Take-home</div>
+                <div class="v">$4,820</div>
+                <div class="delta">+$170 vs May</div>
+              </div>
+              <div class="stat">
+                <div class="l">CPF total</div>
+                <div class="v">$2,220</div>
+                <div class="delta">Employer +$1,020</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">See all →</span></div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="dot"></span>Food</div>
+                <div class="amt">$182<span class="l"> / 345</span></div>
+              </div>
+              <div class="bar"><div class="fill" style="width:53%"></div></div>
+              <div class="meta"><span>53% used</span><span>$163 left · rollover +$45</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="dot b"></span>Transport</div>
+                <div class="amt">$85<span class="l"> / 150</span></div>
+              </div>
+              <div class="bar"><div class="fill b" style="width:57%"></div></div>
+              <div class="meta"><span>57% used</span><span>$65 left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="dot c"></span>Shopping</div>
+                <div class="amt" style="color:#f472b6;">$420<span class="l" style="color:rgba(244,114,182,0.5);"> / 400</span></div>
+              </div>
+              <div class="bar"><div class="fill c" style="width:100%"></div></div>
+              <div class="meta"><span style="color:#f472b6;">Over by $20</span><span>14 days left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="dot d"></span>Coffee</div>
+                <div class="amt">$74<span class="l"> / 110</span></div>
+              </div>
+              <div class="bar"><div class="fill d" style="width:67%"></div></div>
+              <div class="meta"><span>67% used</span><span>$36 left</span></div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V2 Transactions -->
+    <div class="phone">
+      <div class="phone-label">Transactions</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span style="color:#f1f1ff;">9:41</span><span style="color:#f1f1ff;">●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">Transactions</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div style="display:flex; gap:8px; margin-bottom:8px;">
+              <div style="flex:1; height:36px; background:#14142b; border:1px solid rgba(167,139,250,0.15); border-radius:10px; display:flex; align-items:center; padding:0 12px; font-size:12px; color:#6b6b8f;">⌕ Search</div>
+              <div style="width:36px; height:36px; background:#14142b; border:1px solid rgba(167,139,250,0.15); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#a78bfa;">≡</div>
+            </div>
+            <div class="txn-day"><span>Today</span><span>−$48.20</span></div>
+            <div class="txn-item">
+              <div class="txn-icon">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon b">☕</div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Manual</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon d">🚇</div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+            <div class="txn-day"><span>Mon 16 Jun</span><span>−$96.80</span></div>
+            <div class="txn-item">
+              <div class="txn-icon c">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon b">⚡</div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+            <div class="txn-day"><span>Sun 15 Jun</span><span style="color:#34d399;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="txn-icon b">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta">Income · DBS</div>
+              </div>
+              <div class="txn-amount in">+$4,820.00</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============== V3 ============== -->
+<div class="variation v3">
+  <div class="theme-header">
+    <div class="theme-info">
+      <div class="tag">Variation 3</div>
+      <h2>Citrus Pop</h2>
+      <p>Black-and-lime energy with bold typography and oversized numbers. Feels confident, modern, gen-z. Inspired by Cash App's bold blocks and the recent wave of black-with-electric-lime fintech (Klarna, Chipper Cash). Big personality — wears its design opinion on its sleeve.</p>
+    </div>
+    <div class="palette">
+      <div class="swatch"><div class="color" style="background:#0c0a09; border:1px solid #333;"></div><div class="hex">#0C0A09</div><div class="name">Ink</div></div>
+      <div class="swatch"><div class="color" style="background:#fffef7; border:1px solid #ddd;"></div><div class="hex">#FFFEF7</div><div class="name">Cream</div></div>
+      <div class="swatch"><div class="color" style="background:#d4ff00"></div><div class="hex">#D4FF00</div><div class="name">Lime</div></div>
+      <div class="swatch"><div class="color" style="background:#fbbf24"></div><div class="hex">#FBBF24</div><div class="name">Honey</div></div>
+      <div class="swatch"><div class="color" style="background:#fb7185"></div><div class="hex">#FB7185</div><div class="name">Coral</div></div>
+      <div class="swatch"><div class="color" style="background:#f5f0e0"></div><div class="hex">#F5F0E0</div><div class="name">Sand</div></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- V3 Home -->
+    <div class="phone">
+      <div class="phone-label">Home</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">JUN '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="blob"></div>
+              <div class="label">You have</div>
+              <div class="amount">$2,<em>479</em></div>
+              <div class="sub">48% spent · 14 days to go</div>
+              <div class="pill-row">
+                <div class="pill">↑ <b>$4,820</b> in</div>
+                <div class="pill alt">↓ <b>$2,341</b> out</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="h-scroll">
+              <div class="b-card">
+                <div class="emoji">🍱</div>
+                <div class="nm">Food</div>
+                <div class="amt">$182</div>
+                <div class="sub">of $345</div>
+                <div class="bar"><div class="fill" style="width:53%"></div></div>
+              </div>
+              <div class="b-card b">
+                <div class="emoji">🚇</div>
+                <div class="nm">Transport</div>
+                <div class="amt">$85</div>
+                <div class="sub">of $150</div>
+                <div class="bar"><div class="fill" style="width:57%"></div></div>
+              </div>
+              <div class="b-card c">
+                <div class="emoji">🛍</div>
+                <div class="nm" style="color:rgba(255,255,255,0.8);">Shopping</div>
+                <div class="amt">$420</div>
+                <div class="sub" style="color:rgba(255,255,255,0.8);">over by $20</div>
+                <div class="bar"><div class="fill" style="width:100%"></div></div>
+              </div>
+              <div class="b-card d">
+                <div class="emoji">☕</div>
+                <div class="nm">Coffee</div>
+                <div class="amt">$74</div>
+                <div class="sub">of $110</div>
+                <div class="bar"><div class="fill" style="width:67%"></div></div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">All →</span></div>
+            <div class="goal-card">
+              <div class="emo">💻</div>
+              <div class="nm">Goal</div>
+              <div class="ttl">MacBook Pro 14"</div>
+              <div><span class="saved">$1,820</span><span class="of">/ $3,500</span></div>
+              <div class="bar"><div class="fill" style="width:52%"></div></div>
+              <div class="meta"><span>52% there</span><span>8 months left</span></div>
+            </div>
+            <div class="goal-card" style="background:#7c2d12; color:#fed7aa;">
+              <div class="emo">✈️</div>
+              <div class="nm">Goal</div>
+              <div class="ttl" style="color:white;">Japan Trip</div>
+              <div><span class="saved">$500</span><span class="of">/ $2,000</span></div>
+              <div class="bar" style="background:rgba(254,215,170,0.2);"><div class="fill" style="background:#fed7aa; width:25%"></div></div>
+              <div class="meta"><span>25% there</span><span>15 months</span></div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V3 Transactions -->
+    <div class="phone">
+      <div class="phone-label">Transactions</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">Spending</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div style="display:flex; gap:8px; margin-bottom:14px;">
+              <div style="flex:1; height:38px; background:#f5f0e0; border-radius:14px; display:flex; align-items:center; padding:0 14px; font-size:12px; font-weight:600; color:#78716c;">⌕ Search</div>
+              <div style="width:38px; height:38px; background:#0c0a09; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:13px; color:#d4ff00;">≡</div>
+            </div>
+            <div class="txn-day"><b>Today, Tue 17 Jun</b><span class="total">−$48.20</span></div>
+            <div class="txn-item">
+              <div class="txn-icon">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon b">☕</div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Manual</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon c">🚇</div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo</div>
+                <div class="txn-meta">Transport</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+            <div class="txn-day"><b>Mon 16 Jun</b><span class="total">−$96.80</span></div>
+            <div class="txn-item">
+              <div class="txn-icon d" style="color:#d4ff00;">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon b">⚡</div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO · recurring</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+            <div class="txn-day"><b>Sun 15 Jun</b><span class="total" style="color:#0c0a09;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="txn-icon" style="background:#d4ff00;">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta">Income</div>
+              </div>
+              <div class="txn-amount">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============== V4 ============== -->
+<div class="variation v4">
+  <div class="theme-header">
+    <div class="theme-info">
+      <div class="tag">Variation 4</div>
+      <h2>Aurora Glass</h2>
+      <p>Soft pastel gradients with glassmorphism cards. Feels like Apple Wallet meets visionOS — calm, dreamy, premium. Best for users who want their finance app to feel relaxing rather than stressful. Frosted glass cards over a watercolour-pink-to-blue gradient.</p>
+    </div>
+    <div class="palette">
+      <div class="swatch"><div class="color" style="background:linear-gradient(135deg,#fce7f3,#dbeafe);"></div><div class="hex">Gradient</div><div class="name">Aurora BG</div></div>
+      <div class="swatch"><div class="color" style="background:#ec4899"></div><div class="hex">#EC4899</div><div class="name">Magenta</div></div>
+      <div class="swatch"><div class="color" style="background:#8b5cf6"></div><div class="hex">#8B5CF6</div><div class="name">Violet</div></div>
+      <div class="swatch"><div class="color" style="background:#3b82f6"></div><div class="hex">#3B82F6</div><div class="name">Blue</div></div>
+      <div class="swatch"><div class="color" style="background:#1e1b4b"></div><div class="hex">#1E1B4B</div><div class="name">Ink</div></div>
+      <div class="swatch"><div class="color" style="background:rgba(255,255,255,0.6); border:1px solid #ccc;"></div><div class="hex">Glass</div><div class="name">Surface</div></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- V4 Home -->
+    <div class="phone">
+      <div class="phone-label">Home</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">June 2026</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining this month</div>
+              <div class="amount">$2,479</div>
+              <div class="bar"><div class="fill" style="width:48%"></div></div>
+              <div class="meta">
+                <span>48% spent</span>
+                <span>14 days left</span>
+              </div>
+            </div>
+            <div class="pill-stat-row">
+              <div class="pill-stat">
+                <div class="l">Take-home</div>
+                <div class="v">$4,820</div>
+                <div class="delta">+$170 vs May</div>
+              </div>
+              <div class="pill-stat">
+                <div class="l">CPF</div>
+                <div class="v">$2,220</div>
+                <div class="delta">incl. employer</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">See all</span></div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em">🍱</span>Food</div>
+                <div class="amt">$182<span class="l"> / 345</span></div>
+              </div>
+              <div class="bar"><div class="fill" style="width:53%"></div></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em">🚇</span>Transport</div>
+                <div class="amt">$85<span class="l"> / 150</span></div>
+              </div>
+              <div class="bar"><div class="fill b" style="width:57%"></div></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em">🛍</span>Shopping</div>
+                <div class="amt" style="color:#dc2626;">$420<span class="l"> / 400</span></div>
+              </div>
+              <div class="bar"><div class="fill c" style="width:100%"></div></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em">☕</span>Coffee</div>
+                <div class="amt">$74<span class="l"> / 110</span></div>
+              </div>
+              <div class="bar"><div class="fill d" style="width:67%"></div></div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">See all</span></div>
+            <div class="goal-card">
+              <div class="lbl">SAVING FOR</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <div><span class="saved">$1,820</span><span class="of">of $3,500</span></div>
+              <div class="bar"><div class="fill" style="width:52%"></div></div>
+              <div class="eta">52% · 8 months to go</div>
+            </div>
+            <div class="goal-card alt">
+              <div class="lbl">SAVING FOR</div>
+              <div class="nm">Japan Trip</div>
+              <div><span class="saved">$500</span><span class="of">of $2,000</span></div>
+              <div class="bar"><div class="fill" style="width:25%"></div></div>
+              <div class="eta">25% · 15 months</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V4 Transactions -->
+    <div class="phone">
+      <div class="phone-label">Transactions</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">Transactions</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div style="display:flex; gap:8px; margin-bottom:8px;">
+              <div style="flex:1; height:38px; background:rgba(255,255,255,0.4); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.5); border-radius:14px; display:flex; align-items:center; padding:0 14px; font-size:12px; color:#6b6b8f; font-weight:500;">⌕ Search</div>
+              <div style="width:38px; height:38px; background:rgba(255,255,255,0.4); backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.5); border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:13px;">≡</div>
+            </div>
+            <div class="txn-day"><span>Today, Tue 17 Jun</span><span>−$48.20</span></div>
+            <div class="txn-item">
+              <div class="txn-icon">🍱</div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon c">☕</div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Manual</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon b">🚇</div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+            <div class="txn-day"><span>Mon 16 Jun</span><span>−$96.80</span></div>
+            <div class="txn-item">
+              <div class="txn-icon">🛍</div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon d">⚡</div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+            <div class="txn-day"><span>Sun 15 Jun</span><span style="color:#059669;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="txn-icon b">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta">Income</div>
+              </div>
+              <div class="txn-amount" style="color:#059669;">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</body>
+</html>

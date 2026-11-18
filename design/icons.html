@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tokyo Riso — Icon System</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  background: #211e1a;
+  color: #ece6d2;
+  padding: 50px 40px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.board-header { max-width: 1500px; margin: 0 auto 40px; text-align: center; }
+.board-header .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #ff5c4d;
+  color: #2b2825;
+  margin-bottom: 12px;
+}
+.board-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.board-header p {
+  color: #a89b85;
+  font-size: 13px;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.section { max-width: 1500px; margin: 0 auto 50px; }
+.section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff5c4d;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: space-between;
+}
+.section-title .desc {
+  font-size: 11px; letter-spacing: 0; text-transform: none;
+  color: #a89b85; font-weight: 500;
+  max-width: 500px; text-align: right;
+}
+
+.row { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+
+.phone { width: 320px; flex-shrink: 0; }
+.phone-label {
+  font-size: 10px; font-weight: 700;
+  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ffd84d;
+  text-align: center;
+}
+.phone-sub {
+  font-size: 10px; color: #a89b85;
+  text-align: center;
+  margin-bottom: 12px;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.phone-frame {
+  width: 320px;
+  height: 680px;
+  border-radius: 38px;
+  border: 8px solid #0a0a0a;
+  box-shadow: 0 24px 50px -20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ece6d2;
+}
+.notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 26px;
+  background: #0c0a09;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+.status-bar {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 22px 0;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+  color: #2b2825;
+}
+.screen {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column;
+  background: #ece6d2; color: #2b2825;
+}
+.screen::-webkit-scrollbar { display: none; }
+
+.app-header {
+  padding: 10px 16px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.app-header .month { font-size: 14px; font-weight: 700; letter-spacing: -0.015em; }
+.app-header .avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #2b2825; color: #ffd84d;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.scroll { flex: 1; overflow-y: auto; padding: 0 16px 70px; }
+.scroll::-webkit-scrollbar { display: none; }
+
+.txn-search {
+  display: flex; gap: 6px;
+  padding: 4px 16px 12px;
+}
+.search-pill {
+  flex: 1; height: 32px;
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 8px;
+  padding: 0 10px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600;
+  color: #6b6256;
+}
+.filter-btn {
+  width: 32px; height: 32px;
+  background: #ffd84d;
+  border: 1.5px solid #2b2825;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+
+.nav-pills {
+  display: flex; gap: 5px; overflow-x: auto;
+  margin: 0 -16px 10px;
+  padding: 0 16px 4px;
+}
+.nav-pills::-webkit-scrollbar { display: none; }
+.nav-pill {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.nav-pill.active { background: #2b2825; color: #ffd84d; }
+
+.txn-day {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 12px 2px 6px;
+  display: flex; justify-content: space-between;
+}
+.txn-day .ttl { opacity: 0.75; }
+.txn-day .sub { color: #6b6256; font-variant-numeric: tabular-nums; }
+
+.txn-item {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(43,40,37,0.12);
+  display: flex; align-items: center; gap: 10px;
+}
+.txn-item:last-child { border-bottom: none; }
+.txn-name { font-size: 12px; font-weight: 600; letter-spacing: -0.01em; }
+.txn-meta { font-size: 10px; opacity: 0.5; margin-top: 1px; font-weight: 500; }
+.txn-amount {
+  font-size: 12px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.015em;
+}
+.txn-amount.inc { color: #1a8470; }
+
+/* ========== ICON STYLE A: MONOLINE ========== */
+.iconA {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background: #f5f1e0;
+}
+.iconA svg {
+  width: 16px; height: 16px;
+  stroke: #2b2825;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.iconA.bg-yellow { background: #ffd84d; }
+.iconA.bg-coral { background: #ff5c4d; }
+.iconA.bg-mint { background: #4dd9c8; }
+.iconA.bg-iris { background: #b8a4ff; }
+
+/* ========== ICON STYLE B: MERCHANT LOGO ========== */
+.iconB {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  background: white;
+  font-size: 12px;
+  font-weight: 800;
+  overflow: hidden;
+  position: relative;
+}
+.iconB .brand {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.iconB.sushi {
+  background: linear-gradient(135deg, #1a4d2e, #2d6e4a);
+  color: white;
+}
+.iconB.arabica {
+  background: #1a1a1a;
+  color: #d4a574;
+}
+.iconB.simplygo {
+  background: #00b67a;
+  color: white;
+}
+.iconB.uniqlo {
+  background: #ff0000;
+  color: white;
+}
+.iconB.koufu {
+  background: #c8102e;
+  color: white;
+}
+.iconB.sp {
+  background: #003c71;
+  color: #ffd700;
+}
+.iconB.toast {
+  background: #8b4513;
+  color: #fff8e7;
+}
+.iconB.shopee {
+  background: #ee4d2d;
+  color: white;
+}
+.iconB.salary {
+  background: #f5f1e0;
+  border-style: dashed;
+  border-color: #1a8470;
+  color: #1a8470;
+}
+
+/* Fallback category badge for unknown merchants */
+.iconB-fallback {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid #2b2825;
+  background: #f5f1e0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.iconB-fallback svg {
+  width: 14px; height: 14px;
+  stroke: #2b2825;
+  stroke-width: 1.8;
+  fill: none;
+}
+
+/* Category dot indicator next to merchant icon */
+.cat-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+/* ========== ICON STYLE C: INITIAL LETTER ========== */
+.iconC {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: #ffd84d;
+  color: #2b2825;
+}
+.iconC.bg-coral { background: #ff5c4d; color: #2b2825; }
+.iconC.bg-mint { background: #4dd9c8; color: #2b2825; }
+.iconC.bg-iris { background: #b8a4ff; color: #2b2825; }
+.iconC.bg-cream { background: #f5f1e0; color: #2b2825; }
+
+.tab-bar {
+  height: 60px;
+  background: #ece6d2;
+  border-top: 1.5px solid #2b2825;
+  display: flex; justify-content: space-around; padding-top: 8px;
+  flex-shrink: 0;
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-size: 9px; font-weight: 600;
+  color: #a89b85;
+}
+.tab .ic { font-size: 14px; }
+.tab.active { color: #2b2825; }
+.tab.active .ic {
+  background: #ffd84d;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1.5px solid #2b2825;
+  margin-bottom: -2px;
+}
+
+/* Detail header for picker */
+.detail-header {
+  padding: 10px 16px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.back-btn {
+  width: 30px; height: 30px;
+  background: #ffd84d;
+  border: 1.5px solid #2b2825;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+.detail-title { font-size: 13px; font-weight: 700; letter-spacing: -0.015em; }
+
+.picker-tabs {
+  display: flex;
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 9px;
+  padding: 2px;
+  margin: 0 0 14px;
+}
+.picker-tab {
+  flex: 1;
+  padding: 5px 6px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+}
+.picker-tab.active { background: #2b2825; color: #ffd84d; }
+
+.picker-section-title {
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: #6b6256;
+  margin: 14px 0 8px;
+}
+
+.icon-grid {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+.icon-tile {
+  aspect-ratio: 1;
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.icon-tile.selected {
+  background: #ffd84d;
+  box-shadow: 2px 2px 0 #2b2825;
+}
+.icon-tile svg {
+  width: 16px; height: 16px;
+  stroke: #2b2825;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.upload-card {
+  margin-top: 12px;
+  background: #f5f1e0;
+  border: 1.5px dashed #2b2825;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+.upload-card .lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.55; margin-bottom: 6px; }
+.upload-card .ic-up { font-size: 18px; margin-bottom: 4px; }
+.upload-card .desc { font-size: 11px; font-weight: 500; opacity: 0.7; line-height: 1.4; }
+
+.color-row {
+  display: flex; gap: 6px;
+  margin-top: 10px;
+}
+.color-tile {
+  width: 30px; height: 30px;
+  border: 1.5px solid #2b2825;
+  border-radius: 7px;
+}
+.color-tile.active { box-shadow: 2px 2px 0 #2b2825; transform: translate(-1px, -1px); }
+
+/* Edit transaction detail */
+.edit-icon-block {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 12px;
+  padding: 14px;
+  margin: 0 0 12px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 2px 2px 0 #2b2825;
+}
+.edit-icon-block .big-icon {
+  width: 50px; height: 50px;
+  border-radius: 10px;
+  border: 1.5px solid #2b2825;
+  background: linear-gradient(135deg, #1a4d2e, #2d6e4a);
+  display: flex; align-items: center; justify-content: center;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+}
+.edit-icon-block .info { flex: 1; }
+.edit-icon-block .nm { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+.edit-icon-block .sub { font-size: 10px; opacity: 0.55; margin-top: 2px; font-weight: 500; }
+.edit-icon-block .change-btn {
+  padding: 4px 10px;
+  background: #4dd9c8;
+  border: 1.5px solid #2b2825;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.field-row {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.field-row .l { font-size: 11px; font-weight: 600; opacity: 0.55; }
+.field-row .v { font-size: 12px; font-weight: 700; }
+
+.tip-card {
+  background: #b8a4ff;
+  border: 1.5px solid #2b2825;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  display: flex; gap: 10px;
+  box-shadow: 2px 2px 0 #2b2825;
+}
+.tip-card .ic { font-size: 14px; }
+.tip-card .txt { font-size: 11px; line-height: 1.4; font-weight: 600; }
+
+</style>
+</head>
+<body>
+
+<div class="board-header">
+  <div class="tag">Tokyo Riso · Icon System</div>
+  <h1>Three icon directions + customisation</h1>
+  <p>Same transactions screen, three icon strategies. Picker UX shows how a user sets their own. Hover-equivalent considerations below each option.</p>
+</div>
+
+
+<!-- THREE OPTIONS -->
+<div class="section">
+  <div class="section-title">
+    Option Comparison
+    <div class="desc">All three solve the same data — choose by which fits your product's voice and tech ambitions.</div>
+  </div>
+  <div class="row">
+
+    <!-- OPTION A: MONOLINE -->
+    <div class="phone">
+      <div class="phone-label">Option A · Monoline</div>
+      <div class="phone-sub">Clean line icons on the coloured tile. Category-first. Cheapest to build, most editorial feel.</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">Spending</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="txn-search">
+            <div class="search-pill">⌕ Search</div>
+            <div class="filter-btn">≡</div>
+          </div>
+          <div class="scroll" style="padding-top:0;">
+            <div class="nav-pills">
+              <div class="nav-pill active">All</div>
+              <div class="nav-pill">Food</div>
+              <div class="nav-pill">Transport</div>
+              <div class="nav-pill">Shop</div>
+            </div>
+            <div class="txn-day"><span class="ttl">Today, Wed 17 Jun</span><span class="sub">−$48.20</span></div>
+            <div class="txn-item">
+              <div class="iconA bg-yellow">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconA bg-coral">
+                <svg viewBox="0 0 24 24"><path d="M5 9h12v8a4 4 0 01-4 4H9a4 4 0 01-4-4V9zM17 11h2a2 2 0 010 4h-2"/><path d="M9 4v3M13 4v3"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Cash</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconA bg-mint">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M4 11h16M9 18l-2 3M15 18l2 3"/><circle cx="8" cy="14" r="1" fill="#2b2825"/><circle cx="16" cy="14" r="1" fill="#2b2825"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo Top Up</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Tue 16 Jun</span><span class="sub">−$96.80</span></div>
+            <div class="txn-item">
+              <div class="iconA bg-iris">
+                <svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5L6 7zM9 7V5a3 3 0 016 0v2"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconA bg-yellow">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconA">
+                <svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO · recurring</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Sun 14 Jun · payday</span><span class="sub" style="color:#1a8470;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="iconA bg-mint">
+                <svg viewBox="0 0 24 24"><path d="M12 2v20M17 7H9.5a2.5 2.5 0 000 5H14a2.5 2.5 0 010 5H7"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta">Income · DBS</div>
+              </div>
+              <div class="txn-amount inc">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- OPTION B: MERCHANT LOGO -->
+    <div class="phone">
+      <div class="phone-label">Option B · Merchant logo</div>
+      <div class="phone-sub">Auto-fetched logos via Brandfetch. Merchant-first identity. Coloured dot shows category. Best UX, most build cost.</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">Spending</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="txn-search">
+            <div class="search-pill">⌕ Search</div>
+            <div class="filter-btn">≡</div>
+          </div>
+          <div class="scroll" style="padding-top:0;">
+            <div class="nav-pills">
+              <div class="nav-pill active">All</div>
+              <div class="nav-pill">Food</div>
+              <div class="nav-pill">Transport</div>
+              <div class="nav-pill">Shop</div>
+            </div>
+            <div class="txn-day"><span class="ttl">Today, Wed 17 Jun</span><span class="sub">−$48.20</span></div>
+            <div class="txn-item">
+              <div class="iconB sushi"><span class="brand">寿司</span></div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta"><span class="cat-dot" style="background:#ffd84d;"></span>Food · DBS</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconB arabica"><span class="brand">%</span></div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta"><span class="cat-dot" style="background:#ff5c4d;"></span>Coffee · Cash</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconB simplygo"><span class="brand">SG</span></div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo Top Up</div>
+                <div class="txn-meta"><span class="cat-dot" style="background:#4dd9c8;"></span>Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Tue 16 Jun</span><span class="sub">−$96.80</span></div>
+            <div class="txn-item">
+              <div class="iconB uniqlo"><span class="brand">UQ</span></div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta"><span class="cat-dot" style="background:#b8a4ff;"></span>Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconB koufu"><span class="brand">K</span></div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta"><span class="cat-dot" style="background:#ffd84d;"></span>Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconB sp"><span class="brand">SP</span></div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta"><span class="cat-dot" style="background:#f5f1e0; border:1px solid #2b2825;"></span>Bills · GIRO · recurring</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Sun 14 Jun · payday</span><span class="sub" style="color:#1a8470;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="iconB salary">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta"><span class="cat-dot" style="background:#4dd9c8;"></span>Income · DBS</div>
+              </div>
+              <div class="txn-amount inc">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- OPTION C: INITIAL LETTER -->
+    <div class="phone">
+      <div class="phone-label">Option C · Initials</div>
+      <div class="phone-sub">Pure typography. Merchant initial in coloured tile (colour = category). Fastest scan, most minimal.</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">Spending</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="txn-search">
+            <div class="search-pill">⌕ Search</div>
+            <div class="filter-btn">≡</div>
+          </div>
+          <div class="scroll" style="padding-top:0;">
+            <div class="nav-pills">
+              <div class="nav-pill active">All</div>
+              <div class="nav-pill">Food</div>
+              <div class="nav-pill">Transport</div>
+              <div class="nav-pill">Shop</div>
+            </div>
+            <div class="txn-day"><span class="ttl">Today, Wed 17 Jun</span><span class="sub">−$48.20</span></div>
+            <div class="txn-item">
+              <div class="iconC bg-coral">S</div>
+              <div style="flex:1;">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconC bg-coral">%</div>
+              <div style="flex:1;">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Cash</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconC bg-mint">SG</div>
+              <div style="flex:1;">
+                <div class="txn-name">SimplyGo Top Up</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Tue 16 Jun</span><span class="sub">−$96.80</span></div>
+            <div class="txn-item">
+              <div class="iconC bg-iris">U</div>
+              <div style="flex:1;">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconC">K</div>
+              <div style="flex:1;">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="iconC bg-cream">SP</div>
+              <div style="flex:1;">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO · recurring</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+
+            <div class="txn-day"><span class="ttl">Sun 14 Jun · payday</span><span class="sub" style="color:#1a8470;">+$4,820</span></div>
+            <div class="txn-item">
+              <div class="iconC bg-mint">$</div>
+              <div style="flex:1;">
+                <div class="txn-name">Salary — Acme</div>
+                <div class="txn-meta">Income · DBS</div>
+              </div>
+              <div class="txn-amount inc">+$4,820</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- BUILD TRADEOFFS -->
+<div class="section">
+  <div class="section-title">
+    Dev Trade-offs
+    <div class="desc">What each direction actually costs to build.</div>
+  </div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px; max-width:1200px; margin:0 auto;">
+
+    <div style="background:#2d2925; border:1.5px solid #ece6d2; border-radius:14px; padding:20px; box-shadow:3px 3px 0 #ffd84d;">
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#ffd84d; margin-bottom:8px;">Option A · Monoline</div>
+      <div style="font-size:13px; line-height:1.5; opacity:0.85;">
+        <b style="color:#4dd9c8;">Pros</b><br>
+        • Ship now — bundle 30 SVGs with the app<br>
+        • Consistent rendering everywhere<br>
+        • Theme adapts (stroke colour reacts to mode)<br>
+        • Fits the editorial Tokyo Riso voice perfectly<br><br>
+        <b style="color:#ff5c4d;">Cons</b><br>
+        • Can't distinguish Sushi Tei from Koufu (both Food)<br>
+        • Less "personal" without merchant recognition<br><br>
+        <b style="color:#b8a4ff;">Effort</b> · 2–3 days
+      </div>
+    </div>
+
+    <div style="background:#2d2925; border:1.5px solid #ece6d2; border-radius:14px; padding:20px; box-shadow:3px 3px 0 #4dd9c8;">
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#4dd9c8; margin-bottom:8px;">Option B · Merchant Logo</div>
+      <div style="font-size:13px; line-height:1.5; opacity:0.85;">
+        <b style="color:#4dd9c8;">Pros</b><br>
+        • Instantly recognisable — feels premium<br>
+        • Matches mental model (Mint, Copilot, Monzo)<br>
+        • Category dot still signals tagging<br><br>
+        <b style="color:#ff5c4d;">Cons</b><br>
+        • Brandfetch API ($30+/mo) or scrape clearbit<br>
+        • Need merchant-name normalisation pipeline<br>
+        • Local cache + fallback chain logic<br>
+        • Some SG merchants won't have logos<br><br>
+        <b style="color:#b8a4ff;">Effort</b> · 1–2 weeks · ongoing cost
+      </div>
+    </div>
+
+    <div style="background:#2d2925; border:1.5px solid #ece6d2; border-radius:14px; padding:20px; box-shadow:3px 3px 0 #ff5c4d;">
+      <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#ff5c4d; margin-bottom:8px;">Option C · Initials</div>
+      <div style="font-size:13px; line-height:1.5; opacity:0.85;">
+        <b style="color:#4dd9c8;">Pros</b><br>
+        • Zero assets, zero API calls<br>
+        • Pure brutalist typography vibe<br>
+        • Works for any merchant instantly<br>
+        • Fastest visual parsing<br><br>
+        <b style="color:#ff5c4d;">Cons</b><br>
+        • Two "S" merchants look the same<br>
+        • Less personality, more clinical<br>
+        • Brand recognition lost<br><br>
+        <b style="color:#b8a4ff;">Effort</b> · 1 day
+      </div>
+    </div>
+
+  </div>
+
+  <div style="max-width:1200px; margin:30px auto 0; background:#b8a4ff; border:1.5px solid #ece6d2; border-radius:14px; padding:18px 22px; color:#211e1a; box-shadow:3px 3px 0 #ece6d2;">
+    <div style="font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">My take</div>
+    <div style="font-size:13px; line-height:1.5; font-weight:500;">
+      Ship <b>Option A (Monoline)</b> as v1. It's cheap, looks like the rest of the design language, and lets you focus on the actual problems (CSV import, CPF, AI). Then introduce <b>Option B (Merchant logos)</b> as a v2 enhancement — Brandfetch the top 200 SG merchants and progressive-enhance the line icons with logos as they get cached. Best of both: line icons as fallback, logos when available. Option C is too quirky for the long haul.
+    </div>
+  </div>
+</div>
+
+
+<!-- CUSTOMISATION UX -->
+<div class="section">
+  <div class="section-title">
+    Customisation UX
+    <div class="desc">How a user sets their own icon — at category, merchant, or transaction level.</div>
+  </div>
+  <div class="row">
+
+    <!-- ICON PICKER -->
+    <div class="phone">
+      <div class="phone-label">Icon picker — Category</div>
+      <div class="phone-sub">Three tabs: System library (line icons), Brand library (merchant logos), Custom (emoji or upload).</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="detail-header">
+            <div class="back-btn">‹</div>
+            <div class="detail-title">Food · Choose icon</div>
+            <div style="width:30px;"></div>
+          </div>
+          <div class="scroll">
+            <div class="picker-tabs">
+              <div class="picker-tab active">System</div>
+              <div class="picker-tab">Brands</div>
+              <div class="picker-tab">Custom</div>
+            </div>
+
+            <div class="tip-card">
+              <div class="ic">💡</div>
+              <div class="txt">Icons inherit your accent colour. Pick a shape — colours adapt to dark/light mode.</div>
+            </div>
+
+            <div class="picker-section-title">Food &amp; drink</div>
+            <div class="icon-grid">
+              <div class="icon-tile selected">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div class="icon-tile">
+                <svg viewBox="0 0 24 24"><path d="M5 9h12v8a4 4 0 01-4 4H9a4 4 0 01-4-4V9zM17 11h2a2 2 0 010 4h-2"/><path d="M9 4v3M13 4v3"/></svg>
+              </div>
+              <div class="icon-tile">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+              </div>
+              <div class="icon-tile">
+                <svg viewBox="0 0 24 24"><path d="M3 17l4-7 4 5 4-9 6 11"/></svg>
+              </div>
+              <div class="icon-tile">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>
+              </div>
+              <div class="icon-tile">
+                <svg viewBox="0 0 24 24"><path d="M4 20l16-16M4 4l16 16"/></svg>
+              </div>
+            </div>
+
+            <div class="picker-section-title">Lifestyle</div>
+            <div class="icon-grid">
+              <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5L6 7zM9 7V5a3 3 0 016 0v2"/></svg></div>
+              <div class="icon-tile"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M4 11h16"/></svg></div>
+              <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M3 21V8l9-5 9 5v13H3z"/></svg></div>
+              <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+              <div class="icon-tile"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg></div>
+              <div class="icon-tile"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
+            </div>
+
+            <div class="picker-section-title">Background colour</div>
+            <div class="color-row">
+              <div class="color-tile active" style="background:#ffd84d;"></div>
+              <div class="color-tile" style="background:#ff5c4d;"></div>
+              <div class="color-tile" style="background:#4dd9c8;"></div>
+              <div class="color-tile" style="background:#b8a4ff;"></div>
+              <div class="color-tile" style="background:#f5f1e0;"></div>
+              <div class="color-tile" style="background:#2b2825;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CUSTOM TAB -->
+    <div class="phone">
+      <div class="phone-label">Icon picker — Custom tab</div>
+      <div class="phone-sub">User can pick an emoji, paste an SF Symbol name, or upload an image (auto-cropped to tile).</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="detail-header">
+            <div class="back-btn">‹</div>
+            <div class="detail-title">Food · Custom icon</div>
+            <div style="width:30px;"></div>
+          </div>
+          <div class="scroll">
+            <div class="picker-tabs">
+              <div class="picker-tab">System</div>
+              <div class="picker-tab">Brands</div>
+              <div class="picker-tab active">Custom</div>
+            </div>
+
+            <div class="picker-section-title">Pick an emoji</div>
+            <div class="icon-grid">
+              <div class="icon-tile" style="font-size:16px;">🍱</div>
+              <div class="icon-tile selected" style="font-size:16px;">🍜</div>
+              <div class="icon-tile" style="font-size:16px;">🥟</div>
+              <div class="icon-tile" style="font-size:16px;">🍣</div>
+              <div class="icon-tile" style="font-size:16px;">🥘</div>
+              <div class="icon-tile" style="font-size:16px;">+</div>
+            </div>
+
+            <div class="picker-section-title">Upload image</div>
+            <div class="upload-card">
+              <div class="ic-up">⇧</div>
+              <div class="lbl">Tap to upload</div>
+              <div class="desc">PNG or JPG · auto-fits the tile · max 1MB</div>
+            </div>
+
+            <div class="picker-section-title">SF Symbol (advanced)</div>
+            <div style="background:#f5f1e0; border:1.5px solid #2b2825; border-radius:10px; padding:10px 12px; display:flex; align-items:center; gap:10px;">
+              <div style="font-family: SF Mono, Menlo, monospace; font-size:11px; color:#6b6256;">fork.knife.circle</div>
+              <div style="margin-left:auto; padding:3px 9px; background:#4dd9c8; border:1.5px solid #2b2825; border-radius:100px; font-size:9px; font-weight:700;">Apply</div>
+            </div>
+
+            <div class="picker-section-title">Preview</div>
+            <div style="background:#f5f1e0; border:1.5px solid #2b2825; border-radius:10px; padding:12px; display:flex; align-items:center; gap:10px; box-shadow:2px 2px 0 #2b2825;">
+              <div class="iconA bg-yellow" style="font-size:14px;">🍜</div>
+              <div style="flex:1;">
+                <div style="font-size:12px; font-weight:700;">Sushi Tei</div>
+                <div style="font-size:10px; opacity:0.55;">Food · DBS</div>
+              </div>
+              <div style="font-size:12px; font-weight:700;">−$24.50</div>
+            </div>
+
+            <div style="margin-top:18px; display:flex; gap:8px;">
+              <div style="flex:1; background:#f5f1e0; border:1.5px solid #2b2825; border-radius:10px; padding:11px; text-align:center; font-size:11px; font-weight:700;">Reset</div>
+              <div style="flex:1; background:#ff5c4d; border:1.5px solid #2b2825; border-radius:10px; padding:11px; text-align:center; font-size:11px; font-weight:700; box-shadow:2px 2px 0 #2b2825;">Save icon</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- PER-MERCHANT OVERRIDE on transaction -->
+    <div class="phone">
+      <div class="phone-label">Transaction detail · Override</div>
+      <div class="phone-sub">From a transaction, "Change icon" sets it for this merchant going forward. Affects all past + future Sushi Tei rows.</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="detail-header">
+            <div class="back-btn">‹</div>
+            <div class="detail-title">Sushi Tei</div>
+            <div class="back-btn">⋯</div>
+          </div>
+          <div class="scroll">
+            <div style="text-align:center; padding:8px 0 20px;">
+              <div style="font-size:32px; font-weight:700; letter-spacing:-0.035em; font-variant-numeric:tabular-nums;">−$24.50</div>
+              <div style="font-size:11px; opacity:0.55; font-weight:500; margin-top:2px;">Today · 12:42 PM</div>
+            </div>
+
+            <div class="edit-icon-block">
+              <div class="big-icon"><span style="font-size:14px;">寿司</span></div>
+              <div class="info">
+                <div class="nm">Sushi Tei icon</div>
+                <div class="sub">Auto-detected from Brandfetch · used for 12 past txns</div>
+              </div>
+              <div class="change-btn">Change</div>
+            </div>
+
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; opacity:0.55; margin: 14px 4px 8px;">Details</div>
+            <div class="field-row">
+              <div class="l">Category</div>
+              <div class="v" style="display:flex; align-items:center; gap:6px;"><span style="width:8px; height:8px; background:#ffd84d; border:1.5px solid #2b2825; border-radius:50%;"></span>Food ›</div>
+            </div>
+            <div class="field-row">
+              <div class="l">Budget</div>
+              <div class="v">Food · $118 left ›</div>
+            </div>
+            <div class="field-row">
+              <div class="l">Source</div>
+              <div class="v">DBS Multiplier ··3245</div>
+            </div>
+            <div class="field-row">
+              <div class="l">Note</div>
+              <div class="v" style="opacity:0.5;">+ Add note</div>
+            </div>
+
+            <div style="font-size:9px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; opacity:0.55; margin: 14px 4px 8px;">Scope of change</div>
+            <div style="background:#ffd84d; border:1.5px solid #2b2825; border-radius:10px; padding:10px 12px; box-shadow:2px 2px 0 #2b2825;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:18px; height:18px; border-radius:5px; border:1.5px solid #2b2825; background:#2b2825; display:flex; align-items:center; justify-content:center; color:#ffd84d; font-size:11px; font-weight:700;">✓</div>
+                <div>
+                  <div style="font-size:11px; font-weight:700;">Apply to all "Sushi Tei" transactions</div>
+                  <div style="font-size:10px; opacity:0.65; margin-top:1px;">12 past + future · merchant-level override</div>
+                </div>
+              </div>
+            </div>
+            <div style="background:#f5f1e0; border:1.5px solid #2b2825; border-radius:10px; padding:10px 12px; margin-top:5px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:18px; height:18px; border-radius:5px; border:1.5px solid #2b2825; background:#f5f1e0;"></div>
+                <div>
+                  <div style="font-size:11px; font-weight:700;">Just this transaction</div>
+                  <div style="font-size:10px; opacity:0.65; margin-top:1px;">One-off override · this row only</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- RESOLUTION CHAIN -->
+<div class="section">
+  <div class="section-title">
+    Resolution Chain
+    <div class="desc">How the app decides what icon to render — top wins.</div>
+  </div>
+
+  <div style="max-width:900px; margin:0 auto; background:#2d2925; border:1.5px solid #ece6d2; border-radius:14px; padding:24px; box-shadow:4px 4px 0 #ffd84d;">
+
+    <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(236,230,210,0.15);">
+      <div style="font-size:24px; font-weight:800; color:#ffd84d; width:24px;">1</div>
+      <div style="flex:1;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:3px;">Transaction-level override</div>
+        <div style="font-size:11px; opacity:0.7; line-height:1.4;">Per-row icon, set from transaction detail "Just this transaction". Stored on the txn record.</div>
+      </div>
+      <code style="font-size:10px; background:rgba(255,216,77,0.15); padding:3px 8px; border-radius:6px; color:#ffd84d;">txn.icon_override</code>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(236,230,210,0.15);">
+      <div style="font-size:24px; font-weight:800; color:#4dd9c8; width:24px;">2</div>
+      <div style="flex:1;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:3px;">Merchant-level override</div>
+        <div style="font-size:11px; opacity:0.7; line-height:1.4;">User changed icon for "Sushi Tei" → all rows for that merchant adopt it. Stored on merchants table.</div>
+      </div>
+      <code style="font-size:10px; background:rgba(77,217,200,0.15); padding:3px 8px; border-radius:6px; color:#4dd9c8;">merchant.user_icon</code>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(236,230,210,0.15);">
+      <div style="font-size:24px; font-weight:800; color:#b8a4ff; width:24px;">3</div>
+      <div style="flex:1;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:3px;">Merchant auto-fetched logo</div>
+        <div style="font-size:11px; opacity:0.7; line-height:1.4;">Brandfetch result for merchant name. Cached locally. v2 feature.</div>
+      </div>
+      <code style="font-size:10px; background:rgba(184,164,255,0.15); padding:3px 8px; border-radius:6px; color:#b8a4ff;">merchant.fetched_logo</code>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(236,230,210,0.15);">
+      <div style="font-size:24px; font-weight:800; color:#ff5c4d; width:24px;">4</div>
+      <div style="flex:1;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:3px;">Category icon</div>
+        <div style="font-size:11px; opacity:0.7; line-height:1.4;">User's chosen icon for the category (default + bg colour). The "Food" line icon on yellow.</div>
+      </div>
+      <code style="font-size:10px; background:rgba(255,92,77,0.15); padding:3px 8px; border-radius:6px; color:#ff5c4d;">category.icon_id</code>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:14px; padding:12px 0;">
+      <div style="font-size:24px; font-weight:800; opacity:0.5; width:24px;">5</div>
+      <div style="flex:1;">
+        <div style="font-size:14px; font-weight:700; margin-bottom:3px;">Fallback (uncategorised)</div>
+        <div style="font-size:11px; opacity:0.7; line-height:1.4;">Generic dollar sign tile. Shouldn't happen but always available.</div>
+      </div>
+      <code style="font-size:10px; background:rgba(236,230,210,0.1); padding:3px 8px; border-radius:6px; opacity:0.6;">DEFAULT_ICON</code>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

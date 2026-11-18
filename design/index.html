@@ -1,0 +1,2988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huat — Design Board</title>
+<style>
+:root {
+  --bg: #f5f5f4;
+  --panel: #ffffff;
+  --text: #0c0a09;
+  --muted: #78716c;
+  --line: #e7e5e4;
+  --accent: #059669;
+  --accent-soft: #d1fae5;
+  --warn: #d97706;
+  --warn-soft: #fef3c7;
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+  --chip: #f5f5f4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 60px 40px 120px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.board-header {
+  max-width: 1400px;
+  margin: 0 auto 60px;
+}
+.board-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.board-header p {
+  color: var(--muted);
+  font-size: 16px;
+  max-width: 720px;
+  line-height: 1.5;
+}
+.legend {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.legend span { display: flex; align-items: center; gap: 8px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+.section {
+  max-width: 1400px;
+  margin: 0 auto 80px;
+}
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.row {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.phone {
+  width: 320px;
+  flex-shrink: 0;
+}
+.phone-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+.phone-frame {
+  width: 320px;
+  height: 680px;
+  background: #fff;
+  border-radius: 38px;
+  border: 8px solid #0c0a09;
+  box-shadow: 0 30px 60px -25px rgba(0,0,0,0.15);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.phone-frame.dark { background: #0a0a0a; color: #e7e5e4; }
+
+.notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 26px;
+  background: #0c0a09;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+
+.status-bar {
+  height: 38px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 24px 0;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.status-bar .icons { display: flex; gap: 4px; }
+.status-bar .icons span { font-size: 10px; }
+
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.screen.lite { background: #ffffff; color: #0c0a09; }
+.screen.dark { background: #0a0a0a; color: #e7e5e4; }
+
+.app-header {
+  padding: 12px 20px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app-header .month {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.app-header .nav-arrow {
+  font-size: 14px;
+  color: #a8a29e;
+  cursor: pointer;
+}
+.app-header .avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #059669, #047857);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px 80px;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll::-webkit-scrollbar { display: none; }
+
+.hero-card {
+  background: #0c0a09;
+  color: white;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 18px;
+}
+.dark .hero-card { background: #1c1917; }
+
+.hero-card .label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 12px;
+}
+.hero-card .row-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+.hero-card .row-flex .v { font-variant-numeric: tabular-nums; font-weight: 500; }
+.hero-card .divider {
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  margin: 12px 0 14px;
+}
+.hero-card .remaining {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  margin-bottom: 4px;
+}
+.hero-card .big {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.hero-card .progress {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.hero-card .progress-fill {
+  height: 100%;
+  background: #34d399;
+  border-radius: 2px;
+}
+.hero-card .progress-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+.section-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px 0 12px;
+}
+.section-row h2 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.section-row .see-all {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+.dark .section-row .see-all { color: #a8a29e; }
+
+.card {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.dark .card { background: #1c1917; border-color: #292524; }
+
+.cpf-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+}
+.cpf-card .left { display: flex; align-items: center; gap: 12px; }
+.cpf-card .icon {
+  width: 36px; height: 36px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.dark .cpf-card .icon { background: rgba(5,150,105,0.15); }
+.cpf-card .title { font-size: 13px; font-weight: 600; }
+.cpf-card .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.dark .cpf-card .sub { color: #a8a29e; }
+.cpf-card .arrow { color: #a8a29e; font-size: 14px; }
+
+.h-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin: 0 -20px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.h-scroll::-webkit-scrollbar { display: none; }
+
+.budget-card {
+  flex-shrink: 0;
+  width: 140px;
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  padding: 14px;
+}
+.dark .budget-card { background: #1c1917; border-color: #292524; }
+.budget-card .name { font-size: 12px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+.dark .budget-card .name { color: #a8a29e; }
+.budget-card .amount {
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.budget-card .amount .light { color: var(--muted); font-weight: 400; }
+.dark .budget-card .amount .light { color: #78716c; }
+.budget-card .progress {
+  height: 3px;
+  background: #e7e5e4;
+  border-radius: 2px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.dark .budget-card .progress { background: #292524; }
+.budget-card .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+.budget-card .progress-fill.warn { background: var(--warn); }
+.budget-card .progress-fill.danger { background: var(--danger); }
+
+.goal-card {
+  flex-shrink: 0;
+  width: 180px;
+  background: linear-gradient(135deg, #059669, #047857);
+  color: white;
+  border-radius: 16px;
+  padding: 16px;
+}
+.goal-card .name { font-size: 12px; opacity: 0.8; margin-bottom: 4px; }
+.goal-card .amount {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+}
+.goal-card .target { font-size: 11px; opacity: 0.7; margin-bottom: 12px; }
+.goal-card .ring {
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.goal-card .ring-fill { height: 100%; background: white; border-radius: 2px; }
+.goal-card .eta { font-size: 11px; opacity: 0.8; margin-top: 8px; }
+.goal-card.alt { background: linear-gradient(135deg, #1e293b, #0f172a); }
+
+.alert-card {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+.dark .alert-card { background: #1c1917; border-color: #292524; }
+.alert-card .alert-icon {
+  width: 32px; height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.alert-icon.warn { background: var(--warn-soft); color: var(--warn); }
+.alert-icon.info { background: #dbeafe; color: #2563eb; }
+.alert-icon.good { background: var(--accent-soft); color: var(--accent); }
+.dark .alert-icon.warn { background: rgba(217,119,6,0.15); }
+.dark .alert-icon.info { background: rgba(37,99,235,0.15); }
+.dark .alert-icon.good { background: rgba(5,150,105,0.15); }
+.alert-card .alert-text { font-size: 13px; line-height: 1.4; }
+.alert-card .alert-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.dark .alert-card .alert-sub { color: #a8a29e; }
+
+.fab {
+  position: absolute;
+  bottom: 90px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 300;
+  box-shadow: 0 8px 24px rgba(5,150,105,0.4);
+  z-index: 5;
+}
+
+.tab-bar {
+  height: 72px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding-top: 10px;
+  flex-shrink: 0;
+}
+.dark .tab-bar {
+  background: rgba(10,10,10,0.92);
+  border-top: 1px solid #292524;
+}
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: #a8a29e;
+  font-weight: 500;
+}
+.tab.active { color: var(--accent); }
+.tab .ic { font-size: 18px; }
+
+/* Sign in screen */
+.signin {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 40px 28px;
+}
+.signin .top { display: flex; flex-direction: column; align-items: center; margin-top: 60px; }
+.signin .logo {
+  width: 72px;
+  height: 72px;
+  background: var(--accent);
+  border-radius: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: white;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+.signin h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.signin .sub {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  max-width: 240px;
+}
+.dark .signin .sub { color: #a8a29e; }
+.signin .actions { display: flex; flex-direction: column; gap: 10px; }
+.btn {
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+}
+.btn-apple { background: #0c0a09; color: white; }
+.btn-google { background: white; color: #0c0a09; border: 1px solid var(--line); }
+.dark .btn-google { background: #1c1917; color: #e7e5e4; border-color: #292524; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-text { background: transparent; color: var(--muted); font-size: 12px; height: auto; }
+
+/* Onboarding */
+.onb {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 24px 32px;
+}
+.onb .progress-dots {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 32px;
+}
+.onb .dot {
+  height: 4px;
+  flex: 1;
+  background: var(--line);
+  border-radius: 2px;
+}
+.dark .onb .dot { background: #292524; }
+.onb .dot.active { background: var(--accent); }
+.onb .step {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.dark .onb .step { color: #a8a29e; }
+.onb h1 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+.onb .desc {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+.dark .onb .desc { color: #a8a29e; }
+.input-group { margin-bottom: 16px; }
+.input-label {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.dark .input-label { color: #a8a29e; }
+.input-field {
+  height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  background: white;
+}
+.dark .input-field { background: #1c1917; border-color: #292524; }
+.input-field.focus { border-color: var(--accent); }
+.input-field .placeholder { color: #a8a29e; font-weight: 400; }
+
+.calculation-card {
+  background: var(--accent-soft);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-top: 16px;
+}
+.dark .calculation-card { background: rgba(5,150,105,0.15); }
+.calculation-card .label-sm { font-size: 10px; color: #047857; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.dark .calculation-card .label-sm { color: #34d399; }
+.calculation-card .row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 8px; }
+.calculation-card .row b { font-weight: 600; }
+
+/* Quick add */
+.quick-add {
+  background: white;
+  border-radius: 24px 24px 0 0;
+  padding: 24px 20px 32px;
+  margin-top: auto;
+  position: relative;
+}
+.dark .quick-add { background: #1c1917; }
+.quick-add .handle {
+  width: 40px;
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+  margin: -10px auto 16px;
+}
+.dark .quick-add .handle { background: #44403c; }
+.quick-add h3 {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.dark .quick-add h3 { color: #a8a29e; }
+.quick-add .big-amount {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.quick-add .row-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.dark .quick-add .row-input { border-bottom-color: #292524; }
+.quick-add .row-input .lbl { color: var(--muted); }
+.dark .quick-add .row-input .lbl { color: #a8a29e; }
+.quick-add .row-input .val { font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.quick-add .chip-row {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0 20px;
+  flex-wrap: wrap;
+}
+.chip {
+  padding: 8px 12px;
+  background: var(--chip);
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.dark .chip { background: #292524; }
+.chip.active { background: var(--accent); color: white; }
+
+.bg-dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+}
+
+/* Transactions */
+.txn-search {
+  display: flex;
+  gap: 8px;
+  padding: 8px 20px 12px;
+}
+.search-pill {
+  flex: 1;
+  height: 36px;
+  background: #f5f5f4;
+  border-radius: 12px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.dark .search-pill { background: #292524; color: #a8a29e; }
+.filter-btn {
+  width: 36px;
+  height: 36px;
+  background: #f5f5f4;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.dark .filter-btn { background: #292524; }
+
+.txn-day {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 16px 4px 8px;
+  display: flex;
+  justify-content: space-between;
+}
+.dark .txn-day { color: #a8a29e; }
+
+.txn-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f4;
+}
+.dark .txn-item { border-bottom-color: #1c1917; }
+.txn-item:last-child { border-bottom: none; }
+.txn-icon {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.icon-food { background: #fef3c7; color: #d97706; }
+.icon-transport { background: #dbeafe; color: #2563eb; }
+.icon-shop { background: #fce7f3; color: #db2777; }
+.icon-bill { background: #ede9fe; color: #7c3aed; }
+.icon-coffee { background: #fed7aa; color: #c2410c; }
+.icon-income { background: var(--accent-soft); color: var(--accent); }
+.dark .icon-food { background: rgba(217,119,6,0.15); }
+.dark .icon-transport { background: rgba(37,99,235,0.15); }
+.dark .icon-shop { background: rgba(219,39,119,0.15); }
+.dark .icon-bill { background: rgba(124,58,237,0.15); }
+.dark .icon-coffee { background: rgba(194,65,12,0.15); }
+.dark .icon-income { background: rgba(5,150,105,0.15); }
+
+.txn-detail { flex: 1; min-width: 0; }
+.txn-name { font-size: 14px; font-weight: 500; letter-spacing: -0.01em; }
+.txn-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.dark .txn-meta { color: #a8a29e; }
+.txn-amount {
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.txn-amount.income { color: var(--accent); }
+
+/* CSV review */
+.import-banner {
+  background: var(--accent-soft);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+.dark .import-banner { background: rgba(5,150,105,0.12); }
+.import-banner .b-title { font-weight: 600; color: #047857; margin-bottom: 4px; }
+.dark .import-banner .b-title { color: #34d399; }
+.import-banner .b-sub { color: #047857; opacity: 0.8; line-height: 1.4; }
+.dark .import-banner .b-sub { color: #34d399; }
+
+.tab-group {
+  display: flex;
+  gap: 4px;
+  background: #f5f5f4;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 16px;
+}
+.dark .tab-group { background: #1c1917; }
+.tab-pill {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  color: var(--muted);
+}
+.dark .tab-pill { color: #a8a29e; }
+.tab-pill.active {
+  background: white;
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.dark .tab-pill.active { background: #292524; color: #e7e5e4; }
+.tab-pill .count {
+  display: inline-block;
+  font-size: 10px;
+  background: rgba(0,0,0,0.06);
+  padding: 1px 6px;
+  border-radius: 100px;
+  margin-left: 4px;
+}
+.dark .tab-pill .count { background: rgba(255,255,255,0.08); }
+
+.match-card {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+.dark .match-card { background: #1c1917; border-color: #292524; }
+.match-row { display: flex; justify-content: space-between; align-items: center; }
+.match-row .label-tiny { font-size: 9px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.dark .match-row .label-tiny { color: #78716c; }
+.match-card .merchant { font-size: 13px; font-weight: 600; margin-top: 4px; }
+.match-card .meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.dark .match-card .meta { color: #a8a29e; }
+.match-card .divider { height: 1px; background: #e7e5e4; margin: 10px 0; }
+.dark .match-card .divider { background: #292524; }
+.match-card .amount-big { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Budgets */
+.bg-toggle {
+  display: flex;
+  background: #f5f5f4;
+  border-radius: 12px;
+  padding: 4px;
+  margin: 0 20px 16px;
+}
+.dark .bg-toggle { background: #1c1917; }
+
+.budget-detail {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.dark .budget-detail { background: #1c1917; border-color: #292524; }
+.budget-detail .top { display: flex; justify-content: space-between; align-items: flex-start; }
+.budget-detail .name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.budget-detail .amount-bd {
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.budget-detail .amount-bd .light { color: var(--muted); font-weight: 400; font-size: 11px; }
+.dark .budget-detail .amount-bd .light { color: #78716c; }
+.budget-detail .progress-bar {
+  height: 6px;
+  background: #e7e5e4;
+  border-radius: 3px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+.dark .budget-detail .progress-bar { background: #292524; }
+.budget-detail .pf { height: 100%; border-radius: 3px; background: var(--accent); }
+.budget-detail .pf.warn { background: var(--warn); }
+.budget-detail .pf.danger { background: var(--danger); }
+.budget-detail .meta-row { display: flex; justify-content: space-between; margin-top: 8px; font-size: 11px; color: var(--muted); }
+.dark .budget-detail .meta-row { color: #a8a29e; }
+.budget-detail .rollover-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--accent-soft);
+  color: #047857;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.dark .budget-detail .rollover-tag { background: rgba(5,150,105,0.15); color: #34d399; }
+
+/* Goal detail */
+.goal-hero {
+  background: linear-gradient(135deg, #059669, #047857);
+  color: white;
+  border-radius: 20px;
+  padding: 24px 22px;
+  margin-bottom: 16px;
+}
+.goal-hero .label { font-size: 11px; opacity: 0.7; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+.goal-hero h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin: 6px 0 18px; }
+.goal-hero .progress {
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.goal-hero .progress-fill { height: 100%; background: white; border-radius: 3px; }
+.goal-hero .figures { display: flex; justify-content: space-between; margin-top: 12px; font-size: 12px; }
+.goal-hero .figures .v { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.goal-hero .figures .l { opacity: 0.7; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.goal-hero .eta {
+  margin-top: 14px;
+  font-size: 12px;
+  background: rgba(255,255,255,0.15);
+  padding: 8px 12px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Insurance */
+.ins-card {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.dark .ins-card { background: #1c1917; border-color: #292524; }
+.ins-card .type-chip {
+  display: inline-block;
+  background: #ede9fe;
+  color: #6d28d9;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.dark .ins-card .type-chip { background: rgba(124,58,237,0.15); color: #a78bfa; }
+.ins-card .type-chip.health { background: #dbeafe; color: #2563eb; }
+.dark .ins-card .type-chip.health { background: rgba(37,99,235,0.15); color: #60a5fa; }
+.ins-card .type-chip.life { background: var(--accent-soft); color: #047857; }
+.dark .ins-card .type-chip.life { background: rgba(5,150,105,0.15); color: #34d399; }
+.ins-card .name-ins { font-size: 15px; font-weight: 600; margin: 8px 0 2px; letter-spacing: -0.01em; }
+.ins-card .insurer { font-size: 11px; color: var(--muted); }
+.dark .ins-card .insurer { color: #a8a29e; }
+.ins-card .row-ins { display: flex; justify-content: space-between; margin-top: 12px; padding-top: 12px; border-top: 1px solid #e7e5e4; }
+.dark .ins-card .row-ins { border-top-color: #292524; }
+.ins-card .row-ins .col { font-size: 11px; }
+.ins-card .row-ins .l { color: var(--muted); margin-bottom: 2px; }
+.dark .ins-card .row-ins .l { color: #a8a29e; }
+.ins-card .row-ins .v { font-weight: 600; font-size: 13px; font-variant-numeric: tabular-nums; }
+
+.coverage-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.cov-cell {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  padding: 12px;
+}
+.dark .cov-cell { background: #1c1917; border-color: #292524; }
+.cov-cell .l { font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.dark .cov-cell .l { color: #a8a29e; }
+.cov-cell .v { font-size: 16px; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; letter-spacing: -0.015em; }
+.cov-cell .status { font-size: 10px; margin-top: 2px; color: var(--accent); font-weight: 600; }
+.cov-cell .status.warn { color: var(--warn); }
+.cov-cell .status.missing { color: var(--danger); }
+
+.gap-banner {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 12px;
+}
+.dark .gap-banner { background: rgba(217,119,6,0.1); border-color: rgba(217,119,6,0.3); }
+.gap-banner .ic { font-size: 16px; }
+.gap-banner .t { font-size: 12px; font-weight: 600; color: #c2410c; margin-bottom: 3px; }
+.dark .gap-banner .t { color: #fb923c; }
+.gap-banner .s { font-size: 11px; color: #9a3412; line-height: 1.4; }
+.dark .gap-banner .s { color: #fdba74; }
+
+/* Insights */
+.insights-hero {
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: white;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 16px;
+}
+.dark .insights-hero { background: linear-gradient(135deg, #1c1917, #0c0a09); border: 1px solid #292524; }
+.insights-hero .ic-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.insights-hero .ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.1);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.insights-hero h2 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.insights-hero p {
+  font-size: 13px;
+  opacity: 0.7;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+.insights-hero .actions { display: flex; gap: 8px; }
+.insights-hero .actions .btn-mini {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+}
+.insights-hero .actions .btn-mini.primary { background: white; color: #0f172a; }
+
+.insight-card {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.dark .insight-card { background: #1c1917; border-color: #292524; }
+.insight-card .head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.insight-card .ic {
+  width: 24px; height: 24px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.insight-card .cat {
+  font-size: 10px; color: var(--muted); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.06em;
+}
+.dark .insight-card .cat { color: #a8a29e; }
+.insight-card .txt { font-size: 13px; line-height: 1.4; }
+
+/* Chat */
+.chat-bubble {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.chat-bubble.user {
+  background: var(--accent);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble.ai {
+  background: #f5f5f4;
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+.dark .chat-bubble.ai { background: #1c1917; color: #e7e5e4; }
+.chat-input-bar {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--line);
+  background: white;
+}
+.dark .chat-input-bar { background: #0a0a0a; border-top-color: #292524; }
+.chat-input {
+  flex: 1;
+  height: 40px;
+  background: #f5f5f4;
+  border-radius: 20px;
+  padding: 0 16px;
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+}
+.dark .chat-input { background: #1c1917; color: #a8a29e; }
+.send-btn {
+  width: 40px; height: 40px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+/* CPF screen */
+.cpf-hero {
+  background: linear-gradient(135deg, #059669 0%, #064e3b 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 16px;
+}
+.cpf-hero .label { font-size: 11px; opacity: 0.7; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+.cpf-hero .total {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin: 8px 0 16px;
+  font-variant-numeric: tabular-nums;
+}
+.cpf-hero .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 11px; }
+.cpf-hero .breakdown .v { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.cpf-hero .breakdown .l { opacity: 0.7; }
+
+.acct-card {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dark .acct-card { background: #1c1917; border-color: #292524; }
+.acct-card .acct-letter {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+.dark .acct-card .acct-letter { background: rgba(5,150,105,0.15); }
+.acct-card .info { flex: 1; }
+.acct-card .nm { font-size: 13px; font-weight: 600; }
+.acct-card .ml { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.dark .acct-card .ml { color: #a8a29e; }
+.acct-card .bal { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.milestone-card {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.dark .milestone-card { background: #1c1917; border-color: #292524; }
+.milestone-card .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.milestone-card .ttl { font-size: 13px; font-weight: 600; }
+.milestone-card .pct { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dark .milestone-card .pct { color: #a8a29e; }
+.milestone-card .bar { height: 4px; background: #e7e5e4; border-radius: 2px; overflow: hidden; }
+.dark .milestone-card .bar { background: #292524; }
+.milestone-card .fill { height: 100%; background: var(--accent); border-radius: 2px; }
+.milestone-card .eta { font-size: 11px; color: var(--muted); margin-top: 6px; }
+.dark .milestone-card .eta { color: #a8a29e; }
+
+/* Settings */
+.settings-section { margin-top: 18px; }
+.settings-section .hdr {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+.dark .settings-section .hdr { color: #a8a29e; }
+.settings-list {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.dark .settings-list { background: #1c1917; border-color: #292524; }
+.set-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e7e5e4;
+}
+.dark .set-row { border-bottom-color: #292524; }
+.set-row:last-child { border-bottom: none; }
+.set-row .ic {
+  width: 30px; height: 30px;
+  background: #f5f5f4;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+.dark .set-row .ic { background: #292524; }
+.set-row .nm { flex: 1; font-size: 13px; font-weight: 500; }
+.set-row .val { font-size: 12px; color: var(--muted); }
+.dark .set-row .val { color: #a8a29e; }
+.set-row .arrow { color: #a8a29e; font-size: 12px; }
+.toggle {
+  width: 36px; height: 22px;
+  background: var(--accent);
+  border-radius: 11px;
+  position: relative;
+}
+.toggle::after {
+  content: '';
+  position: absolute;
+  right: 2px; top: 2px;
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+}
+.toggle.off { background: #d6d3d1; }
+.dark .toggle.off { background: #44403c; }
+.toggle.off::after { left: 2px; right: auto; }
+
+/* Profile pic in settings */
+.profile-card {
+  background: linear-gradient(135deg, #059669, #047857);
+  color: white;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.profile-card .avatar-lg {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+.profile-card .nm { font-size: 15px; font-weight: 600; }
+.profile-card .sub { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+
+/* Detail screens header */
+.detail-header {
+  padding: 12px 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.detail-header .back {
+  width: 36px; height: 36px;
+  background: #f5f5f4;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.dark .detail-header .back { background: #1c1917; }
+.detail-header .ttl { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.detail-header .placeholder { width: 36px; }
+
+/* Transaction detail */
+.txn-detail-hero {
+  text-align: center;
+  padding: 16px 0 28px;
+}
+.txn-detail-hero .icon-big {
+  width: 56px; height: 56px;
+  margin: 0 auto 14px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.txn-detail-hero .merchant { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
+.txn-detail-hero .date { font-size: 12px; color: var(--muted); }
+.dark .txn-detail-hero .date { color: #a8a29e; }
+.txn-detail-hero .price {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-top: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-row-card {
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.dark .detail-row-card { background: #1c1917; border-color: #292524; }
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e7e5e4;
+  font-size: 13px;
+}
+.dark .detail-row { border-bottom-color: #292524; }
+.detail-row:last-child { border-bottom: none; }
+.detail-row .lbl { color: var(--muted); }
+.dark .detail-row .lbl { color: #a8a29e; }
+.detail-row .val { font-weight: 500; }
+
+/* Helper */
+.divider-section {
+  height: 1px;
+  background: var(--line);
+  margin: 24px 0;
+}
+.dark .divider-section { background: #292524; }
+
+.nav-pills {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  margin: 0 -20px 16px;
+  padding: 0 20px 4px;
+}
+.nav-pills::-webkit-scrollbar { display: none; }
+.nav-pill {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  background: #f5f5f4;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.dark .nav-pill { background: #1c1917; color: #a8a29e; }
+.nav-pill.active { background: var(--text); color: white; }
+.dark .nav-pill.active { background: #e7e5e4; color: #0a0a0a; }
+
+</style>
+</head>
+<body>
+
+<div class="board-header">
+  <h1>Huat — Visual Design System</h1>
+  <p>A complete financial manager built around a daily expense-tracking core. iOS-first, designed for clarity, density without clutter, and quick access to the actions you take every day. Both light and dark modes shown together for each screen.</p>
+  <div class="legend">
+    <span><i style="background:#059669"></i>Primary accent — money positive, CTAs, active states</span>
+    <span><i style="background:#0c0a09; border:1px solid #e7e5e4"></i>Hero surfaces — most important data</span>
+    <span><i style="background:#fafaf9; border:1px solid #e7e5e4"></i>Card surface — cards, lists</span>
+  </div>
+</div>
+
+<!-- ============ SIGN IN + ONBOARDING ============ -->
+<div class="section">
+  <div class="section-title">Onboarding</div>
+  <div class="row">
+
+    <!-- Sign in -->
+    <div class="phone">
+      <div class="phone-label">Sign in — fresh launch</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="signin">
+            <div class="top">
+              <div class="logo">F</div>
+              <h1>Welcome to Finlet</h1>
+              <p class="sub">Your everyday expenses, your full financial picture — one app.</p>
+            </div>
+            <div class="actions">
+              <button class="btn btn-apple">
+                <span style="font-size:18px;">􀣺</span> Continue with Apple
+              </button>
+              <button class="btn btn-google">
+                <span style="font-size:14px; color:#ea4335;">G</span> Continue with Google
+              </button>
+              <button class="btn btn-text" style="margin-top:6px;">Use without account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding step 1 -->
+    <div class="phone">
+      <div class="phone-label">Onboarding 1/4 — Profile</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="onb">
+            <div class="progress-dots">
+              <div class="dot active"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+            <div class="step">Step 1 of 4</div>
+            <h1>Tell us about you</h1>
+            <p class="desc">We use this to calculate your CPF deductions and take-home pay automatically.</p>
+            <div class="input-group">
+              <div class="input-label">DATE OF BIRTH</div>
+              <div class="input-field"><span>15 Aug 1997</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">GROSS MONTHLY SALARY (SGD)</div>
+              <div class="input-field focus"><span>$6,000.00</span></div>
+            </div>
+            <div class="calculation-card">
+              <div class="label-sm">Based on your inputs</div>
+              <div class="row"><span>Your CPF (20%)</span><b>$1,200</b></div>
+              <div class="row"><span>Employer CPF (17%)</span><b>$1,020</b></div>
+              <div class="row" style="margin-top:8px;border-top:1px solid rgba(0,0,0,0.06);padding-top:8px;"><span><b>Take-home</b></span><b>$4,800</b></div>
+            </div>
+            <button class="btn btn-primary" style="margin-top:auto;">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding step 2 - CPF Balances -->
+    <div class="phone">
+      <div class="phone-label">Onboarding 2/4 — CPF balances</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="onb">
+            <div class="progress-dots">
+              <div class="dot active"></div>
+              <div class="dot active"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+            <div class="step">Step 2 of 4 · Optional</div>
+            <h1>Your CPF starting point</h1>
+            <p class="desc">Add your current account balances to track milestone progress. Skip and add later if you'd rather.</p>
+            <div class="input-group">
+              <div class="input-label">ORDINARY ACCOUNT (OA)</div>
+              <div class="input-field"><span class="placeholder">$0.00</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">SPECIAL ACCOUNT (SA)</div>
+              <div class="input-field"><span class="placeholder">$0.00</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">MEDISAVE (MA)</div>
+              <div class="input-field"><span class="placeholder">$0.00</span></div>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:auto;">
+              <button class="btn btn-text" style="flex:1;">Skip for now</button>
+              <button class="btn btn-primary" style="flex:1;">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Onboarding step 3 - Budgets -->
+    <div class="phone">
+      <div class="phone-label">Onboarding 3/4 — Categories</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="onb">
+            <div class="progress-dots">
+              <div class="dot active"></div>
+              <div class="dot active"></div>
+              <div class="dot active"></div>
+              <div class="dot"></div>
+            </div>
+            <div class="step">Step 3 of 4</div>
+            <h1>Start with these categories?</h1>
+            <p class="desc">Tap to toggle. You can rename or add more anytime.</p>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:auto;">
+              <div class="chip active">🍱 Food</div>
+              <div class="chip active">🚇 Transport</div>
+              <div class="chip active">🛍 Shopping</div>
+              <div class="chip active">🏠 Bills</div>
+              <div class="chip">☕ Coffee</div>
+              <div class="chip active">🎬 Entertainment</div>
+              <div class="chip">💊 Health</div>
+              <div class="chip active">✈️ Travel</div>
+              <div class="chip">🎁 Gifts</div>
+              <div class="chip">📚 Subscriptions</div>
+              <div class="chip" style="background:none; border:1px dashed #d6d3d1;">+ Add custom</div>
+            </div>
+            <button class="btn btn-primary">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ HOME DASHBOARD ============ -->
+<div class="section">
+  <div class="section-title">Home — The Daily View</div>
+  <div class="row">
+
+    <!-- Home Light -->
+    <div class="phone">
+      <div class="phone-label">Home — light mode</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="app-header">
+            <div class="month">
+              <span class="nav-arrow">‹</span>
+              <span>June 2026</span>
+              <span class="nav-arrow">›</span>
+            </div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero-card">
+              <div class="label">This month</div>
+              <div class="row-flex"><span>Take-home</span><span class="v">$4,820</span></div>
+              <div class="row-flex"><span>Spent</span><span class="v">−$2,341</span></div>
+              <div class="divider"></div>
+              <div class="remaining">Remaining</div>
+              <div class="big">$2,479</div>
+              <div class="progress">
+                <div class="progress-fill" style="width:48%"></div>
+              </div>
+              <div class="progress-meta">
+                <span>48% of take-home spent</span>
+                <span>14 days left</span>
+              </div>
+            </div>
+
+            <div class="card cpf-card">
+              <div class="left">
+                <div class="icon">CPF</div>
+                <div>
+                  <div class="title">June contribution</div>
+                  <div class="sub">You $1,200 · Employer $1,020</div>
+                </div>
+              </div>
+              <div class="arrow">›</div>
+            </div>
+
+            <div class="section-row">
+              <h2>Budgets</h2>
+              <span class="see-all">See all ›</span>
+            </div>
+            <div class="h-scroll">
+              <div class="budget-card">
+                <div class="name">Food</div>
+                <div class="amount">$182<span class="light"> / 300</span></div>
+                <div class="progress"><div class="progress-fill" style="width:61%"></div></div>
+              </div>
+              <div class="budget-card">
+                <div class="name">Transport</div>
+                <div class="amount">$85<span class="light"> / 150</span></div>
+                <div class="progress"><div class="progress-fill" style="width:57%"></div></div>
+              </div>
+              <div class="budget-card">
+                <div class="name">Shopping</div>
+                <div class="amount">$420<span class="light"> / 400</span></div>
+                <div class="progress"><div class="progress-fill danger" style="width:100%"></div></div>
+              </div>
+              <div class="budget-card">
+                <div class="name">Coffee</div>
+                <div class="amount">$74<span class="light"> / 100</span></div>
+                <div class="progress"><div class="progress-fill warn" style="width:74%"></div></div>
+              </div>
+            </div>
+
+            <div class="section-row">
+              <h2>Goals</h2>
+              <span class="see-all">See all ›</span>
+            </div>
+            <div class="h-scroll">
+              <div class="goal-card">
+                <div class="name">MacBook Pro</div>
+                <div class="amount">$1,820</div>
+                <div class="target">of $3,500</div>
+                <div class="ring"><div class="ring-fill" style="width:52%"></div></div>
+                <div class="eta">52% · 8 months left</div>
+              </div>
+              <div class="goal-card alt">
+                <div class="name">Japan Trip</div>
+                <div class="amount">$500</div>
+                <div class="target">of $2,000</div>
+                <div class="ring"><div class="ring-fill" style="width:25%"></div></div>
+                <div class="eta">25% · 15 months</div>
+              </div>
+            </div>
+
+            <div class="section-row">
+              <h2>Alerts</h2>
+              <span class="see-all">3 ›</span>
+            </div>
+            <div class="alert-card">
+              <div class="alert-icon warn">⚠</div>
+              <div>
+                <div class="alert-text">Shopping is over budget by $20</div>
+                <div class="alert-sub">14 days left in the cycle</div>
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-icon info">🔔</div>
+              <div>
+                <div class="alert-text">NTUC Life premium due in 7 days</div>
+                <div class="alert-sub">$210 · GIRO scheduled</div>
+              </div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Home Dark -->
+    <div class="phone">
+      <div class="phone-label">Home — dark mode</div>
+      <div class="phone-frame dark">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen dark">
+          <div class="app-header">
+            <div class="month">
+              <span class="nav-arrow">‹</span>
+              <span>June 2026</span>
+              <span class="nav-arrow">›</span>
+            </div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero-card">
+              <div class="label">This month</div>
+              <div class="row-flex"><span>Take-home</span><span class="v">$4,820</span></div>
+              <div class="row-flex"><span>Spent</span><span class="v">−$2,341</span></div>
+              <div class="divider"></div>
+              <div class="remaining">Remaining</div>
+              <div class="big">$2,479</div>
+              <div class="progress">
+                <div class="progress-fill" style="width:48%"></div>
+              </div>
+              <div class="progress-meta">
+                <span>48% of take-home spent</span>
+                <span>14 days left</span>
+              </div>
+            </div>
+
+            <div class="card cpf-card">
+              <div class="left">
+                <div class="icon">CPF</div>
+                <div>
+                  <div class="title">June contribution</div>
+                  <div class="sub">You $1,200 · Employer $1,020</div>
+                </div>
+              </div>
+              <div class="arrow">›</div>
+            </div>
+
+            <div class="section-row">
+              <h2>Budgets</h2>
+              <span class="see-all">See all ›</span>
+            </div>
+            <div class="h-scroll">
+              <div class="budget-card">
+                <div class="name">Food</div>
+                <div class="amount">$182<span class="light"> / 300</span></div>
+                <div class="progress"><div class="progress-fill" style="width:61%"></div></div>
+              </div>
+              <div class="budget-card">
+                <div class="name">Transport</div>
+                <div class="amount">$85<span class="light"> / 150</span></div>
+                <div class="progress"><div class="progress-fill" style="width:57%"></div></div>
+              </div>
+              <div class="budget-card">
+                <div class="name">Shopping</div>
+                <div class="amount">$420<span class="light"> / 400</span></div>
+                <div class="progress"><div class="progress-fill danger" style="width:100%"></div></div>
+              </div>
+              <div class="budget-card">
+                <div class="name">Coffee</div>
+                <div class="amount">$74<span class="light"> / 100</span></div>
+                <div class="progress"><div class="progress-fill warn" style="width:74%"></div></div>
+              </div>
+            </div>
+
+            <div class="section-row">
+              <h2>Goals</h2>
+              <span class="see-all">See all ›</span>
+            </div>
+            <div class="h-scroll">
+              <div class="goal-card">
+                <div class="name">MacBook Pro</div>
+                <div class="amount">$1,820</div>
+                <div class="target">of $3,500</div>
+                <div class="ring"><div class="ring-fill" style="width:52%"></div></div>
+                <div class="eta">52% · 8 months left</div>
+              </div>
+              <div class="goal-card alt">
+                <div class="name">Japan Trip</div>
+                <div class="amount">$500</div>
+                <div class="target">of $2,000</div>
+                <div class="ring"><div class="ring-fill" style="width:25%"></div></div>
+                <div class="eta">25% · 15 months</div>
+              </div>
+            </div>
+
+            <div class="section-row">
+              <h2>Alerts</h2>
+              <span class="see-all">3 ›</span>
+            </div>
+            <div class="alert-card">
+              <div class="alert-icon warn">⚠</div>
+              <div>
+                <div class="alert-text">Shopping is over budget by $20</div>
+                <div class="alert-sub">14 days left in the cycle</div>
+              </div>
+            </div>
+            <div class="alert-card">
+              <div class="alert-icon info">🔔</div>
+              <div>
+                <div class="alert-text">NTUC Life premium due in 7 days</div>
+                <div class="alert-sub">$210 · GIRO scheduled</div>
+              </div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick add -->
+    <div class="phone">
+      <div class="phone-label">Quick add — daily action</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite" style="position:relative; overflow:hidden;">
+          <div style="opacity:0.4; pointer-events:none;">
+            <div class="app-header">
+              <div class="month">
+                <span class="nav-arrow">‹</span>
+                <span>June 2026</span>
+                <span class="nav-arrow">›</span>
+              </div>
+              <div class="avatar">JK</div>
+            </div>
+          </div>
+          <div class="bg-dim"></div>
+          <div class="quick-add" style="position:absolute; bottom:0; left:0; right:0; box-shadow:0 -20px 40px rgba(0,0,0,0.1);">
+            <div class="handle"></div>
+            <h3>New transaction</h3>
+            <div class="big-amount">$24.50</div>
+            <div class="chip-row">
+              <div class="chip active">🍱 Food</div>
+              <div class="chip">☕ Coffee</div>
+              <div class="chip">🚇 Transport</div>
+              <div class="chip">🛍 Shop</div>
+            </div>
+            <div class="row-input">
+              <span class="lbl">Date</span>
+              <span class="val">Today, 12:42 PM ›</span>
+            </div>
+            <div class="row-input">
+              <span class="lbl">Budget</span>
+              <span class="val"><span style="display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:50%;"></span> Food · $118 left ›</span>
+            </div>
+            <div class="row-input">
+              <span class="lbl">Note</span>
+              <span class="val" style="color:var(--muted);">Add note</span>
+            </div>
+            <button class="btn btn-primary" style="margin-top:18px;">Save transaction</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ TRANSACTIONS ============ -->
+<div class="section">
+  <div class="section-title">Transactions</div>
+  <div class="row">
+
+    <!-- Transactions list -->
+    <div class="phone">
+      <div class="phone-label">Transactions — list view</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="app-header">
+            <div class="month" style="font-size:20px;">Transactions</div>
+            <div style="display:flex; gap:8px;">
+              <div style="width:32px; height:32px; background:#f5f5f4; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:14px;">⬆</div>
+            </div>
+          </div>
+          <div class="txn-search">
+            <div class="search-pill">⌕ Search transactions</div>
+            <div class="filter-btn">≡</div>
+          </div>
+          <div class="scroll">
+            <div class="nav-pills">
+              <div class="nav-pill active">All</div>
+              <div class="nav-pill">Food</div>
+              <div class="nav-pill">Transport</div>
+              <div class="nav-pill">Shopping</div>
+              <div class="nav-pill">Coffee</div>
+            </div>
+            <div class="txn-day">
+              <span>Today · Tue 15 Jun</span>
+              <span>−$48.20</span>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon icon-food">🍱</div>
+              <div class="txn-detail">
+                <div class="txn-name">Sushi Tei</div>
+                <div class="txn-meta">Food · DBS Multiplier</div>
+              </div>
+              <div class="txn-amount">−$24.50</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon icon-coffee">☕</div>
+              <div class="txn-detail">
+                <div class="txn-name">% Arabica</div>
+                <div class="txn-meta">Coffee · Manual</div>
+              </div>
+              <div class="txn-amount">−$8.20</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon icon-transport">🚇</div>
+              <div class="txn-detail">
+                <div class="txn-name">SimplyGo Top Up</div>
+                <div class="txn-meta">Transport · DBS</div>
+              </div>
+              <div class="txn-amount">−$15.50</div>
+            </div>
+
+            <div class="txn-day">
+              <span>Mon 14 Jun</span>
+              <span>−$96.80</span>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon icon-shop">🛍</div>
+              <div class="txn-detail">
+                <div class="txn-name">Uniqlo Orchard</div>
+                <div class="txn-meta">Shopping · DBS Multiplier</div>
+              </div>
+              <div class="txn-amount">−$59.90</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon icon-food">🍱</div>
+              <div class="txn-detail">
+                <div class="txn-name">Koufu</div>
+                <div class="txn-meta">Food · Cash</div>
+              </div>
+              <div class="txn-amount">−$6.80</div>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon icon-bill">⚡</div>
+              <div class="txn-detail">
+                <div class="txn-name">SP Group</div>
+                <div class="txn-meta">Bills · GIRO · Recurring</div>
+              </div>
+              <div class="txn-amount">−$30.10</div>
+            </div>
+
+            <div class="txn-day">
+              <span>Sun 13 Jun</span>
+              <span>+$4,820.00</span>
+            </div>
+            <div class="txn-item">
+              <div class="txn-icon icon-income">$</div>
+              <div class="txn-detail">
+                <div class="txn-name">Salary — Acme Pte Ltd</div>
+                <div class="txn-meta">Income · DBS</div>
+              </div>
+              <div class="txn-amount income">+$4,820.00</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab active"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CSV import review -->
+    <div class="phone">
+      <div class="phone-label">CSV import — reconciliation</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Review import</div>
+            <div class="placeholder"></div>
+          </div>
+          <div class="scroll">
+            <div class="import-banner">
+              <div class="b-title">DBS_June_2026.csv · 28 transactions</div>
+              <div class="b-sub">12 already in your app · 14 new · 2 manual entries unmatched</div>
+            </div>
+
+            <div class="tab-group">
+              <div class="tab-pill">Matched <span class="count">12</span></div>
+              <div class="tab-pill active">New <span class="count">14</span></div>
+              <div class="tab-pill">Manual <span class="count">2</span></div>
+            </div>
+
+            <div class="match-card">
+              <div class="match-row">
+                <div>
+                  <div class="merchant">Grab Singapore</div>
+                  <div class="meta">11 Jun · auto-categorised as Transport</div>
+                </div>
+                <div class="amount-big">−$18.20</div>
+              </div>
+            </div>
+            <div class="match-card">
+              <div class="match-row">
+                <div>
+                  <div class="merchant">FairPrice Online</div>
+                  <div class="meta">10 Jun · auto-categorised as Groceries</div>
+                </div>
+                <div class="amount-big">−$94.30</div>
+              </div>
+            </div>
+            <div class="match-card">
+              <div class="match-row">
+                <div>
+                  <div class="merchant">Spotify</div>
+                  <div class="meta">8 Jun · auto-categorised as Subscriptions</div>
+                </div>
+                <div class="amount-big">−$10.98</div>
+              </div>
+            </div>
+            <div class="match-card" style="background: #fff7ed; border-color: #fed7aa;">
+              <div class="match-row">
+                <div class="label-tiny" style="color:#c2410c;">⚠ Late arrival — will apply to May</div>
+              </div>
+              <div class="match-row" style="margin-top:6px;">
+                <div>
+                  <div class="merchant">Shopee Pay</div>
+                  <div class="meta">31 May · transaction date</div>
+                </div>
+                <div class="amount-big">−$42.80</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 12px 20px 16px; border-top: 1px solid var(--line);">
+            <button class="btn btn-primary">Confirm import (14)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction detail -->
+    <div class="phone">
+      <div class="phone-label">Transaction detail</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Transaction</div>
+            <div class="back">⋯</div>
+          </div>
+          <div class="scroll">
+            <div class="txn-detail-hero">
+              <div class="icon-big icon-food">🍱</div>
+              <div class="merchant">Sushi Tei</div>
+              <div class="date">Tuesday, 15 June · 12:42 PM</div>
+              <div class="price">−$24.50</div>
+            </div>
+            <div class="detail-row-card">
+              <div class="detail-row"><span class="lbl">Category</span><span class="val">🍱 Food</span></div>
+              <div class="detail-row"><span class="lbl">Budget</span><span class="val">Food · $118 left</span></div>
+              <div class="detail-row"><span class="lbl">Source</span><span class="val">DBS Multiplier ··3245</span></div>
+              <div class="detail-row"><span class="lbl">Imported</span><span class="val">Today, 6:30 PM</span></div>
+            </div>
+            <div class="section-row" style="margin-top:18px;">
+              <h2>Note</h2>
+            </div>
+            <div class="card" style="padding:14px 16px; font-size:13px; color:var(--muted);">
+              Team lunch with Marcus and Janice
+            </div>
+            <div class="section-row" style="margin-top:18px;">
+              <h2>Actions</h2>
+            </div>
+            <div class="detail-row-card">
+              <div class="detail-row"><span class="val">Split transaction</span><span class="arrow" style="color:#a8a29e;">›</span></div>
+              <div class="detail-row"><span class="val">Mark as recurring</span><span class="arrow" style="color:#a8a29e;">›</span></div>
+              <div class="detail-row"><span class="val" style="color:var(--danger);">Delete transaction</span><span class="arrow" style="color:#a8a29e;">›</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ BUDGETS & GOALS ============ -->
+<div class="section">
+  <div class="section-title">Budgets & Goals</div>
+  <div class="row">
+
+    <!-- Budgets tab -->
+    <div class="phone">
+      <div class="phone-label">Budgets tab</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="app-header">
+            <div class="month" style="font-size:20px;">Budgets & Goals</div>
+            <div style="width:32px; height:32px; background:#f5f5f4; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px;">+</div>
+          </div>
+          <div class="bg-toggle">
+            <div class="tab-pill active">Budgets</div>
+            <div class="tab-pill">Goals</div>
+          </div>
+          <div class="scroll">
+            <div class="hero-card" style="margin-bottom:18px;">
+              <div class="label">Across all budgets</div>
+              <div class="big" style="margin-top:6px;">$2,341 <span style="font-size:14px; opacity:0.5; font-weight:500;">of $2,900</span></div>
+              <div class="progress"><div class="progress-fill" style="width:81%"></div></div>
+              <div class="progress-meta">
+                <span>$559 remaining</span>
+                <span>14 days left</span>
+              </div>
+            </div>
+
+            <div class="budget-detail">
+              <div class="top">
+                <div>
+                  <div class="name">🍱 Food</div>
+                  <div class="rollover-tag">↻ Rollover · +$45</div>
+                </div>
+                <div class="amount-bd">$182<br><span class="light">of $345 left</span></div>
+              </div>
+              <div class="progress-bar"><div class="pf" style="width:53%"></div></div>
+              <div class="meta-row"><span>53% used</span><span>$163 left</span></div>
+            </div>
+
+            <div class="budget-detail">
+              <div class="top">
+                <div>
+                  <div class="name">🚇 Transport</div>
+                  <div class="rollover-tag" style="background:#f5f5f4; color:var(--muted);">↺ Reset monthly</div>
+                </div>
+                <div class="amount-bd">$85<br><span class="light">of $150 left</span></div>
+              </div>
+              <div class="progress-bar"><div class="pf" style="width:57%"></div></div>
+              <div class="meta-row"><span>57% used</span><span>$65 left</span></div>
+            </div>
+
+            <div class="budget-detail">
+              <div class="top">
+                <div>
+                  <div class="name">🛍 Shopping</div>
+                  <div class="rollover-tag" style="background:#fef3c7; color:#c2410c;">? Ask at month end</div>
+                </div>
+                <div class="amount-bd" style="color:var(--danger);">$420<br><span class="light" style="color:var(--muted)">of $400 limit</span></div>
+              </div>
+              <div class="progress-bar"><div class="pf danger" style="width:100%"></div></div>
+              <div class="meta-row"><span style="color:var(--danger);">Over by $20</span><span>14 days left</span></div>
+            </div>
+
+            <div class="budget-detail">
+              <div class="top">
+                <div>
+                  <div class="name">☕ Coffee</div>
+                  <div class="rollover-tag">↻ Rollover · +$10</div>
+                </div>
+                <div class="amount-bd">$74<br><span class="light">of $110 left</span></div>
+              </div>
+              <div class="progress-bar"><div class="pf warn" style="width:67%"></div></div>
+              <div class="meta-row"><span>67% used</span><span>$36 left</span></div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab active"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goal detail -->
+    <div class="phone">
+      <div class="phone-label">Goal detail</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Goal</div>
+            <div class="back">⋯</div>
+          </div>
+          <div class="scroll">
+            <div class="goal-hero">
+              <div class="label">Saving for</div>
+              <h2>MacBook Pro 14"</h2>
+              <div class="progress"><div class="progress-fill" style="width:52%"></div></div>
+              <div class="figures">
+                <div>
+                  <div class="l">Saved</div>
+                  <div class="v">$1,820</div>
+                </div>
+                <div style="text-align:right;">
+                  <div class="l">Target</div>
+                  <div class="v">$3,500</div>
+                </div>
+              </div>
+              <div class="eta">⏱ Projected completion · Feb 2027 (8 months)</div>
+            </div>
+
+            <div class="section-row"><h2>Contributions</h2></div>
+            <div class="card" style="padding:14px 16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <div style="font-size:13px; font-weight:500;">Monthly contribution</div>
+                  <div style="font-size:11px; color:var(--muted); margin-top:2px;">Auto-deducted on 1st</div>
+                </div>
+                <div style="font-size:15px; font-weight:700; font-variant-numeric:tabular-nums;">$210</div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; margin-top:12px;">
+              <button class="btn btn-primary" style="flex:1; font-size:13px;">Add one-off funds</button>
+              <button class="btn btn-google" style="flex:1; font-size:13px;">Pause goal</button>
+            </div>
+
+            <div class="section-row" style="margin-top:18px;"><h2>History</h2></div>
+            <div class="card" style="padding:0;">
+              <div style="display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--line); font-size:12px;">
+                <span>1 Jun · Monthly</span><span style="font-weight:600;">+$210</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--line); font-size:12px;">
+                <span>20 May · Bonus</span><span style="font-weight:600;">+$500</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; padding:12px 16px; border-bottom:1px solid var(--line); font-size:12px;">
+                <span>1 May · Monthly</span><span style="font-weight:600;">+$210</span>
+              </div>
+              <div style="display:flex; justify-content:space-between; padding:12px 16px; font-size:12px;">
+                <span>1 Apr · Monthly</span><span style="font-weight:600;">+$210</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budget detail dark -->
+    <div class="phone">
+      <div class="phone-label">Budget detail — dark</div>
+      <div class="phone-frame dark">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen dark">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Food</div>
+            <div class="back">⋯</div>
+          </div>
+          <div class="scroll">
+            <div class="hero-card">
+              <div class="label">June 2026</div>
+              <div class="row-flex"><span>Base budget</span><span class="v">$300</span></div>
+              <div class="row-flex"><span>Rolled over</span><span class="v">+$45</span></div>
+              <div class="row-flex"><span>Spent so far</span><span class="v">−$182</span></div>
+              <div class="divider"></div>
+              <div class="remaining">Available</div>
+              <div class="big">$163</div>
+              <div class="progress"><div class="progress-fill" style="width:53%"></div></div>
+            </div>
+
+            <div class="section-row"><h2>This month vs last 6</h2></div>
+            <div class="card" style="padding:18px;">
+              <div style="display:flex; align-items:flex-end; gap:8px; height:90px; margin-bottom:12px;">
+                <div style="flex:1; background:#292524; height:70%; border-radius:4px 4px 0 0;"></div>
+                <div style="flex:1; background:#292524; height:50%; border-radius:4px 4px 0 0;"></div>
+                <div style="flex:1; background:#292524; height:80%; border-radius:4px 4px 0 0;"></div>
+                <div style="flex:1; background:#292524; height:60%; border-radius:4px 4px 0 0;"></div>
+                <div style="flex:1; background:#292524; height:90%; border-radius:4px 4px 0 0;"></div>
+                <div style="flex:1; background:#292524; height:65%; border-radius:4px 4px 0 0;"></div>
+                <div style="flex:1; background:var(--accent); height:55%; border-radius:4px 4px 0 0;"></div>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:10px; color:#a8a29e;">
+                <span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+              </div>
+              <div style="margin-top:16px; padding-top:16px; border-top:1px solid #292524; display:flex; justify-content:space-between; font-size:12px;">
+                <div><div style="color:#a8a29e; font-size:10px;">6-MONTH AVG</div><div style="font-weight:600; margin-top:2px;">$248</div></div>
+                <div style="text-align:right;"><div style="color:#a8a29e; font-size:10px;">VS LAST MONTH</div><div style="font-weight:600; color:var(--accent); margin-top:2px;">−18%</div></div>
+              </div>
+            </div>
+
+            <div class="section-row" style="margin-top:18px;"><h2>Settings</h2></div>
+            <div class="detail-row-card">
+              <div class="detail-row"><span class="lbl">Base amount</span><span class="val">$300/mo</span></div>
+              <div class="detail-row"><span class="lbl">End of month</span><span class="val">↻ Rollover ›</span></div>
+              <div class="detail-row"><span class="lbl">Alert at</span><span class="val">80% used</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ INSURANCE ============ -->
+<div class="section">
+  <div class="section-title">Insurance</div>
+  <div class="row">
+
+    <!-- Insurance home -->
+    <div class="phone">
+      <div class="phone-label">Insurance home</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="app-header">
+            <div class="month" style="font-size:20px;">Insurance</div>
+            <div style="width:32px; height:32px; background:#f5f5f4; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px;">+</div>
+          </div>
+          <div class="scroll">
+            <div style="background:#0c0a09; color:white; border-radius:20px; padding:22px; margin-bottom:16px;">
+              <div style="font-size:11px; opacity:0.5; letter-spacing:0.06em; text-transform:uppercase; font-weight:600;">Annual premiums</div>
+              <div style="font-size:30px; font-weight:700; letter-spacing:-0.025em; margin:6px 0 8px; font-variant-numeric:tabular-nums;">$3,420</div>
+              <div style="font-size:11px; opacity:0.6;">5.9% of annual income · within healthy range</div>
+            </div>
+
+            <div class="section-row"><h2>Coverage at a glance</h2></div>
+            <div class="coverage-summary">
+              <div class="cov-cell">
+                <div class="l">Hospitalisation</div>
+                <div class="v">$1M</div>
+                <div class="status">✓ Covered</div>
+              </div>
+              <div class="cov-cell">
+                <div class="l">Life cover</div>
+                <div class="v">$500K</div>
+                <div class="status">✓ Covered</div>
+              </div>
+              <div class="cov-cell">
+                <div class="l">Critical illness</div>
+                <div class="v">$150K</div>
+                <div class="status warn">Light coverage</div>
+              </div>
+              <div class="cov-cell">
+                <div class="l">Disability income</div>
+                <div class="v">—</div>
+                <div class="status missing">Not covered</div>
+              </div>
+            </div>
+
+            <div class="gap-banner">
+              <div class="ic">⚠</div>
+              <div>
+                <div class="t">Disability income gap detected</div>
+                <div class="s">Based on your income, consider DI coverage of ~$3,500/mo. Tap to ask the AI.</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h2>Your policies</h2></div>
+
+            <div class="ins-card">
+              <div class="type-chip health">Hospitalisation</div>
+              <div class="name-ins">AIA HealthShield Gold Max A</div>
+              <div class="insurer">AIA · Policy A12345</div>
+              <div class="row-ins">
+                <div class="col">
+                  <div class="l">Annual premium</div>
+                  <div class="v">$1,820</div>
+                </div>
+                <div class="col" style="text-align:right;">
+                  <div class="l">Next payment</div>
+                  <div class="v">15 Aug 2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ins-card">
+              <div class="type-chip life">Life</div>
+              <div class="name-ins">Manulife ReadyBuilder Term</div>
+              <div class="insurer">Manulife · Policy M67890</div>
+              <div class="row-ins">
+                <div class="col">
+                  <div class="l">Annual premium</div>
+                  <div class="v">$890</div>
+                </div>
+                <div class="col" style="text-align:right;">
+                  <div class="l">Next payment</div>
+                  <div class="v">22 Jun 2026</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="ins-card">
+              <div class="type-chip">Critical Illness</div>
+              <div class="name-ins">NTUC Income LifeSecure</div>
+              <div class="insurer">NTUC Income · Policy N24680</div>
+              <div class="row-ins">
+                <div class="col">
+                  <div class="l">Annual premium</div>
+                  <div class="v">$710</div>
+                </div>
+                <div class="col" style="text-align:right;">
+                  <div class="l">Next payment</div>
+                  <div class="v">3 Sep 2026</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab active"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insurance detail -->
+    <div class="phone">
+      <div class="phone-label">Policy detail — AI parsed</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Policy</div>
+            <div class="back">⋯</div>
+          </div>
+          <div class="scroll">
+            <div style="text-align:center; padding:8px 0 24px;">
+              <div style="display:inline-block; background:#dbeafe; color:#2563eb; font-size:10px; font-weight:600; padding:4px 10px; border-radius:100px; text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px;">Hospitalisation · Integrated Shield</div>
+              <div style="font-size:18px; font-weight:700; letter-spacing:-0.02em;">AIA HealthShield Gold Max A</div>
+              <div style="font-size:12px; color:var(--muted); margin-top:2px;">AIA Singapore · Policy A12345</div>
+            </div>
+
+            <div style="background:linear-gradient(135deg,#dbeafe,#bfdbfe); border-radius:16px; padding:18px; margin-bottom:14px;">
+              <div style="font-size:11px; color:#1e40af; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">✨ AI parsed coverage</div>
+              <div style="font-size:13px; color:#1e3a8a; line-height:1.5;">
+                Covers up to <b>$1M/year</b> for hospitalisation in Class A wards or private hospitals. Includes pre/post hospital care, surgeries, ICU. Excludes maternity, cosmetic, and self-inflicted injury.
+              </div>
+            </div>
+
+            <div class="section-row"><h2>Coverage details</h2></div>
+            <div class="detail-row-card">
+              <div class="detail-row"><span class="lbl">Annual limit</span><span class="val">$1,000,000</span></div>
+              <div class="detail-row"><span class="lbl">Deductible</span><span class="val">$3,500/year</span></div>
+              <div class="detail-row"><span class="lbl">Co-insurance</span><span class="val">5%</span></div>
+              <div class="detail-row"><span class="lbl">Ward class</span><span class="val">Private / A</span></div>
+            </div>
+
+            <div class="section-row" style="margin-top:18px;"><h2>Payments</h2></div>
+            <div style="background:#fafaf9; border:1px solid #e7e5e4; border-radius:14px; padding:16px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <div style="font-size:12px; color:var(--muted);">Total paid since 2022</div>
+                <div style="font-size:14px; font-weight:700; font-variant-numeric:tabular-nums;">$7,280</div>
+              </div>
+              <div style="display:flex; justify-content:space-between;">
+                <div style="font-size:12px; color:var(--muted);">Next payment</div>
+                <div style="font-size:13px; font-weight:600;">$1,820 · 15 Aug</div>
+              </div>
+            </div>
+
+            <div class="section-row" style="margin-top:18px;"><h2>Documents</h2></div>
+            <div class="card" style="display:flex; align-items:center; gap:12px; padding:14px;">
+              <div style="width:36px; height:36px; background:#fee2e2; color:#dc2626; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:14px;">📄</div>
+              <div style="flex:1;">
+                <div style="font-size:13px; font-weight:500;">AIA_HealthShield_Policy.pdf</div>
+                <div style="font-size:11px; color:var(--muted); margin-top:2px;">Uploaded 3 May · 2.4 MB</div>
+              </div>
+              <div style="font-size:14px; color:#a8a29e;">›</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add insurance -->
+    <div class="phone">
+      <div class="phone-label">Add policy — upload doc</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Add policy</div>
+            <div class="placeholder"></div>
+          </div>
+          <div class="scroll">
+            <div class="input-group">
+              <div class="input-label">POLICY NAME</div>
+              <div class="input-field focus"><span>NTUC Income LifeSecure</span></div>
+            </div>
+
+            <div style="background:linear-gradient(135deg,#dbeafe,#bfdbfe); border-radius:16px; padding:18px; margin:12px 0;">
+              <div style="font-size:11px; color:#1e40af; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:8px;">✨ Upload your policy</div>
+              <div style="font-size:12px; color:#1e3a8a; line-height:1.5; margin-bottom:14px;">
+                AI will read your policy document and auto-extract premium, coverage, exclusions, and renewal date.
+              </div>
+              <div style="background:white; border-radius:12px; padding:24px 14px; text-align:center; border:2px dashed #93c5fd;">
+                <div style="font-size:28px; margin-bottom:8px;">📄</div>
+                <div style="font-size:12px; font-weight:600; color:#1e40af;">Tap to upload PDF or image</div>
+                <div style="font-size:10px; color:#3b82f6; margin-top:4px;">or drag a file here</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h2>Or enter manually</h2></div>
+            <div class="input-group">
+              <div class="input-label">POLICY TYPE</div>
+              <div class="input-field"><span class="placeholder">Select type</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">PREMIUM AMOUNT</div>
+              <div class="input-field"><span class="placeholder">$0.00</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">PAYMENT FREQUENCY</div>
+              <div style="display:flex; gap:6px;">
+                <div class="chip">Monthly</div>
+                <div class="chip active">Annually</div>
+                <div class="chip">Quarterly</div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-top:24px;">Save policy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ INSIGHTS ============ -->
+<div class="section">
+  <div class="section-title">Insights — AI Layer</div>
+  <div class="row">
+
+    <!-- Insights home -->
+    <div class="phone">
+      <div class="phone-label">Insights — monthly digest</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="app-header">
+            <div class="month" style="font-size:20px;">Insights</div>
+            <div style="width:32px; height:32px; background:#f5f5f4; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:14px;">⚙</div>
+          </div>
+          <div class="scroll">
+            <div class="insights-hero">
+              <div class="ic-row">
+                <div class="ai-badge">✨ June digest · Claude Sonnet</div>
+              </div>
+              <h2>You're spending 18% less on food this month, but Shopping is the standout outlier.</h2>
+              <p>You've hit your shopping budget 14 days early — mostly two large Uniqlo and Shopee transactions. Worth reviewing before the next pay cycle.</p>
+              <div class="actions">
+                <button class="btn-mini primary">Read full digest</button>
+                <button class="btn-mini">Ask follow-up</button>
+              </div>
+            </div>
+
+            <div class="section-row"><h2>Smart alerts</h2></div>
+
+            <div class="insight-card">
+              <div class="head">
+                <div class="ic" style="background:#fef3c7; color:#c2410c;">💡</div>
+                <div class="cat">Tax saving</div>
+              </div>
+              <div class="txt">You have $7,200 of tax relief headroom for CPF top-ups. Topping up before 31 Dec could save you up to $1,440 in income tax.</div>
+            </div>
+
+            <div class="insight-card">
+              <div class="head">
+                <div class="ic" style="background:#dbeafe; color:#2563eb;">📊</div>
+                <div class="cat">Trend</div>
+              </div>
+              <div class="txt">Food spend is down 18% from last month. You've cooked at home 4 more times. Nice.</div>
+            </div>
+
+            <div class="insight-card">
+              <div class="head">
+                <div class="ic" style="background:#fee2e2; color:#dc2626;">⚠</div>
+                <div class="cat">Coverage gap</div>
+              </div>
+              <div class="txt">No disability income coverage detected. Consider adding ~$3,500/mo DI based on your income level.</div>
+            </div>
+
+            <div class="insight-card">
+              <div class="head">
+                <div class="ic" style="background:var(--accent-soft); color:var(--accent);">🎯</div>
+                <div class="cat">Goal</div>
+              </div>
+              <div class="txt">At current contribution rate, MacBook Pro goal completes Feb 2027 — 2 months earlier than projected.</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab active"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Chat -->
+    <div class="phone">
+      <div class="phone-label">Ask your finances anything</div>
+      <div class="phone-frame dark">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen dark">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="font-size:13px; font-weight:600;">Ask Finlet</div>
+              <div style="font-size:10px; background:rgba(5,150,105,0.15); color:#34d399; padding:2px 8px; border-radius:100px; font-weight:600;">Claude</div>
+            </div>
+            <div class="back">⋯</div>
+          </div>
+          <div class="scroll" style="padding-bottom:20px;">
+            <div style="font-size:11px; color:#78716c; text-align:center; margin: 8px 0 16px;">Today, 2:34 PM</div>
+
+            <div class="chat-bubble user">Am I on track for my MacBook goal?</div>
+
+            <div class="chat-bubble ai">
+              Yes — you're slightly ahead of pace. You've saved $1,820 of $3,500 (52%) and your $210/month contribution means you'll hit the target by Feb 2027.
+              <br><br>
+              That's 2 months earlier than the projected June 2027, because your May bonus pushed you ahead.
+            </div>
+
+            <div class="chat-bubble user">Can I afford to add another $100/month?</div>
+
+            <div class="chat-bubble ai">
+              Yes — your average leftover after all budgets and goals is $390/month over the last 6 months. Adding $100 would still leave a $290 cushion.
+              <br><br>
+              At $310/month, you'd hit the goal by Dec 2026 — 2 months sooner.
+              <br><br>
+              <b>Want me to update your contribution to $310?</b>
+            </div>
+
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <div class="chip" style="background:rgba(255,255,255,0.05); color:#a8a29e; border:1px solid #292524;">Yes, update</div>
+              <div class="chip" style="background:rgba(255,255,255,0.05); color:#a8a29e; border:1px solid #292524;">No</div>
+            </div>
+          </div>
+          <div class="chat-input-bar">
+            <div class="chat-input">Ask a question…</div>
+            <div class="send-btn">↑</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Settings -->
+    <div class="phone">
+      <div class="phone-label">AI settings — BYOK</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">AI assistant</div>
+            <div class="placeholder"></div>
+          </div>
+          <div class="scroll">
+            <div style="background:linear-gradient(135deg, #1e293b, #0f172a); color:white; border-radius:16px; padding:16px; margin-bottom:18px;">
+              <div style="font-size:11px; opacity:0.6; letter-spacing:0.06em; text-transform:uppercase; font-weight:600; margin-bottom:6px;">✨ Connected</div>
+              <div style="font-size:15px; font-weight:600;">Claude Sonnet 4.6</div>
+              <div style="font-size:11px; opacity:0.7; margin-top:2px;">Via your Anthropic API key</div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">Provider</div>
+              <div class="settings-list">
+                <div class="set-row">
+                  <div class="ic">A</div>
+                  <div class="nm">Anthropic (Claude)</div>
+                  <div class="val">Active</div>
+                </div>
+                <div class="set-row">
+                  <div class="ic">O</div>
+                  <div class="nm">OpenAI</div>
+                  <span class="arrow">›</span>
+                </div>
+                <div class="set-row">
+                  <div class="ic">G</div>
+                  <div class="nm">Google Gemini</div>
+                  <span class="arrow">›</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">Digest schedule</div>
+              <div class="settings-list">
+                <div class="set-row">
+                  <div class="ic">📅</div>
+                  <div class="nm">Frequency</div>
+                  <div class="val">Monthly ›</div>
+                </div>
+                <div class="set-row">
+                  <div class="ic">🕘</div>
+                  <div class="nm">Delivery time</div>
+                  <div class="val">9:00 AM ›</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">Personal context</div>
+              <div class="card" style="padding:14px;">
+                <div style="font-size:12px; color:var(--muted); line-height:1.5;">
+                  "I'm saving for a flat in 2028 and prefer conservative advice. Don't suggest crypto or volatile equity."
+                </div>
+                <div style="font-size:11px; color:var(--accent); font-weight:600; margin-top:10px;">✎ Edit context</div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">Privacy</div>
+              <div class="settings-list">
+                <div class="set-row">
+                  <div class="ic">🔒</div>
+                  <div class="nm">Send financial data</div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="set-row">
+                  <div class="ic">📜</div>
+                  <div class="nm">Save chat history</div>
+                  <div class="toggle off"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============ CPF ============ -->
+<div class="section">
+  <div class="section-title">CPF — Singapore Context</div>
+  <div class="row">
+
+    <!-- CPF home -->
+    <div class="phone">
+      <div class="phone-label">CPF overview</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">CPF</div>
+            <div class="back">✎</div>
+          </div>
+          <div class="scroll">
+            <div class="cpf-hero">
+              <div class="label">June 2026 contribution</div>
+              <div class="total">$2,220</div>
+              <div class="breakdown">
+                <div>
+                  <div class="l">You contributed</div>
+                  <div class="v">$1,200</div>
+                </div>
+                <div>
+                  <div class="l">Employer added</div>
+                  <div class="v">$1,020</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-row"><h2>Account balances</h2></div>
+            <div class="acct-card">
+              <div class="acct-letter">OA</div>
+              <div class="info">
+                <div class="nm">Ordinary Account</div>
+                <div class="ml">+$1,380 this month · 2.5% p.a.</div>
+              </div>
+              <div class="bal">$18,420</div>
+            </div>
+            <div class="acct-card">
+              <div class="acct-letter" style="background:#dbeafe; color:#2563eb;">SA</div>
+              <div class="info">
+                <div class="nm">Special Account</div>
+                <div class="ml">+$360 this month · 4% p.a.</div>
+              </div>
+              <div class="bal">$7,890</div>
+            </div>
+            <div class="acct-card">
+              <div class="acct-letter" style="background:#fce7f3; color:#db2777;">MA</div>
+              <div class="info">
+                <div class="nm">MediSave</div>
+                <div class="ml">+$480 this month · 4% p.a.</div>
+              </div>
+              <div class="bal">$12,340</div>
+            </div>
+
+            <div class="section-row"><h2>Milestones</h2></div>
+
+            <div class="milestone-card">
+              <div class="top">
+                <div class="ttl">OA investment threshold</div>
+                <div class="pct">$18.4k / $20k</div>
+              </div>
+              <div class="bar"><div class="fill" style="width:92%"></div></div>
+              <div class="eta">Reachable in 2 months → CPFIS eligible</div>
+            </div>
+
+            <div class="milestone-card">
+              <div class="top">
+                <div class="ttl">MediSave BHS</div>
+                <div class="pct">$12.3k / $79k</div>
+              </div>
+              <div class="bar"><div class="fill" style="width:16%"></div></div>
+              <div class="eta">Projected to reach BHS by 2034 → excess flows to SA</div>
+            </div>
+
+            <div class="milestone-card">
+              <div class="top">
+                <div class="ttl">Full Retirement Sum</div>
+                <div class="pct">$7.9k / $220k</div>
+              </div>
+              <div class="bar"><div class="fill" style="width:4%"></div></div>
+              <div class="eta">Projected at age 52 · ahead of FRS at 55</div>
+            </div>
+
+            <div class="milestone-card">
+              <div class="top">
+                <div class="ttl">Voluntary top-up relief</div>
+                <div class="pct">$0 / $8,000 used</div>
+              </div>
+              <div class="bar"><div class="fill" style="width:0%"></div></div>
+              <div class="eta">Full $8,000 tax relief available this year</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bonus CPF -->
+    <div class="phone">
+      <div class="phone-label">Log a bonus — AW ceiling</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen lite">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Log bonus</div>
+            <div class="placeholder"></div>
+          </div>
+          <div class="scroll">
+            <div class="input-group">
+              <div class="input-label">BONUS AMOUNT (GROSS)</div>
+              <div class="input-field focus"><span>$15,000.00</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">PAYMENT DATE</div>
+              <div class="input-field"><span>15 June 2026</span></div>
+            </div>
+            <div class="input-group">
+              <div class="input-label">TYPE</div>
+              <div style="display:flex; gap:6px;">
+                <div class="chip active">Annual bonus</div>
+                <div class="chip">Commission</div>
+                <div class="chip">13th month</div>
+              </div>
+            </div>
+
+            <div class="calculation-card" style="margin-top:20px;">
+              <div class="label-sm">Calculation breakdown</div>
+              <div class="row"><span>Additional Wage ceiling (YTD)</span><b>$93,600</b></div>
+              <div class="row"><span>Already contributed (OW)</span><b>$28,800</b></div>
+              <div class="row"><span>Remaining AW headroom</span><b>$64,800</b></div>
+              <div class="row" style="margin-top:8px; border-top:1px solid rgba(0,0,0,0.06); padding-top:8px;"><span>Bonus subject to CPF</span><b>$15,000</b></div>
+            </div>
+
+            <div style="background:#fafaf9; border:1px solid #e7e5e4; border-radius:14px; padding:16px; margin-top:12px;">
+              <div style="font-size:11px; color:var(--muted); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:10px;">CPF on this bonus</div>
+              <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
+                <span>You contribute (20%)</span><b>$3,000</b>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
+                <span>Employer contributes (17%)</span><b>$2,550</b>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:14px; padding-top:8px; border-top:1px solid var(--line); margin-top:6px;">
+                <b>You take home</b><b>$12,000</b>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-top:24px;">Save bonus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="phone">
+      <div class="phone-label">Settings</div>
+      <div class="phone-frame dark">
+        <div class="notch"></div>
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="icons">●●●</span>
+        </div>
+        <div class="screen dark">
+          <div class="detail-header">
+            <div class="back">‹</div>
+            <div class="ttl">Settings</div>
+            <div class="placeholder"></div>
+          </div>
+          <div class="scroll">
+            <div class="profile-card">
+              <div class="avatar-lg">JK</div>
+              <div>
+                <div class="nm">Jerry Kuo</div>
+                <div class="sub">jerrykcy97@gmail.com</div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">Profile & income</div>
+              <div class="settings-list">
+                <div class="set-row">
+                  <div class="ic">📅</div>
+                  <div class="nm">Date of birth</div>
+                  <div class="val">15 Aug 1997</div>
+                </div>
+                <div class="set-row">
+                  <div class="ic">💵</div>
+                  <div class="nm">Gross salary</div>
+                  <div class="val">$6,000/mo</div>
+                </div>
+                <div class="set-row">
+                  <div class="ic">🏦</div>
+                  <div class="nm">CPF balances</div>
+                  <span class="arrow">›</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">App</div>
+              <div class="settings-list">
+                <div class="set-row">
+                  <div class="ic">🏷</div>
+                  <div class="nm">Categories</div>
+                  <span class="arrow">›</span>
+                </div>
+                <div class="set-row">
+                  <div class="ic">🔔</div>
+                  <div class="nm">Notifications</div>
+                  <span class="arrow">›</span>
+                </div>
+                <div class="set-row">
+                  <div class="ic">✨</div>
+                  <div class="nm">AI assistant</div>
+                  <div class="val">Claude</div>
+                </div>
+                <div class="set-row">
+                  <div class="ic">🌙</div>
+                  <div class="nm">Appearance</div>
+                  <div class="val">System</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">Security</div>
+              <div class="settings-list">
+                <div class="set-row">
+                  <div class="ic">👤</div>
+                  <div class="nm">Face ID</div>
+                  <div class="toggle"></div>
+                </div>
+                <div class="set-row">
+                  <div class="ic">🔐</div>
+                  <div class="nm">Auto-lock</div>
+                  <div class="val">5 min ›</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="hdr">Data</div>
+              <div class="settings-list">
+                <div class="set-row">
+                  <div class="ic">⬇</div>
+                  <div class="nm">Export data</div>
+                  <span class="arrow">›</span>
+                </div>
+                <div class="set-row">
+                  <div class="ic">☁</div>
+                  <div class="nm">Cloud sync</div>
+                  <div class="val">Coming soon</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

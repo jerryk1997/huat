@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tokyo Riso — Menu Final</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  background: #211e1a;
+  color: #ece6d2;
+  padding: 50px 40px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.board-header { max-width: 1400px; margin: 0 auto 36px; text-align: center; }
+.board-header .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #ff5c4d;
+  color: #2b2825;
+  margin-bottom: 12px;
+}
+.board-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.board-header p {
+  color: #a89b85;
+  font-size: 13px;
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.section { max-width: 1400px; margin: 0 auto 50px; }
+.section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff5c4d;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.phone { width: 320px; flex-shrink: 0; }
+.phone-label {
+  font-size: 10px; font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a89b85;
+  text-align: center;
+}
+.phone-frame {
+  width: 320px;
+  height: 680px;
+  border-radius: 38px;
+  border: 8px solid #0a0a0a;
+  box-shadow: 0 24px 50px -20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 26px;
+  background: #0c0a09;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+.status-bar {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 22px 0;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.screen { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.screen::-webkit-scrollbar { display: none; }
+
+.scr-light { background: #ece6d2; color: #2b2825; }
+.scr-light .status-bar { color: #2b2825; }
+.scr-dark { background: #211e1a; color: #ece6d2; }
+.scr-dark .status-bar { color: #ece6d2; }
+
+.app-header {
+  padding: 10px 16px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.app-header .month { font-size: 14px; font-weight: 700; letter-spacing: -0.015em; }
+.avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #2b2825; color: #ffd84d;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.scr-dark .avatar { background: #ffd84d; color: #211e1a; border-color: #ece6d2; }
+.scroll { flex: 1; overflow-y: auto; padding: 0 16px 70px; }
+.scroll::-webkit-scrollbar { display: none; }
+
+.hero {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 0 #2b2825;
+}
+.scr-dark .hero {
+  background: #2d2925;
+  border-color: #ece6d2;
+  box-shadow: 3px 3px 0 #ff5c4d;
+}
+.hero .label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; opacity: 0.55; }
+.hero .amount { font-size: 32px; font-weight: 700; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 10px; }
+.hero .amount .accent { color: #ff5c4d; }
+.hero .row { display: flex; gap: 6px; }
+.hero .stat { flex: 1; border: 1.5px solid #2b2825; border-radius: 7px; padding: 5px 8px; background: #ffd84d; }
+.hero .stat.b { background: #4dd9c8; }
+.scr-dark .hero .stat { border-color: #211e1a; color: #211e1a; }
+.hero .stat .l { font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.hero .stat .v { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.015em; margin-top: 1px; }
+
+.section-row { display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px; }
+.section-row h3 { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.section-row .more { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.45; }
+
+.b-card {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-bottom: 5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.scr-dark .b-card { background: #2d2925; border-color: #ece6d2; }
+.b-card .em-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  background: #ffd84d;
+  flex-shrink: 0;
+  color: #2b2825;
+}
+.scr-dark .b-card .em-icon { border-color: #ece6d2; }
+.b-card .em-icon.b { background: #4dd9c8; }
+.b-card .em-icon.c { background: #ff5c4d; }
+.b-card .em-icon.d { background: #b8a4ff; }
+.b-card .em-icon svg { width: 14px; height: 14px; }
+.b-card .em-icon svg path, .b-card .em-icon svg circle, .b-card .em-icon svg rect {
+  stroke: #2b2825; stroke-width: 1.8; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.b-card .info { flex: 1; min-width: 0; }
+.b-card .nm { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.b-card .ml { font-size: 10px; opacity: 0.55; margin-top: 1px; font-weight: 500; }
+.scr-dark .b-card .ml { opacity: 0.5; }
+.b-card .bal { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; text-align: right; }
+.b-card .bal .of { font-size: 9px; opacity: 0.5; font-weight: 500; display: block; margin-top: 1px; }
+.scr-dark .b-card .bal .of { opacity: 0.45; }
+
+.goal-card {
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  color: #2b2825;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 7px;
+  box-shadow: 3px 3px 0 #2b2825;
+}
+.goal-card.alt { background: #4dd9c8; }
+.scr-dark .goal-card { border-color: #ece6d2; box-shadow: 3px 3px 0 #ece6d2; }
+.goal-card .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.goal-card .lbl { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.goal-card .pct { font-size: 10px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.goal-card .nm { font-size: 14px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+.goal-card .figs { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.goal-card .saved { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; }
+.goal-card .of { font-size: 10px; font-weight: 600; opacity: 0.75; }
+.goal-card .bar { height: 4px; background: #2b2825; border-radius: 100px; overflow: hidden; position: relative; }
+.goal-card .bar::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; background: #f5f1e0; }
+.goal-card.p52 .bar::after { width: 52%; }
+.goal-card.p25 .bar::after { width: 25%; }
+.goal-card .eta { font-size: 9px; font-weight: 600; opacity: 0.7; margin-top: 6px; }
+
+/* ========================================
+   THE TAB BAR — NOTCHED + CENTER CIRCULAR FAB
+   ======================================== */
+.tab-bar {
+  height: 64px;
+  background: #ece6d2;
+  border-top: 1.5px solid #2b2825;
+  display: grid;
+  grid-template-columns: 1fr 1fr 60px 1fr 1fr;
+  align-items: flex-start;
+  padding-top: 8px;
+  flex-shrink: 0;
+  position: relative;
+}
+.scr-dark .tab-bar { background: #211e1a; border-top-color: #ece6d2; }
+
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  color: #a89b85;
+  position: relative;
+  padding-top: 2px;
+}
+.tab .lbl { font-size: 10px; font-weight: 600; }
+.tab.active { color: #2b2825; }
+.tab.active .lbl { font-weight: 700; }
+.scr-dark .tab { color: #6b6256; }
+.scr-dark .tab.active { color: #ece6d2; }
+
+/* The notched marker — pokes down from the top edge */
+.tab.active::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38px;
+  height: 5px;
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+.scr-dark .tab.active::before {
+  background: #ffd84d;
+  border-color: #ece6d2;
+}
+
+/* Monoline icons */
+.t-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.t-icon path, .t-icon circle, .t-icon rect {
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.t-icon.fill path, .t-icon.fill circle, .t-icon.fill rect {
+  fill: currentColor;
+}
+
+/* Center action slot */
+.center-slot {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  height: 100%;
+}
+
+/* Circular FAB — raised above the tab bar */
+.center-fab {
+  width: 54px; height: 54px;
+  margin-top: -22px;
+  border-radius: 50%;
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 #2b2825;
+  position: relative;
+  z-index: 6;
+  cursor: pointer;
+}
+.scr-dark .center-fab {
+  background: #ffd84d;
+  border-color: #ece6d2;
+  box-shadow: 3px 3px 0 #ece6d2;
+}
+.center-fab svg { width: 22px; height: 22px; }
+.center-fab svg path {
+  stroke: #2b2825;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  fill: none;
+}
+
+/* Mini detail: a tiny notch under the FAB matching the active marker style */
+.center-fab::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  border-radius: 50%;
+  display: none;
+}
+
+.center-label {
+  position: absolute;
+  bottom: 6px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #2b2825;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.scr-dark .center-label { color: #ece6d2; }
+
+/* Variant: FAB without separate label, more compact */
+.center-fab-tight {
+  width: 50px; height: 50px;
+  margin-top: -16px;
+}
+
+/* Anatomy diagram */
+.anatomy-card {
+  background: #2d2925;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 24px;
+}
+.anatomy-card h3 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #ece6d2;
+}
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(236,230,210,0.08);
+  font-size: 12px;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-row .label { opacity: 0.6; }
+.spec-row .val { font-family: "SF Mono", Menlo, monospace; font-size: 11px; color: #ffd84d; }
+
+/* For the "press states" demo */
+.press-row {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  padding: 20px;
+  background: #ece6d2;
+  border-radius: 14px;
+  justify-content: space-around;
+}
+.press-row .state-label {
+  font-size: 10px;
+  color: #2b2825;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 12px;
+}
+.fab-demo {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 0 #2b2825;
+}
+.fab-demo svg { width: 22px; height: 22px; }
+.fab-demo svg path {
+  stroke: #2b2825;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  fill: none;
+}
+.fab-demo.pressed {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 #2b2825;
+}
+.fab-demo.opened {
+  transform: rotate(45deg);
+  background: #2b2825;
+}
+.fab-demo.opened svg path { stroke: #ff5c4d; }
+
+</style>
+</head>
+<body>
+
+<div class="board-header">
+  <div class="tag">Menu Bar Final</div>
+  <h1>Notched tabs + raised circular FAB</h1>
+  <p>The notched marker reads as a paper index tab. The circular FAB sits raised above the bar — a stamp, not a sticker. Both share the same 1.5px outline + 3px offset shadow grammar as the rest of the system.</p>
+</div>
+
+
+<!-- IN CONTEXT -->
+<div class="section">
+  <div class="section-title">Applied — Light & Dark</div>
+  <div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">
+
+    <div class="phone">
+      <div class="phone-label">Light · Home</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen scr-light">
+          <div class="app-header">
+            <div class="month">Jun '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat"><div class="l">In</div><div class="v">$4,820</div></div>
+                <div class="stat b"><div class="l">Out</div><div class="v">$2,341</div></div>
+              </div>
+            </div>
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em-icon">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div class="info"><div class="nm">Food</div><div class="ml">$163 left · rollover</div></div>
+              <div class="bal">$182<span class="of">/345</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon b">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M4 11h16"/></svg>
+              </div>
+              <div class="info"><div class="nm">Transport</div><div class="ml">$65 left</div></div>
+              <div class="bal">$85<span class="of">/150</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon c">
+                <svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5L6 7zM9 7V5a3 3 0 016 0v2"/></svg>
+              </div>
+              <div class="info"><div class="nm">Shopping</div><div class="ml" style="color:#c93a2b;">Over by $20</div></div>
+              <div class="bal" style="color:#c93a2b;">$420<span class="of" style="color:#c93a2b;">/400</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon d">
+                <svg viewBox="0 0 24 24"><path d="M5 9h12v8a4 4 0 01-4 4H9a4 4 0 01-4-4V9zM17 11h2a2 2 0 010 4h-2"/><path d="M9 4v3M13 4v3"/></svg>
+              </div>
+              <div class="info"><div class="nm">Coffee</div><div class="ml">$36 left</div></div>
+              <div class="bal">$74<span class="of">/110</span></div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">All →</span></div>
+            <div class="goal-card p52">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">52%</div>
+              </div>
+              <div class="nm">MacBook Pro 14"</div>
+              <div class="figs">
+                <div class="saved">$1,820</div>
+                <div class="of">of $3,500</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">8 months · on track</div>
+            </div>
+            <div class="goal-card alt p25">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">25%</div>
+              </div>
+              <div class="nm">Japan Trip</div>
+              <div class="figs">
+                <div class="saved">$500</div>
+                <div class="of">of $2,000</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">15 months · paused</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab active">
+              <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+              <div class="lbl">Home</div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+              <div class="lbl">Txns</div>
+            </div>
+            <div class="center-slot">
+              <div class="center-fab">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+              <div class="lbl">Insurance</div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+              <div class="lbl">Insights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="phone">
+      <div class="phone-label">Dark · Home</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen scr-dark">
+          <div class="app-header">
+            <div class="month">Jun '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat"><div class="l">In</div><div class="v">$4,820</div></div>
+                <div class="stat b"><div class="l">Out</div><div class="v">$2,341</div></div>
+              </div>
+            </div>
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em-icon">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div class="info"><div class="nm">Food</div><div class="ml">$163 left · rollover</div></div>
+              <div class="bal">$182<span class="of">/345</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon b">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M4 11h16"/></svg>
+              </div>
+              <div class="info"><div class="nm">Transport</div><div class="ml">$65 left</div></div>
+              <div class="bal">$85<span class="of">/150</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon c">
+                <svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5L6 7zM9 7V5a3 3 0 016 0v2"/></svg>
+              </div>
+              <div class="info"><div class="nm">Shopping</div><div class="ml" style="color:#ff5c4d;">Over by $20</div></div>
+              <div class="bal" style="color:#ff5c4d;">$420<span class="of" style="color:#ff5c4d;">/400</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon d">
+                <svg viewBox="0 0 24 24"><path d="M5 9h12v8a4 4 0 01-4 4H9a4 4 0 01-4-4V9zM17 11h2a2 2 0 010 4h-2"/><path d="M9 4v3M13 4v3"/></svg>
+              </div>
+              <div class="info"><div class="nm">Coffee</div><div class="ml">$36 left</div></div>
+              <div class="bal">$74<span class="of">/110</span></div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">All →</span></div>
+            <div class="goal-card p52">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">52%</div>
+              </div>
+              <div class="nm">MacBook Pro 14"</div>
+              <div class="figs">
+                <div class="saved">$1,820</div>
+                <div class="of">of $3,500</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">8 months · on track</div>
+            </div>
+            <div class="goal-card alt p25">
+              <div class="top">
+                <div class="lbl">Saving for</div>
+                <div class="pct">25%</div>
+              </div>
+              <div class="nm">Japan Trip</div>
+              <div class="figs">
+                <div class="saved">$500</div>
+                <div class="of">of $2,000</div>
+              </div>
+              <div class="bar"></div>
+              <div class="eta">15 months · paused</div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab active">
+              <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+              <div class="lbl">Home</div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+              <div class="lbl">Txns</div>
+            </div>
+            <div class="center-slot">
+              <div class="center-fab">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+              <div class="lbl">Insurance</div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+              <div class="lbl">Insights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Active state on different tab to show notch travels -->
+    <div class="phone">
+      <div class="phone-label">Light · Insights tab active</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen scr-light">
+          <div class="app-header">
+            <div class="month">Insights</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero" style="background:#2b2825; color:#ece6d2; box-shadow: 3px 3px 0 #b8a4ff;">
+              <div class="label" style="color:#b8a4ff; opacity:1;">✨ June digest</div>
+              <div style="font-size:14px; font-weight:600; line-height:1.4; margin: 8px 0 12px;">You're spending 18% less on food, but Shopping went over 14 days early.</div>
+              <div style="display:flex; gap:6px;">
+                <div style="background:#ffd84d; border:1.5px solid #ece6d2; padding:5px 10px; border-radius:6px; font-size:10px; font-weight:700; color:#2b2825;">Read full</div>
+                <div style="background:transparent; border:1.5px solid #ece6d2; padding:5px 10px; border-radius:6px; font-size:10px; font-weight:700;">Ask follow-up</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Smart alerts</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em-icon" style="background:#ffd84d;">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Tax saving</div>
+                <div class="ml">CPF top-up could save $1,440</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon d">
+                <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Trend</div>
+                <div class="ml">Food spend down 18%</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon c">
+                <svg viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/><path d="M9 12h6"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Coverage gap</div>
+                <div class="ml">No DI · consider $3,500/mo</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon b">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Goal</div>
+                <div class="ml">MacBook 2 months ahead</div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-bar">
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+              <div class="lbl">Home</div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+              <div class="lbl">Txns</div>
+            </div>
+            <div class="center-slot">
+              <div class="center-fab">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+              <div class="lbl">Insurance</div>
+            </div>
+            <div class="tab active">
+              <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+              <div class="lbl">Insights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ANATOMY + INTERACTION -->
+<div class="section">
+  <div class="section-title">Anatomy + Press States</div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; max-width:1100px; margin:0 auto;">
+
+    <div class="anatomy-card">
+      <h3>Tab bar specs</h3>
+      <div class="spec-row"><span class="label">Height</span><span class="val">64px (+ safe area)</span></div>
+      <div class="spec-row"><span class="label">Top border</span><span class="val">1.5px solid #2B2825</span></div>
+      <div class="spec-row"><span class="label">Grid</span><span class="val">1fr · 1fr · 60px · 1fr · 1fr</span></div>
+      <div class="spec-row"><span class="label">Icon size</span><span class="val">18 × 18 SVG</span></div>
+      <div class="spec-row"><span class="label">Label</span><span class="val">10px / 600 weight</span></div>
+      <div class="spec-row"><span class="label">Active marker</span><span class="val">38 × 5 px, top: −9</span></div>
+      <div class="spec-row"><span class="label">Marker fill</span><span class="val">#FF5C4D (light) / #FFD84D (dark)</span></div>
+      <div class="spec-row"><span class="label">Active icon</span><span class="val">SVG fill = stroke (filled style)</span></div>
+    </div>
+
+    <div class="anatomy-card">
+      <h3>Center FAB specs</h3>
+      <div class="spec-row"><span class="label">Size</span><span class="val">54 × 54 px circle</span></div>
+      <div class="spec-row"><span class="label">Margin-top</span><span class="val">−22px (raised above bar)</span></div>
+      <div class="spec-row"><span class="label">Border</span><span class="val">1.5px solid #2B2825</span></div>
+      <div class="spec-row"><span class="label">Shadow</span><span class="val">3px 3px 0 #2B2825</span></div>
+      <div class="spec-row"><span class="label">Fill (light)</span><span class="val">#FF5C4D</span></div>
+      <div class="spec-row"><span class="label">Fill (dark)</span><span class="val">#FFD84D</span></div>
+      <div class="spec-row"><span class="label">Icon</span><span class="val">"+" 22 × 22, stroke 2.4</span></div>
+      <div class="spec-row"><span class="label">Tap target</span><span class="val">extends 6px around (60 × 60)</span></div>
+    </div>
+
+  </div>
+
+  <div style="max-width:1100px; margin:24px auto 0;" class="anatomy-card">
+    <h3>FAB press &amp; expanded states</h3>
+    <div class="press-row" style="margin-top: 14px;">
+      <div>
+        <div class="fab-demo">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <div class="state-label">Rest</div>
+      </div>
+      <div>
+        <div class="fab-demo pressed">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <div class="state-label">Pressed (shadow collapses)</div>
+      </div>
+      <div>
+        <div class="fab-demo opened">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <div class="state-label">Quick-add open (rotates 45°)</div>
+      </div>
+    </div>
+    <div style="font-size:12px; line-height:1.5; opacity:0.7; margin-top: 16px;">
+      Pressing the FAB collapses its 3px offset shadow so it appears to "press into" the screen — a satisfying physical interaction that matches the brutalist stamp aesthetic. When the quick-add sheet opens, the "+" rotates 45° into an "×" (close), and the fill inverts to ink black.
+    </div>
+  </div>
+</div>
+
+
+<!-- DEV NOTE -->
+<div class="section">
+  <div class="section-title">Dev Note</div>
+  <div style="max-width:1100px; margin:0 auto;" class="anatomy-card">
+    <div style="font-size:13px; line-height:1.6; opacity:0.85;">
+      <b style="color:#ffd84d;">React Native implementation:</b> use a custom <code style="background:rgba(255,255,255,0.06); padding:1px 6px; border-radius:4px; font-size:11px;">BottomTabBar</code> from React Navigation. The center "tab" is replaced by an empty placeholder column, and the FAB is absolutely positioned over the bar with <code style="background:rgba(255,255,255,0.06); padding:1px 6px; border-radius:4px; font-size:11px;">zIndex: 6</code>. Active marker is a 38×5 absolutely-positioned View on top edge of each tab.
+      <br><br>
+      <b style="color:#4dd9c8;">Safe area handling:</b> the bar should sit above the home indicator. On iPhone Pro models with no notch but rounded bottom, add 16–20px bottom inset. The FAB's tap target should extend INTO the safe area for thumb comfort but the visual circle stays at 54px.
+      <br><br>
+      <b style="color:#b8a4ff;">Hit testing edge case:</b> the FAB overlaps slightly with the Txns and Insurance tabs. Make sure FAB owns those 27px on either side of center — easiest way is the absolute-positioned FAB has <code style="background:rgba(255,255,255,0.06); padding:1px 6px; border-radius:4px; font-size:11px;">hitSlop: { top: 10, left: 10, right: 10, bottom: 0 }</code>.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

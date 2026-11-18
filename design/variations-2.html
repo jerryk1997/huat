@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huat — Round 2 Variations</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  background: #0a0a0a;
+  color: #f5f5f4;
+  padding: 60px 40px 120px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.board-header {
+  max-width: 1600px;
+  margin: 0 auto 60px;
+  text-align: center;
+}
+.board-header h1 {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.board-header p {
+  color: #a8a29e;
+  font-size: 16px;
+  max-width: 720px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.variation {
+  max-width: 1600px;
+  margin: 0 auto 80px;
+  padding: 40px;
+  border-radius: 24px;
+}
+
+.theme-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+.theme-info h2 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+}
+.theme-info .tag {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.theme-info p { font-size: 14px; line-height: 1.5; max-width: 520px; }
+
+.palette { display: flex; gap: 12px; flex-wrap: wrap; }
+.swatch { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.swatch .color { width: 50px; height: 50px; border-radius: 12px; }
+.swatch .hex { font-size: 9px; font-family: "SF Mono", Menlo, monospace; }
+.swatch .name { font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; }
+
+.row { display: flex; gap: 28px; flex-wrap: wrap; justify-content: center; }
+
+.phone { width: 320px; flex-shrink: 0; }
+.phone-label {
+  font-size: 11px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  text-align: center;
+}
+.phone-frame {
+  width: 320px;
+  height: 680px;
+  border-radius: 38px;
+  border: 8px solid #0a0a0a;
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.4);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 26px;
+  background: #0c0a09;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+.status-bar {
+  height: 38px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 24px 0;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.screen { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.screen::-webkit-scrollbar { display: none; }
+
+.app-header {
+  padding: 14px 20px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app-header .month { font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+.app-header .avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+
+.scroll { flex: 1; overflow-y: auto; padding: 0 20px 80px; }
+.scroll::-webkit-scrollbar { display: none; }
+
+.tab-bar {
+  height: 72px;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+  flex-shrink: 0;
+}
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 500;
+}
+.tab .ic { font-size: 18px; }
+.fab {
+  position: absolute; bottom: 86px; right: 20px;
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 300;
+  z-index: 5;
+}
+
+/* ============== V5 — OLIVE & BONE ============== */
+.v5 { background: #1f2418; }
+.v5 .theme-info .tag { background: #87a154; color: #1f2418; }
+.v5 .theme-info h2, .v5 .theme-info p { color: #f4f1e8; }
+
+/* Light mode */
+.v5l .phone-frame { background: #f5f2e8; }
+.v5l .screen { background: #f5f2e8; color: #2d3520; }
+.v5l .app-header .avatar { background: #3d4a22; color: #f5f2e8; }
+
+.v5l .hero {
+  background: #2d3520;
+  color: #f4f1e8;
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.v5l .hero::after {
+  content: '';
+  position: absolute;
+  top: -50%; right: -30%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(135,161,84,0.35), transparent 65%);
+  border-radius: 50%;
+}
+.v5l .hero .label { font-size: 11px; opacity: 0.5; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; position: relative; }
+.v5l .hero .amount {
+  font-family: "Charter", "Georgia", serif;
+  font-size: 44px; font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 14px; line-height: 1;
+  position: relative;
+}
+.v5l .hero .row { display: flex; gap: 18px; font-size: 11px; opacity: 0.7; position: relative; }
+.v5l .hero .row b { display: block; font-size: 14px; font-weight: 600; opacity: 1; margin-bottom: 2px; color: #c5d68f; }
+
+.v5l .section-row { display:flex; justify-content:space-between; align-items:center; margin: 22px 0 10px; }
+.v5l .section-row h3 { font-family: "Charter", "Georgia", serif; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; color: #2d3520; }
+.v5l .section-row .more { font-size: 11px; opacity: 0.5; color: #6b7c3e; font-weight: 600; }
+
+.v5l .b-card {
+  background: #ede8d5;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.v5l .b-card .em {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  background: #d4d8b8;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.v5l .b-card .info { flex: 1; }
+.v5l .b-card .nm { font-size: 13px; font-weight: 600; color: #2d3520; }
+.v5l .b-card .ml { font-size: 11px; color: #6b7c3e; margin-top: 2px; font-weight: 500; }
+.v5l .b-card .progress-circle {
+  position: relative;
+  width: 36px; height: 36px;
+  flex-shrink: 0;
+}
+.v5l .b-card .ring-bg {
+  stroke: #d4d8b8;
+  stroke-width: 4;
+  fill: none;
+}
+.v5l .b-card .ring-fg {
+  stroke: #87a154;
+  stroke-width: 4;
+  fill: none;
+  stroke-linecap: round;
+}
+.v5l .b-card .pct {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 9px;
+  font-weight: 700;
+  color: #2d3520;
+}
+
+.v5l .goal-card {
+  background: #c97d5a;
+  color: #f5f2e8;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.v5l .goal-card.alt { background: #6b7c3e; }
+.v5l .goal-card .lbl { font-size: 11px; opacity: 0.8; font-weight: 600; }
+.v5l .goal-card .nm { font-family: "Charter", "Georgia", serif; font-size: 19px; font-weight: 700; letter-spacing: -0.015em; margin: 4px 0 14px; }
+.v5l .goal-card .saved {
+  font-family: "Charter", "Georgia", serif;
+  font-size: 24px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.v5l .goal-card .of { font-size: 11px; opacity: 0.8; margin-left: 4px; }
+.v5l .goal-card .bar { height: 4px; background: rgba(255,255,255,0.25); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+.v5l .goal-card .fill { height: 100%; background: white; border-radius: 2px; }
+.v5l .goal-card .eta { font-size: 11px; opacity: 0.85; margin-top: 8px; }
+
+.v5l .fab { background: #3d4a22; color: #c5d68f; box-shadow: 0 10px 30px rgba(61,74,34,0.35); }
+.v5l .tab-bar { background: rgba(245,242,232,0.92); backdrop-filter: blur(16px); border-top: 1px solid #d4d8b8; }
+.v5l .tab { color: #8a9670; }
+.v5l .tab.active { color: #3d4a22; }
+
+/* Dark mode */
+.v5d .phone-frame { background: #1a201a; }
+.v5d .screen { background: #1a201a; color: #e5e3d4; }
+.v5d .app-header .avatar { background: #87a154; color: #1a201a; }
+
+.v5d .hero {
+  background: #252e22;
+  border: 1px solid #3d4a30;
+  color: #f4f1e8;
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.v5d .hero::after {
+  content: '';
+  position: absolute;
+  top: -50%; right: -30%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(135,161,84,0.2), transparent 65%);
+  border-radius: 50%;
+}
+.v5d .hero .label { font-size: 11px; opacity: 0.5; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; position: relative; }
+.v5d .hero .amount {
+  font-family: "Charter", "Georgia", serif;
+  font-size: 44px; font-weight: 700;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 14px; line-height: 1;
+  position: relative;
+  color: #c5d68f;
+}
+.v5d .hero .row { display: flex; gap: 18px; font-size: 11px; opacity: 0.7; position: relative; }
+.v5d .hero .row b { display: block; font-size: 14px; font-weight: 600; opacity: 1; margin-bottom: 2px; color: #87a154; }
+
+.v5d .section-row { display:flex; justify-content:space-between; align-items:center; margin: 22px 0 10px; }
+.v5d .section-row h3 { font-family: "Charter", "Georgia", serif; font-size: 18px; font-weight: 600; letter-spacing: -0.015em; color: #f4f1e8; }
+.v5d .section-row .more { font-size: 11px; opacity: 0.5; color: #87a154; font-weight: 600; }
+
+.v5d .b-card {
+  background: #252e22;
+  border: 1px solid #3d4a30;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.v5d .b-card .em {
+  width: 38px; height: 38px;
+  border-radius: 12px;
+  background: #3d4a30;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.v5d .b-card .info { flex: 1; }
+.v5d .b-card .nm { font-size: 13px; font-weight: 600; color: #e5e3d4; }
+.v5d .b-card .ml { font-size: 11px; color: #87a154; margin-top: 2px; font-weight: 500; }
+.v5d .b-card .ring-bg { stroke: #3d4a30; stroke-width: 4; fill: none; }
+.v5d .b-card .ring-fg { stroke: #c5d68f; stroke-width: 4; fill: none; stroke-linecap: round; }
+.v5d .b-card .pct { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9px; font-weight: 700; color: #f4f1e8; }
+
+.v5d .goal-card {
+  background: #c97d5a;
+  color: #f5f2e8;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 10px;
+}
+.v5d .goal-card.alt { background: #6b7c3e; }
+.v5d .goal-card .lbl { font-size: 11px; opacity: 0.8; font-weight: 600; }
+.v5d .goal-card .nm { font-family: "Charter", "Georgia", serif; font-size: 19px; font-weight: 700; letter-spacing: -0.015em; margin: 4px 0 14px; }
+.v5d .goal-card .saved { font-family: "Charter", "Georgia", serif; font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.v5d .goal-card .of { font-size: 11px; opacity: 0.8; margin-left: 4px; }
+.v5d .goal-card .bar { height: 4px; background: rgba(255,255,255,0.25); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+.v5d .goal-card .fill { height: 100%; background: white; border-radius: 2px; }
+.v5d .goal-card .eta { font-size: 11px; opacity: 0.85; margin-top: 8px; }
+
+.v5d .fab { background: #c5d68f; color: #1a201a; box-shadow: 0 10px 30px rgba(197,214,143,0.25); }
+.v5d .tab-bar { background: rgba(26,32,26,0.92); backdrop-filter: blur(16px); border-top: 1px solid #3d4a30; }
+.v5d .tab { color: #6b7656; }
+.v5d .tab.active { color: #c5d68f; }
+
+
+/* ============== V6 — TOKYO RISO ============== */
+.v6 { background: #1c1c1e; }
+.v6 .theme-info .tag { background: #ff5c4d; color: #1c1c1e; }
+.v6 .theme-info h2, .v6 .theme-info p { color: #fefcf3; }
+
+/* Light mode */
+.v6l .phone-frame { background: #fefcf3; }
+.v6l .screen { background: #fefcf3; color: #1c1c1e; }
+.v6l .app-header .month { font-weight: 800; letter-spacing: -0.025em; }
+.v6l .app-header .avatar { background: #1c1c1e; color: #fefcf3; }
+
+.v6l .hero {
+  background: #fefcf3;
+  border: 2px solid #1c1c1e;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 14px;
+  position: relative;
+  box-shadow: 5px 5px 0 #1c1c1e;
+}
+.v6l .hero .label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 800; margin-bottom: 8px; }
+.v6l .hero .amount {
+  font-size: 52px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 14px;
+  line-height: 0.95;
+}
+.v6l .hero .amount .accent { color: #ff5c4d; }
+.v6l .hero .row { display: flex; justify-content: space-between; gap: 12px; }
+.v6l .hero .stat {
+  flex: 1;
+  border: 2px solid #1c1c1e;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: #ffd84d;
+}
+.v6l .hero .stat.b { background: #4dd9c8; }
+.v6l .hero .stat .l { font-size: 9px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.v6l .hero .stat .v { font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; margin-top: 2px; }
+
+.v6l .section-row { display:flex; justify-content:space-between; align-items:center; margin: 22px 0 10px; }
+.v6l .section-row h3 { font-size: 18px; font-weight: 900; letter-spacing: -0.025em; }
+.v6l .section-row .more { font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+
+.v6l .b-card {
+  background: #fefcf3;
+  border: 2px solid #1c1c1e;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 3px 3px 0 #1c1c1e;
+}
+.v6l .b-card .em {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: #ffd84d;
+  border: 2px solid #1c1c1e;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.v6l .b-card .em.b { background: #4dd9c8; }
+.v6l .b-card .em.c { background: #ff5c4d; }
+.v6l .b-card .em.d { background: #b8a4ff; }
+.v6l .b-card .info { flex: 1; }
+.v6l .b-card .nm { font-size: 13px; font-weight: 800; letter-spacing: -0.01em; }
+.v6l .b-card .ml { font-size: 11px; opacity: 0.6; margin-top: 2px; font-weight: 600; }
+.v6l .b-card .bal { font-size: 17px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+.v6l .goal-card {
+  background: #ff5c4d;
+  border: 2px solid #1c1c1e;
+  color: #1c1c1e;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 10px;
+  box-shadow: 4px 4px 0 #1c1c1e;
+}
+.v6l .goal-card.alt { background: #4dd9c8; }
+.v6l .goal-card .lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.v6l .goal-card .nm { font-size: 20px; font-weight: 900; letter-spacing: -0.025em; margin: 4px 0 14px; }
+.v6l .goal-card .saved { font-size: 26px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; }
+.v6l .goal-card .of { font-size: 11px; font-weight: 700; margin-left: 4px; }
+.v6l .goal-card .bar { height: 6px; background: #1c1c1e; border-radius: 100px; margin-top: 12px; overflow: hidden; position: relative; }
+.v6l .goal-card .bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: #fefcf3;
+  border-right: 2px solid #1c1c1e;
+}
+.v6l .goal-card.p52 .bar::after { width: 52%; }
+.v6l .goal-card.p25 .bar::after { width: 25%; }
+.v6l .goal-card .eta { font-size: 11px; font-weight: 700; margin-top: 10px; }
+
+.v6l .fab { background: #ff5c4d; color: #1c1c1e; border: 2px solid #1c1c1e; box-shadow: 4px 4px 0 #1c1c1e; }
+.v6l .tab-bar { background: #fefcf3; border-top: 2px solid #1c1c1e; }
+.v6l .tab { color: #8a8a8e; font-weight: 700; }
+.v6l .tab.active { color: #1c1c1e; }
+.v6l .tab.active .ic { background: #ffd84d; padding: 4px 8px; border-radius: 8px; border: 2px solid #1c1c1e; margin-bottom: -2px; }
+
+/* Dark mode */
+.v6d .phone-frame { background: #0a0a0a; }
+.v6d .screen { background: #0a0a0a; color: #fefcf3; }
+.v6d .app-header .month { font-weight: 800; letter-spacing: -0.025em; }
+.v6d .app-header .avatar { background: #ffd84d; color: #0a0a0a; }
+
+.v6d .hero {
+  background: #1c1c1e;
+  border: 2px solid #fefcf3;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 14px;
+  box-shadow: 5px 5px 0 #ff5c4d;
+}
+.v6d .hero .label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 800; margin-bottom: 8px; opacity: 0.6; }
+.v6d .hero .amount {
+  font-size: 52px; font-weight: 900;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 14px; line-height: 0.95;
+}
+.v6d .hero .amount .accent { color: #ff5c4d; }
+.v6d .hero .row { display: flex; gap: 12px; }
+.v6d .hero .stat {
+  flex: 1; border: 2px solid #fefcf3;
+  border-radius: 12px;
+  padding: 8px 10px;
+  background: #1c1c1e;
+}
+.v6d .hero .stat.b { background: #4dd9c8; color: #0a0a0a; border-color: #0a0a0a; }
+.v6d .hero .stat.a { background: #ffd84d; color: #0a0a0a; border-color: #0a0a0a; }
+.v6d .hero .stat .l { font-size: 9px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+.v6d .hero .stat .v { font-size: 15px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; margin-top: 2px; }
+
+.v6d .section-row { display:flex; justify-content:space-between; align-items:center; margin: 22px 0 10px; }
+.v6d .section-row h3 { font-size: 18px; font-weight: 900; letter-spacing: -0.025em; }
+.v6d .section-row .more { font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.6; }
+
+.v6d .b-card {
+  background: #1c1c1e;
+  border: 2px solid #fefcf3;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 3px 3px 0 #ffd84d;
+}
+.v6d .b-card.c2 { box-shadow: 3px 3px 0 #4dd9c8; }
+.v6d .b-card.c3 { box-shadow: 3px 3px 0 #ff5c4d; }
+.v6d .b-card.c4 { box-shadow: 3px 3px 0 #b8a4ff; }
+.v6d .b-card .em {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  background: #ffd84d;
+  border: 2px solid #fefcf3;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.v6d .b-card .em.b { background: #4dd9c8; }
+.v6d .b-card .em.c { background: #ff5c4d; }
+.v6d .b-card .em.d { background: #b8a4ff; }
+.v6d .b-card .info { flex: 1; }
+.v6d .b-card .nm { font-size: 13px; font-weight: 800; }
+.v6d .b-card .ml { font-size: 11px; opacity: 0.6; margin-top: 2px; font-weight: 600; }
+.v6d .b-card .bal { font-size: 17px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+.v6d .goal-card {
+  background: #ff5c4d;
+  border: 2px solid #fefcf3;
+  color: #1c1c1e;
+  border-radius: 18px;
+  padding: 18px;
+  margin-bottom: 10px;
+  box-shadow: 4px 4px 0 #fefcf3;
+}
+.v6d .goal-card.alt { background: #4dd9c8; }
+.v6d .goal-card .lbl { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.v6d .goal-card .nm { font-size: 20px; font-weight: 900; letter-spacing: -0.025em; margin: 4px 0 14px; }
+.v6d .goal-card .saved { font-size: 26px; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; }
+.v6d .goal-card .of { font-size: 11px; font-weight: 700; margin-left: 4px; }
+.v6d .goal-card .bar { height: 6px; background: #1c1c1e; border-radius: 100px; margin-top: 12px; overflow: hidden; position: relative; }
+.v6d .goal-card .bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: #fefcf3;
+}
+.v6d .goal-card.p52 .bar::after { width: 52%; }
+.v6d .goal-card.p25 .bar::after { width: 25%; }
+.v6d .goal-card .eta { font-size: 11px; font-weight: 700; margin-top: 10px; }
+
+.v6d .fab { background: #ffd84d; color: #0a0a0a; border: 2px solid #fefcf3; }
+.v6d .tab-bar { background: #0a0a0a; border-top: 2px solid #1c1c1e; }
+.v6d .tab { color: #5a5a5e; font-weight: 700; }
+.v6d .tab.active { color: #ffd84d; }
+.v6d .tab.active .ic { background: #1c1c1e; padding: 4px 8px; border-radius: 8px; border: 2px solid #ffd84d; margin-bottom: -2px; }
+
+
+/* ============== V7 — TIDE ============== */
+.v7 { background: #061821; }
+.v7 .theme-info .tag { background: #06b6d4; color: #0f1925; }
+.v7 .theme-info h2, .v7 .theme-info p { color: #ecf6fc; }
+
+/* Light mode */
+.v7l .phone-frame { background: #f3f7f9; }
+.v7l .screen { background: #f3f7f9; color: #0f1925; }
+.v7l .app-header .avatar { background: linear-gradient(135deg, #0891b2, #0e7490); color: white; }
+
+.v7l .hero {
+  background: linear-gradient(160deg, #ecf6fc 0%, #cdeaf3 100%);
+  border-radius: 26px;
+  padding: 24px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.v7l .hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -30%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(8,145,178,0.18), transparent 65%);
+  border-radius: 50%;
+}
+.v7l .hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40%; left: -20%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(20,184,166,0.15), transparent 65%);
+  border-radius: 50%;
+}
+.v7l .hero .label { font-size: 11px; opacity: 0.55; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; position: relative; color: #0e7490; }
+.v7l .hero .amount {
+  font-size: 44px; font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px; line-height: 1;
+  position: relative;
+  background: linear-gradient(135deg, #0f1925, #0e7490);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v7l .hero .pgrad {
+  height: 8px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 12px;
+}
+.v7l .hero .pgrad-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #14b8a6, #84cc16);
+  border-radius: 100px;
+}
+.v7l .hero .row { display: flex; justify-content: space-between; font-size: 11px; color: #475569; font-weight: 500; position: relative; }
+
+.v7l .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.v7l .stat-card {
+  background: white;
+  border: 1px solid rgba(8,145,178,0.1);
+  border-radius: 16px;
+  padding: 14px;
+}
+.v7l .stat-card .l { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.55; font-weight: 600; }
+.v7l .stat-card .v { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 4px; letter-spacing: -0.015em; }
+.v7l .stat-card .delta { font-size: 10px; color: #0891b2; font-weight: 600; margin-top: 2px; }
+
+.v7l .section-row { display:flex; justify-content:space-between; align-items:center; margin: 22px 0 10px; }
+.v7l .section-row h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.015em; }
+.v7l .section-row .more { font-size: 11px; color: #0891b2; font-weight: 600; }
+
+.v7l .b-card {
+  background: white;
+  border: 1px solid rgba(8,145,178,0.1);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.v7l .b-card .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.v7l .b-card .nm { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.v7l .b-card .em {
+  width: 28px; height: 28px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #cffafe, #a5f3fc);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.v7l .b-card .em.b { background: linear-gradient(135deg, #ccfbf1, #99f6e4); }
+.v7l .b-card .em.c { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+.v7l .b-card .em.d { background: linear-gradient(135deg, #ecfccb, #d9f99d); }
+.v7l .b-card .amt { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.v7l .b-card .amt .l { opacity: 0.4; font-weight: 500; font-size: 11px; }
+.v7l .b-card .bar { height: 5px; background: #e0f2fe; border-radius: 100px; overflow: hidden; }
+.v7l .b-card .fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #14b8a6); border-radius: 100px; }
+.v7l .b-card .fill.b { background: linear-gradient(90deg, #14b8a6, #84cc16); }
+.v7l .b-card .fill.c { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+.v7l .b-card .fill.d { background: linear-gradient(90deg, #84cc16, #facc15); }
+.v7l .b-card .meta { display: flex; justify-content: space-between; margin-top: 8px; font-size: 10px; opacity: 0.55; font-weight: 500; }
+
+.v7l .goal-card {
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 50%, #155e75 100%);
+  color: white;
+  border-radius: 22px;
+  padding: 20px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.v7l .goal-card::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -20%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(132,204,22,0.3), transparent 70%);
+  border-radius: 50%;
+}
+.v7l .goal-card.alt { background: linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be185d 100%); }
+.v7l .goal-card.alt::before { background: radial-gradient(circle, rgba(251,191,36,0.3), transparent 70%); }
+.v7l .goal-card .lbl { font-size: 10px; opacity: 0.75; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; position: relative; }
+.v7l .goal-card .nm { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; margin: 4px 0 14px; position: relative; }
+.v7l .goal-card .saved { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; position: relative; }
+.v7l .goal-card .of { font-size: 11px; opacity: 0.75; margin-left: 4px; }
+.v7l .goal-card .bar { height: 5px; background: rgba(255,255,255,0.2); border-radius: 100px; margin-top: 12px; overflow: hidden; position: relative; }
+.v7l .goal-card .fill { height: 100%; background: linear-gradient(90deg, #84cc16, #ecfccb); border-radius: 100px; }
+.v7l .goal-card.alt .fill { background: linear-gradient(90deg, #fbbf24, #fef3c7); }
+.v7l .goal-card .eta { font-size: 11px; opacity: 0.85; margin-top: 8px; position: relative; }
+
+.v7l .fab { background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; box-shadow: 0 10px 30px rgba(8,145,178,0.4); }
+.v7l .tab-bar { background: rgba(243,247,249,0.92); backdrop-filter: blur(16px); border-top: 1px solid rgba(8,145,178,0.1); }
+.v7l .tab { color: #94a3b8; }
+.v7l .tab.active { color: #0891b2; }
+
+/* Dark mode */
+.v7d .phone-frame { background: #061821; }
+.v7d .screen { background: #061821; color: #ecf6fc; }
+.v7d .app-header .avatar { background: linear-gradient(135deg, #06b6d4, #67e8f9); color: #061821; }
+
+.v7d .hero {
+  background: linear-gradient(160deg, #0c2532 0%, #051a26 100%);
+  border: 1px solid rgba(6,182,212,0.15);
+  border-radius: 26px;
+  padding: 24px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.v7d .hero::before {
+  content: '';
+  position: absolute;
+  top: -50%; right: -30%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(6,182,212,0.25), transparent 65%);
+  border-radius: 50%;
+}
+.v7d .hero::after {
+  content: '';
+  position: absolute;
+  bottom: -40%; left: -20%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(20,184,166,0.18), transparent 65%);
+  border-radius: 50%;
+}
+.v7d .hero .label { font-size: 11px; opacity: 0.55; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; position: relative; color: #67e8f9; }
+.v7d .hero .amount {
+  font-size: 44px; font-weight: 700;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 16px; line-height: 1;
+  position: relative;
+  background: linear-gradient(135deg, #ecf6fc, #67e8f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v7d .hero .pgrad {
+  height: 8px;
+  background: rgba(6,182,212,0.12);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 12px;
+}
+.v7d .hero .pgrad-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #06b6d4, #14b8a6, #84cc16);
+  border-radius: 100px;
+}
+.v7d .hero .row { display: flex; justify-content: space-between; font-size: 11px; opacity: 0.6; font-weight: 500; position: relative; }
+
+.v7d .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.v7d .stat-card {
+  background: #0c2532;
+  border: 1px solid rgba(6,182,212,0.1);
+  border-radius: 16px;
+  padding: 14px;
+}
+.v7d .stat-card .l { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.55; font-weight: 600; }
+.v7d .stat-card .v { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; margin-top: 4px; letter-spacing: -0.015em; }
+.v7d .stat-card .delta { font-size: 10px; color: #67e8f9; font-weight: 600; margin-top: 2px; }
+
+.v7d .section-row { display:flex; justify-content:space-between; align-items:center; margin: 22px 0 10px; }
+.v7d .section-row h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.015em; }
+.v7d .section-row .more { font-size: 11px; color: #67e8f9; font-weight: 600; }
+
+.v7d .b-card {
+  background: #0c2532;
+  border: 1px solid rgba(6,182,212,0.1);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 8px;
+}
+.v7d .b-card .top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.v7d .b-card .nm { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.v7d .b-card .em {
+  width: 28px; height: 28px;
+  border-radius: 9px;
+  background: rgba(6,182,212,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.v7d .b-card .em.b { background: rgba(20,184,166,0.15); }
+.v7d .b-card .em.c { background: rgba(236,72,153,0.15); }
+.v7d .b-card .em.d { background: rgba(132,204,22,0.15); }
+.v7d .b-card .amt { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.v7d .b-card .amt .l { opacity: 0.4; font-weight: 500; font-size: 11px; }
+.v7d .b-card .bar { height: 5px; background: rgba(6,182,212,0.1); border-radius: 100px; overflow: hidden; }
+.v7d .b-card .fill { height: 100%; background: linear-gradient(90deg, #06b6d4, #14b8a6); border-radius: 100px; }
+.v7d .b-card .fill.b { background: linear-gradient(90deg, #14b8a6, #84cc16); }
+.v7d .b-card .fill.c { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+.v7d .b-card .fill.d { background: linear-gradient(90deg, #84cc16, #facc15); }
+.v7d .b-card .meta { display: flex; justify-content: space-between; margin-top: 8px; font-size: 10px; opacity: 0.55; font-weight: 500; }
+
+.v7d .goal-card {
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 50%, #155e75 100%);
+  color: white;
+  border-radius: 22px;
+  padding: 20px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.v7d .goal-card::before {
+  content: '';
+  position: absolute;
+  top: -30%; right: -20%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(132,204,22,0.3), transparent 70%);
+  border-radius: 50%;
+}
+.v7d .goal-card.alt { background: linear-gradient(135deg, #ec4899 0%, #db2777 50%, #be185d 100%); }
+.v7d .goal-card.alt::before { background: radial-gradient(circle, rgba(251,191,36,0.3), transparent 70%); }
+.v7d .goal-card .lbl { font-size: 10px; opacity: 0.75; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; position: relative; }
+.v7d .goal-card .nm { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; margin: 4px 0 14px; position: relative; }
+.v7d .goal-card .saved { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.025em; position: relative; }
+.v7d .goal-card .of { font-size: 11px; opacity: 0.75; margin-left: 4px; }
+.v7d .goal-card .bar { height: 5px; background: rgba(255,255,255,0.2); border-radius: 100px; margin-top: 12px; overflow: hidden; position: relative; }
+.v7d .goal-card .fill { height: 100%; background: linear-gradient(90deg, #84cc16, #ecfccb); border-radius: 100px; }
+.v7d .goal-card.alt .fill { background: linear-gradient(90deg, #fbbf24, #fef3c7); }
+.v7d .goal-card .eta { font-size: 11px; opacity: 0.85; margin-top: 8px; position: relative; }
+
+.v7d .fab { background: linear-gradient(135deg, #06b6d4, #14b8a6); color: white; box-shadow: 0 10px 30px rgba(6,182,212,0.4); }
+.v7d .tab-bar { background: rgba(6,24,33,0.92); backdrop-filter: blur(16px); border-top: 1px solid rgba(6,182,212,0.08); }
+.v7d .tab { color: #475569; }
+.v7d .tab.active { color: #67e8f9; }
+
+</style>
+</head>
+<body>
+
+<div class="board-header">
+  <h1>Round 2 — Three Fresh Directions</h1>
+  <p>Each direction below shows light and dark mode side-by-side, focused on the Home screen (the daily-use surface). Same content, three different vibes.</p>
+</div>
+
+
+<!-- ============== V5 — OLIVE & BONE ============== -->
+<div class="variation v5">
+  <div class="theme-header">
+    <div class="theme-info">
+      <div class="tag">Variation 5</div>
+      <h2>Olive & Bone</h2>
+      <p>Organic, considered, calm. Olive green and bone with a terracotta goal accent. Serif headlines on money for an editorial touch, ring-style progress indicators replace bars. Feels like Aesop's design language meets a hand-bound finance journal. Wellness-adjacent but grown-up.</p>
+    </div>
+    <div class="palette">
+      <div class="swatch"><div class="color" style="background:#f5f2e8"></div><div class="hex">#F5F2E8</div><div class="name">Bone</div></div>
+      <div class="swatch"><div class="color" style="background:#2d3520"></div><div class="hex">#2D3520</div><div class="name">Forest</div></div>
+      <div class="swatch"><div class="color" style="background:#87a154"></div><div class="hex">#87A154</div><div class="name">Olive</div></div>
+      <div class="swatch"><div class="color" style="background:#c5d68f"></div><div class="hex">#C5D68F</div><div class="name">Sage</div></div>
+      <div class="swatch"><div class="color" style="background:#c97d5a"></div><div class="hex">#C97D5A</div><div class="name">Clay</div></div>
+      <div class="swatch"><div class="color" style="background:#3d4a22"></div><div class="hex">#3D4A22</div><div class="name">Deep Olive</div></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- V5 Light -->
+    <div class="phone v5l">
+      <div class="phone-label">Light mode</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">June 2026</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining this month</div>
+              <div class="amount">$2,479</div>
+              <div class="row">
+                <div><b>$4,820</b>Take-home</div>
+                <div><b>$2,341</b>Spent</div>
+                <div><b>14d</b>Left</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">See all →</span></div>
+
+            <div class="b-card">
+              <div class="em">🍱</div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$163 left of $345</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="44" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">53%</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em">🚇</div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left of $150</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="40" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">57%</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em" style="background:#e8a89a;">🛍</div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#a83a1f;">Over by $20</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke="#a83a1f" stroke-dasharray="94.2" stroke-dashoffset="0" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">105%</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em">☕</div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">$36 left of $110</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="31" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">67%</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">See all →</span></div>
+            <div class="goal-card">
+              <div class="lbl">SAVING FOR</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <span class="saved">$1,820</span><span class="of">of $3,500</span>
+              <div class="bar"><div class="fill" style="width:52%"></div></div>
+              <div class="eta">52% · 8 months to go</div>
+            </div>
+            <div class="goal-card alt">
+              <div class="lbl">SAVING FOR</div>
+              <div class="nm">Japan Trip</div>
+              <span class="saved">$500</span><span class="of">of $2,000</span>
+              <div class="bar"><div class="fill" style="width:25%"></div></div>
+              <div class="eta">25% · 15 months</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V5 Dark -->
+    <div class="phone v5d">
+      <div class="phone-label">Dark mode</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">June 2026</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining this month</div>
+              <div class="amount">$2,479</div>
+              <div class="row">
+                <div><b>$4,820</b>Take-home</div>
+                <div><b>$2,341</b>Spent</div>
+                <div><b>14d</b>Left</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">See all →</span></div>
+
+            <div class="b-card">
+              <div class="em">🍱</div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$163 left of $345</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="44" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">53%</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em">🚇</div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left of $150</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="40" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">57%</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em" style="background:#5a3825;">🛍</div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#e8a89a;">Over by $20</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke="#e8a89a" stroke-dasharray="94.2" stroke-dashoffset="0" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">105%</div>
+              </div>
+            </div>
+            <div class="b-card">
+              <div class="em">☕</div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">$36 left of $110</div>
+              </div>
+              <div class="progress-circle">
+                <svg width="36" height="36" viewBox="0 0 36 36">
+                  <circle class="ring-bg" cx="18" cy="18" r="15"></circle>
+                  <circle class="ring-fg" cx="18" cy="18" r="15" stroke-dasharray="94.2" stroke-dashoffset="31" transform="rotate(-90 18 18)"></circle>
+                </svg>
+                <div class="pct">67%</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">See all →</span></div>
+            <div class="goal-card">
+              <div class="lbl">SAVING FOR</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <span class="saved">$1,820</span><span class="of">of $3,500</span>
+              <div class="bar"><div class="fill" style="width:52%"></div></div>
+              <div class="eta">52% · 8 months to go</div>
+            </div>
+            <div class="goal-card alt">
+              <div class="lbl">SAVING FOR</div>
+              <div class="nm">Japan Trip</div>
+              <span class="saved">$500</span><span class="of">of $2,000</span>
+              <div class="bar"><div class="fill" style="width:25%"></div></div>
+              <div class="eta">25% · 15 months</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============== V6 — TOKYO RISO ============== -->
+<div class="variation v6">
+  <div class="theme-header">
+    <div class="theme-info">
+      <div class="tag">Variation 6</div>
+      <h2>Tokyo Riso</h2>
+      <p>Bold neo-brutalist energy with risograph-print colour blocks. Heavy 2px outlines, hard offset shadows, ultra-bold typography. Feels like a modern indie product — Notion's logo merch meets a Tokyo zine. Lots of personality, instantly memorable, will not be mistaken for any other finance app.</p>
+    </div>
+    <div class="palette">
+      <div class="swatch"><div class="color" style="background:#fefcf3"></div><div class="hex">#FEFCF3</div><div class="name">Cream</div></div>
+      <div class="swatch"><div class="color" style="background:#1c1c1e"></div><div class="hex">#1C1C1E</div><div class="name">Ink</div></div>
+      <div class="swatch"><div class="color" style="background:#ff5c4d"></div><div class="hex">#FF5C4D</div><div class="name">Persimmon</div></div>
+      <div class="swatch"><div class="color" style="background:#ffd84d"></div><div class="hex">#FFD84D</div><div class="name">Saffron</div></div>
+      <div class="swatch"><div class="color" style="background:#4dd9c8"></div><div class="hex">#4DD9C8</div><div class="name">Mint</div></div>
+      <div class="swatch"><div class="color" style="background:#b8a4ff"></div><div class="hex">#B8A4FF</div><div class="name">Iris</div></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- V6 Light -->
+    <div class="phone v6l">
+      <div class="phone-label">Light mode</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">JUN '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">You have</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat">
+                  <div class="l">In</div>
+                  <div class="v">$4,820</div>
+                </div>
+                <div class="stat b">
+                  <div class="l">Out</div>
+                  <div class="v">$2,341</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em">🍱</div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">53% used · $163 left</div>
+              </div>
+              <div class="bal">$182</div>
+            </div>
+            <div class="b-card">
+              <div class="em b">🚇</div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">57% used · $65 left</div>
+              </div>
+              <div class="bal">$85</div>
+            </div>
+            <div class="b-card">
+              <div class="em c">🛍</div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#ff5c4d;">Over by $20</div>
+              </div>
+              <div class="bal">$420</div>
+            </div>
+            <div class="b-card">
+              <div class="em d">☕</div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">67% used · $36 left</div>
+              </div>
+              <div class="bal">$74</div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">All →</span></div>
+            <div class="goal-card p52">
+              <div class="lbl">Saving for</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <span class="saved">$1,820</span><span class="of">/ $3,500</span>
+              <div class="bar"></div>
+              <div class="eta">52% there · 8 months left</div>
+            </div>
+            <div class="goal-card alt p25">
+              <div class="lbl">Saving for</div>
+              <div class="nm">Japan Trip</div>
+              <span class="saved">$500</span><span class="of">/ $2,000</span>
+              <div class="bar"></div>
+              <div class="eta">25% there · 15 months</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V6 Dark -->
+    <div class="phone v6d">
+      <div class="phone-label">Dark mode</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">JUN '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">You have</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat a">
+                  <div class="l">In</div>
+                  <div class="v">$4,820</div>
+                </div>
+                <div class="stat b">
+                  <div class="l">Out</div>
+                  <div class="v">$2,341</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em">🍱</div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">53% used · $163 left</div>
+              </div>
+              <div class="bal">$182</div>
+            </div>
+            <div class="b-card c2">
+              <div class="em b">🚇</div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">57% used · $65 left</div>
+              </div>
+              <div class="bal">$85</div>
+            </div>
+            <div class="b-card c3">
+              <div class="em c">🛍</div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#ff5c4d;">Over by $20</div>
+              </div>
+              <div class="bal">$420</div>
+            </div>
+            <div class="b-card c4">
+              <div class="em d">☕</div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">67% used · $36 left</div>
+              </div>
+              <div class="bal">$74</div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">All →</span></div>
+            <div class="goal-card p52">
+              <div class="lbl">Saving for</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <span class="saved">$1,820</span><span class="of">/ $3,500</span>
+              <div class="bar"></div>
+              <div class="eta">52% there · 8 months left</div>
+            </div>
+            <div class="goal-card alt p25">
+              <div class="lbl">Saving for</div>
+              <div class="nm">Japan Trip</div>
+              <span class="saved">$500</span><span class="of">/ $2,000</span>
+              <div class="bar"></div>
+              <div class="eta">25% there · 15 months</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ============== V7 — TIDE ============== -->
+<div class="variation v7">
+  <div class="theme-header">
+    <div class="theme-info">
+      <div class="tag">Variation 7</div>
+      <h2>Tide</h2>
+      <p>Cyan-teal gradients with watery, organic vibes. Soft glow effects, gradient text on numbers, fluid progress bars that shift from cyan through teal to lime. Feels fresh, optimistic, modern — like Apple's recent visionOS and the lighter side of fintech (Wise, Revolut Ultra). Calm but not boring.</p>
+    </div>
+    <div class="palette">
+      <div class="swatch"><div class="color" style="background:#f3f7f9"></div><div class="hex">#F3F7F9</div><div class="name">Mist</div></div>
+      <div class="swatch"><div class="color" style="background:#061821"></div><div class="hex">#061821</div><div class="name">Abyss</div></div>
+      <div class="swatch"><div class="color" style="background:#06b6d4"></div><div class="hex">#06B6D4</div><div class="name">Cyan</div></div>
+      <div class="swatch"><div class="color" style="background:#14b8a6"></div><div class="hex">#14B8A6</div><div class="name">Teal</div></div>
+      <div class="swatch"><div class="color" style="background:#84cc16"></div><div class="hex">#84CC16</div><div class="name">Lime</div></div>
+      <div class="swatch"><div class="color" style="background:#67e8f9"></div><div class="hex">#67E8F9</div><div class="name">Aqua</div></div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- V7 Light -->
+    <div class="phone v7l">
+      <div class="phone-label">Light mode</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">June 2026</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining this month</div>
+              <div class="amount">$2,479.00</div>
+              <div class="pgrad"><div class="pgrad-fill" style="width:48%"></div></div>
+              <div class="row">
+                <span>48% spent</span>
+                <span>14 days left</span>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat-card">
+                <div class="l">Take-home</div>
+                <div class="v">$4,820</div>
+                <div class="delta">+$170 vs May</div>
+              </div>
+              <div class="stat-card">
+                <div class="l">CPF total</div>
+                <div class="v">$2,220</div>
+                <div class="delta">incl. employer</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">See all →</span></div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em">🍱</span>Food</div>
+                <div class="amt">$182<span class="l"> / 345</span></div>
+              </div>
+              <div class="bar"><div class="fill" style="width:53%"></div></div>
+              <div class="meta"><span>53% used</span><span>$163 left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em b">🚇</span>Transport</div>
+                <div class="amt">$85<span class="l"> / 150</span></div>
+              </div>
+              <div class="bar"><div class="fill b" style="width:57%"></div></div>
+              <div class="meta"><span>57% used</span><span>$65 left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em c">🛍</span>Shopping</div>
+                <div class="amt" style="color:#be185d;">$420<span class="l"> / 400</span></div>
+              </div>
+              <div class="bar"><div class="fill c" style="width:100%"></div></div>
+              <div class="meta"><span style="color:#be185d;">Over by $20</span><span>14 days left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em d">☕</span>Coffee</div>
+                <div class="amt">$74<span class="l"> / 110</span></div>
+              </div>
+              <div class="bar"><div class="fill d" style="width:67%"></div></div>
+              <div class="meta"><span>67% used</span><span>$36 left</span></div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">See all →</span></div>
+            <div class="goal-card">
+              <div class="lbl">Saving for</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <span class="saved">$1,820</span><span class="of">of $3,500</span>
+              <div class="bar"><div class="fill" style="width:52%"></div></div>
+              <div class="eta">52% · 8 months to go</div>
+            </div>
+            <div class="goal-card alt">
+              <div class="lbl">Saving for</div>
+              <div class="nm">Japan Trip</div>
+              <span class="saved">$500</span><span class="of">of $2,000</span>
+              <div class="bar"><div class="fill" style="width:25%"></div></div>
+              <div class="eta">25% · 15 months</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- V7 Dark -->
+    <div class="phone v7d">
+      <div class="phone-label">Dark mode</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen">
+          <div class="app-header">
+            <div class="month">June 2026</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining this month</div>
+              <div class="amount">$2,479.00</div>
+              <div class="pgrad"><div class="pgrad-fill" style="width:48%"></div></div>
+              <div class="row">
+                <span>48% spent</span>
+                <span>14 days left</span>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat-card">
+                <div class="l">Take-home</div>
+                <div class="v">$4,820</div>
+                <div class="delta">+$170 vs May</div>
+              </div>
+              <div class="stat-card">
+                <div class="l">CPF total</div>
+                <div class="v">$2,220</div>
+                <div class="delta">incl. employer</div>
+              </div>
+            </div>
+
+            <div class="section-row"><h3>Budgets</h3><span class="more">See all →</span></div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em">🍱</span>Food</div>
+                <div class="amt">$182<span class="l"> / 345</span></div>
+              </div>
+              <div class="bar"><div class="fill" style="width:53%"></div></div>
+              <div class="meta"><span>53% used</span><span>$163 left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em b">🚇</span>Transport</div>
+                <div class="amt">$85<span class="l"> / 150</span></div>
+              </div>
+              <div class="bar"><div class="fill b" style="width:57%"></div></div>
+              <div class="meta"><span>57% used</span><span>$65 left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em c">🛍</span>Shopping</div>
+                <div class="amt" style="color:#f472b6;">$420<span class="l"> / 400</span></div>
+              </div>
+              <div class="bar"><div class="fill c" style="width:100%"></div></div>
+              <div class="meta"><span style="color:#f472b6;">Over by $20</span><span>14 days left</span></div>
+            </div>
+            <div class="b-card">
+              <div class="top">
+                <div class="nm"><span class="em d">☕</span>Coffee</div>
+                <div class="amt">$74<span class="l"> / 110</span></div>
+              </div>
+              <div class="bar"><div class="fill d" style="width:67%"></div></div>
+              <div class="meta"><span>67% used</span><span>$36 left</span></div>
+            </div>
+
+            <div class="section-row"><h3>Goals</h3><span class="more">See all →</span></div>
+            <div class="goal-card">
+              <div class="lbl">Saving for</div>
+              <div class="nm">MacBook Pro 14"</div>
+              <span class="saved">$1,820</span><span class="of">of $3,500</span>
+              <div class="bar"><div class="fill" style="width:52%"></div></div>
+              <div class="eta">52% · 8 months to go</div>
+            </div>
+            <div class="goal-card alt">
+              <div class="lbl">Saving for</div>
+              <div class="nm">Japan Trip</div>
+              <span class="saved">$500</span><span class="of">of $2,000</span>
+              <div class="bar"><div class="fill" style="width:25%"></div></div>
+              <div class="eta">25% · 15 months</div>
+            </div>
+          </div>
+          <div class="fab">+</div>
+          <div class="tab-bar">
+            <div class="tab active"><span class="ic">⌂</span>Home</div>
+            <div class="tab"><span class="ic">≡</span>Txns</div>
+            <div class="tab"><span class="ic">◎</span>Budgets</div>
+            <div class="tab"><span class="ic">🛡</span>Insurance</div>
+            <div class="tab"><span class="ic">✨</span>Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+</body>
+</html>

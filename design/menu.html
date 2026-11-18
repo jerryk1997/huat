@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Tokyo Riso — Menu Bar</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "SF Pro Display", "SF Pro Text", system-ui, sans-serif;
+  background: #211e1a;
+  color: #ece6d2;
+  padding: 50px 40px 100px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.board-header { max-width: 1400px; margin: 0 auto 36px; text-align: center; }
+.board-header .tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: #ff5c4d;
+  color: #2b2825;
+  margin-bottom: 12px;
+}
+.board-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.board-header p {
+  color: #a89b85;
+  font-size: 13px;
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.section { max-width: 1400px; margin: 0 auto 50px; }
+.section-title {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff5c4d;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ====== TAB BAR COMPARISON ROW ====== */
+.bar-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.bar-cell {
+  background: #2d2925;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 26px;
+}
+.bar-cell .meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+.bar-cell h3 {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+  color: #ece6d2;
+}
+.bar-cell .badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: #ffd84d;
+  color: #2b2825;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.bar-cell p { font-size: 11px; color: #a89b85; line-height: 1.5; max-width: 340px; }
+
+/* Common tab bar frame */
+.tab-frame {
+  width: 100%;
+  background: #ece6d2;
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 16px 0 12px;
+  padding-top: 24px;
+}
+.tab-frame.dark { background: #211e1a; padding-top: 24px; }
+
+/* Shared monoline icon */
+.t-icon { width: 18px; height: 18px; flex-shrink: 0; }
+.t-icon path, .t-icon circle, .t-icon rect, .t-icon line {
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.t-icon.fill path, .t-icon.fill circle, .t-icon.fill rect {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* ============ OPTION 1: Underline + filled icon ============ */
+.bar-1 {
+  height: 64px;
+  border-top: 1.5px solid #2b2825;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 8px;
+}
+.bar-1 .tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #a89b85;
+  position: relative;
+  padding: 0 4px;
+}
+.bar-1 .tab .lbl {
+  font-size: 10px;
+  font-weight: 600;
+}
+.bar-1 .tab.active {
+  color: #2b2825;
+}
+.bar-1 .tab.active::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 1.5px;
+  background: #ff5c4d;
+}
+.bar-1 .tab.active .lbl { font-weight: 700; }
+
+.bar-1.dark { border-top-color: #ece6d2; }
+.bar-1.dark .tab { color: #6b6256; }
+.bar-1.dark .tab.active { color: #ece6d2; }
+.bar-1.dark .tab.active::before { background: #ffd84d; }
+
+
+/* ============ OPTION 2: Inverted square stamp ============ */
+.bar-2 {
+  height: 64px;
+  border-top: 1.5px solid #2b2825;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 8px;
+}
+.bar-2 .tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: #a89b85;
+  padding: 0 4px;
+}
+.bar-2 .tab .ic-wrap {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid transparent;
+  display: flex; align-items: center; justify-content: center;
+}
+.bar-2 .tab .lbl { font-size: 10px; font-weight: 600; }
+.bar-2 .tab.active { color: #ece6d2; }
+.bar-2 .tab.active .ic-wrap {
+  background: #2b2825;
+  border-color: #2b2825;
+  color: #ece6d2;
+}
+.bar-2 .tab.active .lbl { color: #2b2825; font-weight: 700; }
+
+.bar-2.dark { border-top-color: #ece6d2; }
+.bar-2.dark .tab { color: #6b6256; }
+.bar-2.dark .tab.active { color: #211e1a; }
+.bar-2.dark .tab.active .ic-wrap { background: #ffd84d; border-color: #ffd84d; }
+.bar-2.dark .tab.active .lbl { color: #ffd84d; font-weight: 700; }
+
+
+/* ============ OPTION 3: Notched cutout (riso top edge) ============ */
+.bar-3 {
+  height: 64px;
+  border-top: 1.5px solid #2b2825;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 8px;
+  position: relative;
+}
+.bar-3 .tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #a89b85;
+  position: relative;
+  flex: 1;
+}
+.bar-3 .tab .lbl { font-size: 10px; font-weight: 600; }
+.bar-3 .tab.active {
+  color: #2b2825;
+}
+.bar-3 .tab.active .lbl { font-weight: 700; }
+.bar-3 .tab.active::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38px;
+  height: 4px;
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+}
+
+.bar-3.dark { border-top-color: #ece6d2; }
+.bar-3.dark .tab { color: #6b6256; }
+.bar-3.dark .tab.active { color: #ece6d2; }
+.bar-3.dark .tab.active::before {
+  background: #ffd84d;
+  border-color: #ece6d2;
+  border-top: none;
+}
+
+
+/* ============ OPTION 4: Filled+dot, no chrome ============ */
+.bar-4 {
+  height: 64px;
+  border-top: 1.5px solid #2b2825;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 10px;
+}
+.bar-4 .tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: #a89b85;
+  position: relative;
+  flex: 1;
+}
+.bar-4 .tab .lbl { font-size: 10px; font-weight: 600; }
+.bar-4 .tab.active { color: #2b2825; }
+.bar-4 .tab.active .lbl { font-weight: 700; }
+.bar-4 .tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  width: 4px; height: 4px;
+  background: #ff5c4d;
+  border-radius: 50%;
+  border: 1px solid #2b2825;
+}
+
+.bar-4.dark { border-top-color: #ece6d2; }
+.bar-4.dark .tab { color: #6b6256; }
+.bar-4.dark .tab.active { color: #ece6d2; }
+.bar-4.dark .tab.active::after {
+  background: #ffd84d;
+  border-color: #ece6d2;
+}
+
+
+/* ============= APPLIED IN-CONTEXT ============= */
+.phone { width: 320px; flex-shrink: 0; }
+.phone-label {
+  font-size: 10px; font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a89b85;
+  text-align: center;
+}
+.phone-frame {
+  width: 320px;
+  height: 680px;
+  border-radius: 38px;
+  border: 8px solid #0a0a0a;
+  box-shadow: 0 24px 50px -20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.notch {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 26px;
+  background: #0c0a09;
+  border-radius: 0 0 14px 14px;
+  z-index: 10;
+}
+.status-bar {
+  height: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 22px 0;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.screen { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.screen::-webkit-scrollbar { display: none; }
+
+.scr-light { background: #ece6d2; color: #2b2825; }
+.scr-light .status-bar { color: #2b2825; }
+.scr-dark { background: #211e1a; color: #ece6d2; }
+.scr-dark .status-bar { color: #ece6d2; }
+
+.app-header {
+  padding: 10px 16px 12px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.app-header .month { font-size: 14px; font-weight: 700; letter-spacing: -0.015em; }
+.avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #2b2825; color: #ffd84d;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700;
+}
+.scr-dark .avatar { background: #ffd84d; color: #211e1a; border-color: #ece6d2; }
+.scroll { flex: 1; overflow-y: auto; padding: 0 16px 70px; }
+.scroll::-webkit-scrollbar { display: none; }
+
+.hero {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 3px 3px 0 #2b2825;
+}
+.scr-dark .hero {
+  background: #2d2925;
+  border-color: #ece6d2;
+  box-shadow: 3px 3px 0 #ff5c4d;
+}
+.hero .label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; opacity: 0.55; }
+.hero .amount { font-size: 32px; font-weight: 700; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; line-height: 1; margin-bottom: 10px; }
+.hero .amount .accent { color: #ff5c4d; }
+.hero .row { display: flex; gap: 6px; }
+.hero .stat { flex: 1; border: 1.5px solid #2b2825; border-radius: 7px; padding: 5px 8px; background: #ffd84d; }
+.hero .stat.b { background: #4dd9c8; }
+.scr-dark .hero .stat { border-color: #211e1a; color: #211e1a; }
+.hero .stat .l { font-size: 8px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.7; }
+.hero .stat .v { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.015em; margin-top: 1px; }
+
+.section-row { display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px; }
+.section-row h3 { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.section-row .more { font-size: 9px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.45; }
+
+.b-card {
+  background: #f5f1e0;
+  border: 1.5px solid #2b2825;
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-bottom: 5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.scr-dark .b-card { background: #2d2925; border-color: #ece6d2; }
+.b-card .em-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  background: #ffd84d;
+  flex-shrink: 0;
+  color: #2b2825;
+}
+.scr-dark .b-card .em-icon { border-color: #ece6d2; }
+.b-card .em-icon.b { background: #4dd9c8; }
+.b-card .em-icon.c { background: #ff5c4d; }
+.b-card .em-icon.d { background: #b8a4ff; }
+.b-card .em-icon svg { width: 14px; height: 14px; }
+.b-card .em-icon svg path, .b-card .em-icon svg circle, .b-card .em-icon svg rect {
+  stroke: #2b2825; stroke-width: 1.8; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.b-card .info { flex: 1; min-width: 0; }
+.b-card .nm { font-size: 12px; font-weight: 700; letter-spacing: -0.01em; }
+.b-card .ml { font-size: 10px; opacity: 0.55; margin-top: 1px; font-weight: 500; }
+.scr-dark .b-card .ml { opacity: 0.5; }
+.b-card .bal { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; text-align: right; }
+.b-card .bal .of { font-size: 9px; opacity: 0.5; font-weight: 500; display: block; margin-top: 1px; }
+.scr-dark .b-card .bal .of { opacity: 0.45; }
+
+/* ====== FAB redesign ====== */
+/* OLD FAB (for comparison) */
+.fab-old {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: #ff5c4d; color: #2b2825;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 500;
+  box-shadow: 2px 2px 0 #2b2825;
+}
+
+/* NEW FAB — square, embedded, more confident */
+.fab-new {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: #ff5c4d;
+  color: #2b2825;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 2px 2px 0 #2b2825;
+  position: relative;
+}
+.fab-new svg { width: 18px; height: 18px; }
+.fab-new svg path { stroke: #2b2825; stroke-width: 2.2; stroke-linecap: round; fill: none; }
+
+/* Floating new FAB */
+.fab-floating {
+  position: absolute; bottom: 80px; right: 14px;
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  background: #ff5c4d;
+  color: #2b2825;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 3px 3px 0 #2b2825;
+  z-index: 5;
+}
+.fab-floating svg { width: 20px; height: 20px; }
+.fab-floating svg path { stroke: #2b2825; stroke-width: 2.2; stroke-linecap: round; fill: none; }
+
+/* Integrated FAB option */
+.tab-bar-fab {
+  height: 64px;
+  background: #ece6d2;
+  border-top: 1.5px solid #2b2825;
+  display: grid;
+  grid-template-columns: 1fr 1fr 60px 1fr 1fr;
+  align-items: center;
+  padding-top: 8px;
+  flex-shrink: 0;
+}
+.tab-bar-fab.dark { background: #211e1a; border-top-color: #ece6d2; }
+.tab-bar-fab .tab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  color: #a89b85;
+  font-size: 10px; font-weight: 600;
+  position: relative;
+}
+.tab-bar-fab .tab .lbl { font-size: 10px; }
+.tab-bar-fab .tab.active { color: #2b2825; }
+.tab-bar-fab .tab.active .lbl { font-weight: 700; }
+.tab-bar-fab .tab.active::before {
+  content: '';
+  position: absolute;
+  top: -8px; left: 50%; transform: translateX(-50%);
+  width: 28px; height: 1.5px;
+  background: #ff5c4d;
+}
+.tab-bar-fab.dark .tab { color: #6b6256; }
+.tab-bar-fab.dark .tab.active { color: #ece6d2; }
+.tab-bar-fab.dark .tab.active::before { background: #ffd84d; }
+.tab-bar-fab .center-action {
+  display: flex; justify-content: center; align-items: flex-start;
+  position: relative;
+}
+.tab-bar-fab .center-fab {
+  width: 50px; height: 50px;
+  margin-top: -16px;
+  border-radius: 14px;
+  background: #ff5c4d;
+  border: 1.5px solid #2b2825;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 3px 3px 0 #2b2825;
+}
+.tab-bar-fab.dark .center-fab { background: #ffd84d; border-color: #ece6d2; box-shadow: 3px 3px 0 #ece6d2; }
+.tab-bar-fab .center-fab svg { width: 22px; height: 22px; }
+.tab-bar-fab .center-fab svg path { stroke: #2b2825; stroke-width: 2.2; stroke-linecap: round; fill: none; }
+
+</style>
+</head>
+<body>
+
+<div class="board-header">
+  <div class="tag">Menu Bar Redesign</div>
+  <h1>Active state — four ways</h1>
+  <p>Four approaches to how the active tab reads. All use the same monoline icons from earlier. Pick the one that feels right, then we'll wire it back into the home screen and also redesign the floating + button.</p>
+</div>
+
+
+<!-- TAB BAR OPTIONS COMPARISON -->
+<div class="section">
+  <div class="section-title">Tab Bar — 4 Variations</div>
+  <div class="bar-row">
+
+    <!-- OPT 1 -->
+    <div class="bar-cell">
+      <div class="meta">
+        <div>
+          <h3>1 · Underline + filled icon</h3>
+          <p>Clean horizontal accent above active tab, icon swaps to filled. Most native-iOS feel.</p>
+        </div>
+        <div class="badge" style="background:#4dd9c8;">My pick</div>
+      </div>
+
+      <div class="tab-frame">
+        <div class="bar-1">
+          <div class="tab active">
+            <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-frame dark">
+        <div class="bar-1 dark">
+          <div class="tab active">
+            <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- OPT 2 -->
+    <div class="bar-cell">
+      <div class="meta">
+        <div>
+          <h3>2 · Inverted stamp</h3>
+          <p>Active icon sits in a small filled tile — riso "stamped" feel. Keeps the Tokyo brutalist voice but at icon scale, not pill scale.</p>
+        </div>
+      </div>
+
+      <div class="tab-frame">
+        <div class="bar-2">
+          <div class="tab active">
+            <div class="ic-wrap">
+              <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            </div>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg></div>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg></div>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-frame dark">
+        <div class="bar-2 dark">
+          <div class="tab active">
+            <div class="ic-wrap">
+              <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            </div>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg></div>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <div class="ic-wrap"><svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg></div>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- OPT 3 -->
+    <div class="bar-cell">
+      <div class="meta">
+        <div>
+          <h3>3 · Notched marker</h3>
+          <p>A small coloured "tab" pokes up from the menu edge, framed by the 1.5px outline. Reads as a page marker / index tab.</p>
+        </div>
+      </div>
+
+      <div class="tab-frame">
+        <div class="bar-3">
+          <div class="tab active">
+            <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-frame dark">
+        <div class="bar-3 dark">
+          <div class="tab active">
+            <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- OPT 4 -->
+    <div class="bar-cell">
+      <div class="meta">
+        <div>
+          <h3>4 · Dot indicator</h3>
+          <p>Quietest option. Active icon goes solid + label bolds + a single coloured dot under label. Minimal chrome, zero decoration.</p>
+        </div>
+      </div>
+
+      <div class="tab-frame">
+        <div class="bar-4">
+          <div class="tab active">
+            <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-frame dark">
+        <div class="bar-4 dark">
+          <div class="tab active">
+            <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+            <div class="lbl">Home</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+            <div class="lbl">Txns</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+            <div class="lbl">Budgets</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+            <div class="lbl">Insurance</div>
+          </div>
+          <div class="tab">
+            <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+            <div class="lbl">Insights</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FAB COMPARISON -->
+<div class="section">
+  <div class="section-title">Floating + Button — Redesign</div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; max-width:1100px; margin:0 auto;">
+
+    <div class="bar-cell">
+      <h3 style="margin-bottom:6px;">Before</h3>
+      <p style="margin-bottom: 28px;">Circle, hand-drawn "+" character. Reads as sticker. Inconsistent stroke weight against the other 1.5px lines.</p>
+      <div style="display:flex; justify-content:center; padding: 30px 0; background:#ece6d2; border-radius:14px;">
+        <div class="fab-old">+</div>
+      </div>
+    </div>
+
+    <div class="bar-cell">
+      <h3 style="margin-bottom:6px;">After</h3>
+      <p style="margin-bottom: 28px;">Squared with same border-radius as cards. SVG "+" with consistent 2.2px stroke. Same offset shadow pattern as the rest of the brutalist system.</p>
+      <div style="display:flex; justify-content:center; padding: 30px 0; background:#ece6d2; border-radius:14px;">
+        <div class="fab-new">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- APPLIED IN-CONTEXT -->
+<div class="section">
+  <div class="section-title">Recommended Combo — In Context</div>
+  <div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">
+
+    <!-- LIGHT IN CONTEXT - Underline + new FAB -->
+    <div class="phone">
+      <div class="phone-label">Light · Option 1 (Underline)</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen scr-light">
+          <div class="app-header">
+            <div class="month">Jun '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat"><div class="l">In</div><div class="v">$4,820</div></div>
+                <div class="stat b"><div class="l">Out</div><div class="v">$2,341</div></div>
+              </div>
+            </div>
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em-icon">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$163 left · rollover</div>
+              </div>
+              <div class="bal">$182<span class="of">/345</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon b">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M4 11h16"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left</div>
+              </div>
+              <div class="bal">$85<span class="of">/150</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon c">
+                <svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5L6 7zM9 7V5a3 3 0 016 0v2"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#c93a2b;">Over by $20</div>
+              </div>
+              <div class="bal" style="color:#c93a2b;">$420<span class="of" style="color:#c93a2b;">/400</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon d">
+                <svg viewBox="0 0 24 24"><path d="M5 9h12v8a4 4 0 01-4 4H9a4 4 0 01-4-4V9zM17 11h2a2 2 0 010 4h-2"/><path d="M9 4v3M13 4v3"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">$36 left</div>
+              </div>
+              <div class="bal">$74<span class="of">/110</span></div>
+            </div>
+          </div>
+          <div class="fab-floating">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+          <div style="background:#ece6d2; flex-shrink:0;">
+            <div class="bar-1">
+              <div class="tab active">
+                <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+                <div class="lbl">Home</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+                <div class="lbl">Txns</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+                <div class="lbl">Budgets</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+                <div class="lbl">Insurance</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+                <div class="lbl">Insights</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DARK IN CONTEXT - Underline + new FAB -->
+    <div class="phone">
+      <div class="phone-label">Dark · Option 1 (Underline)</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen scr-dark">
+          <div class="app-header">
+            <div class="month">Jun '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat"><div class="l">In</div><div class="v">$4,820</div></div>
+                <div class="stat b"><div class="l">Out</div><div class="v">$2,341</div></div>
+              </div>
+            </div>
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em-icon">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$163 left · rollover</div>
+              </div>
+              <div class="bal">$182<span class="of">/345</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon b">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M4 11h16"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left</div>
+              </div>
+              <div class="bal">$85<span class="of">/150</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon c">
+                <svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5L6 7zM9 7V5a3 3 0 016 0v2"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#ff5c4d;">Over by $20</div>
+              </div>
+              <div class="bal" style="color:#ff5c4d;">$420<span class="of" style="color:#ff5c4d;">/400</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon d">
+                <svg viewBox="0 0 24 24"><path d="M5 9h12v8a4 4 0 01-4 4H9a4 4 0 01-4-4V9zM17 11h2a2 2 0 010 4h-2"/><path d="M9 4v3M13 4v3"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">$36 left</div>
+              </div>
+              <div class="bal">$74<span class="of">/110</span></div>
+            </div>
+          </div>
+          <div class="fab-floating" style="background:#ffd84d; border-color:#ece6d2; box-shadow: 3px 3px 0 #ece6d2;">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="#211e1a"/></svg>
+          </div>
+          <div style="background:#211e1a; flex-shrink:0;">
+            <div class="bar-1 dark">
+              <div class="tab active">
+                <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+                <div class="lbl">Home</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+                <div class="lbl">Txns</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+                <div class="lbl">Budgets</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+                <div class="lbl">Insurance</div>
+              </div>
+              <div class="tab">
+                <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+                <div class="lbl">Insights</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- BONUS: Integrated FAB at centre -->
+    <div class="phone">
+      <div class="phone-label">Bonus · Centre-integrated FAB</div>
+      <div class="phone-frame">
+        <div class="notch"></div>
+        <div class="status-bar"><span>9:41</span><span>●●●</span></div>
+        <div class="screen scr-light">
+          <div class="app-header">
+            <div class="month">Jun '26</div>
+            <div class="avatar">JK</div>
+          </div>
+          <div class="scroll">
+            <div class="hero">
+              <div class="label">Remaining</div>
+              <div class="amount">$2,<span class="accent">479</span></div>
+              <div class="row">
+                <div class="stat"><div class="l">In</div><div class="v">$4,820</div></div>
+                <div class="stat b"><div class="l">Out</div><div class="v">$2,341</div></div>
+              </div>
+            </div>
+            <div class="section-row"><h3>Budgets</h3><span class="more">All →</span></div>
+            <div class="b-card">
+              <div class="em-icon">
+                <svg viewBox="0 0 24 24"><path d="M3 11h18M5 11v9a1 1 0 001 1h12a1 1 0 001-1v-9M9 7c0-2 1.5-3 3-3s3 1 3 3M7 11V8a2 2 0 012-2h6a2 2 0 012 2v3"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Food</div>
+                <div class="ml">$163 left · rollover</div>
+              </div>
+              <div class="bal">$182<span class="of">/345</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon b">
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="2"/><path d="M4 11h16"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Transport</div>
+                <div class="ml">$65 left</div>
+              </div>
+              <div class="bal">$85<span class="of">/150</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon c">
+                <svg viewBox="0 0 24 24"><path d="M6 7h12l1 13H5L6 7zM9 7V5a3 3 0 016 0v2"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Shopping</div>
+                <div class="ml" style="color:#c93a2b;">Over by $20</div>
+              </div>
+              <div class="bal" style="color:#c93a2b;">$420<span class="of" style="color:#c93a2b;">/400</span></div>
+            </div>
+            <div class="b-card">
+              <div class="em-icon d">
+                <svg viewBox="0 0 24 24"><path d="M5 9h12v8a4 4 0 01-4 4H9a4 4 0 01-4-4V9zM17 11h2a2 2 0 010 4h-2"/><path d="M9 4v3M13 4v3"/></svg>
+              </div>
+              <div class="info">
+                <div class="nm">Coffee</div>
+                <div class="ml">$36 left</div>
+              </div>
+              <div class="bal">$74<span class="of">/110</span></div>
+            </div>
+          </div>
+          <div class="tab-bar-fab">
+            <div class="tab active">
+              <svg class="t-icon fill" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-4v-7h-8v7H4a1 1 0 01-1-1V11z"/></svg>
+              <div class="lbl">Home</div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+              <div class="lbl">Txns</div>
+            </div>
+            <div class="center-action">
+              <div class="center-fab">
+                <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z"/></svg>
+              <div class="lbl">Insurance</div>
+            </div>
+            <div class="tab">
+              <svg class="t-icon" viewBox="0 0 24 24"><path d="M12 3l2 6 6 1-4.5 4 1.5 7-5-3-5 3 1.5-7L4 10l6-1z"/></svg>
+              <div class="lbl">Insights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- FAB POSITION RECOMMENDATION -->
+<div class="section">
+  <div class="section-title">FAB Position — Floating vs Integrated</div>
+  <div style="max-width:1100px; margin:0 auto; background:#2d2925; border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:24px;">
+    <div style="font-size:13px; line-height:1.6; opacity:0.85;">
+      <b style="color:#ffd84d;">Floating + button (right-bottom):</b> classic pattern, doesn't change tab bar layout. Adds visual weight in bottom-right. Easy to one-hand on iPhone. Recommended for expense tracking since quick-add is the most-used action and deserves the dominant position.<br><br>
+      <b style="color:#4dd9c8;">Integrated + button (centre of tab bar):</b> elegant, removes a floating element. But it sits above the safe area and centre is awkward for right-handed thumb. Better when add-action is occasional, not constant.<br><br>
+      <b style="color:#b8a4ff;">My take:</b> stick with floating right-bottom. The square shape + 1.5px border + 3px offset shadow ties it to the design system instead of looking like a sticker bolted on. Position above the tab bar with enough clearance so it doesn't cover content under it.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
