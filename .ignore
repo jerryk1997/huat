@@ -1,0 +1,4 @@
+# Excluded from ripgrep/Grep so lookups stay on the terse working docs.
+# Read these explicitly by path only when working on them.
+handbook/
+docs/design/prototypes/

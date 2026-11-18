@@ -1,85 +1,68 @@
-# Huat — Product Brain Dump
+# Product overview
 
-Everything decided so far about what Huat is and does. Captured from the initial
-design sessions. This is the source of truth for scope; `user-stories.md` turns it
-into testable stories.
+Source of truth for scope. `user-stories.md` = testable form. Updated 2026-11-18.
 
-Last updated: 2026-11-18
+**Pitch:** SG personal finance — spending, budgets, goals, CPF projection, insurance in one
+picture. CPF is first-class: gross salary says little about spendable pay (age bracket,
+OW ceiling, bonus/AW interaction). Generic apps get this wrong.
 
 ## Platform
+iOS → web soon after → Android later (ADR 0002). Expo/RN from day one (ADR 0001).
 
-- iOS first → web app shortly after → Android on a longer horizon
-- Cross-platform framework from day one (Expo / React Native)
+## Transactions & import
+- CSV import from SG banks (DBS, OCBC, UOB, …).
+- AI auto-categorises imported rows.
+- Preset category list; user can rename/add/delete.
+- Option: AI generates categories + sub-categories from CSV.
+- Manual entry supported.
 
-## Bank Import & Transactions
-- CSV upload from SG banks (DBS, OCBC, UOB, etc.)
-- AI auto-categorises transactions from uploaded statement
-- Pre-set category list (user can rename, add, delete)
-- Option to let AI auto-generate categories + sub-categories from CSV data
-- Manual transaction entry also supported
+## Budgets
+- Per-category, configurable month-end behaviour:
+  - **Auto-rollover** — unused carries forward silently.
+  - **Ask me** — month-end prompt: roll over / move to goal / reset.
+  - **Reset** — back to base each month.
+- Balance = base + accumulated rollover (pot grows if underspent).
+- A category can act as a sinking fund (contribute; don't spend until target).
 
-## Budget System
-- Per-category budgets with configurable end-of-month behavior:
-  - **Auto-rollover**: unused amount carries forward silently
-  - **Ask me**: month-end prompt — roll over, move to a goal, or reset?
-  - **Reset**: wipes back to base amount each month
-- Balance = base amount + accumulated rollover (pot grows if underspent)
-- A budget category can function as a sinking fund (keep contributing, don't spend until target hit)
+## Goals
+- Name, target, monthly contribution → progress + projected completion date.
+- Notify when reached (user then buys).
+- Top-level, separate from budgets, same "pot" mechanic.
 
-## Goals (Savings)
-- User names a goal (e.g. "New MacBook"), sets target amount + monthly contribution
-- App tracks progress, projects completion date
-- Notifies user when goal is reached — user then goes to buy the item
-- Goals are a top-level concept separate from budgets but share the same "pot" mechanic
-
-## CPF (Singapore-specific)
-- User inputs: date of birth + gross monthly salary
-- App auto-calculates:
-  - Employee CPF deduction (age-dependent: 20% at ≤55, down to 5% at >70)
-  - Employer contribution (17% at ≤55, down to 7.5% at >70)
-  - Allocation per account (OA / SA / MA / RA) based on age bracket
-  - Take-home pay (spendable income)
-- Ordinary Wage ceiling: $8,000/month (Jan 2026)
-- **Bonus CPF tracked separately**: user logs bonus, app calculates CPF using AW ceiling (~$102k/yr minus OW contributed that year)
-- User manually inputs current OA/SA/MA balances once; app projects forward from there
-- Milestone tracking:
-  - MA toward BHS ($79,000) — surface when overflow behavior changes
-  - SA/RA toward FRS ($220,400) / BRS ($110,200)
-  - OA investment threshold ($20,000)
-  - Voluntary top-up tax relief headroom ($8,000/yr)
-  - Extra 1% interest on first $60k combined
+## CPF
+- Inputs: DOB + gross monthly salary.
+- Computes: employee deduction (age-based, 20% ≤55 → 5% >70), employer (17% ≤55 → 7.5%
+  >70), split across OA/SA/MA/RA by age, take-home pay.
+- OW ceiling $8,000/mo (Jan 2026, unverified).
+- Bonus logged separately; CPF via AW ceiling (~$102k/yr − OW contributed YTD).
+- User enters OA/SA/MA balances once; app projects forward.
+- Milestones: MA → BHS $79k (overflow changes) · SA/RA → FRS $220.4k / BRS $110.2k ·
+  OA $20k investment threshold · top-up tax relief $8k/yr · extra 1% on first $60k combined.
+- All figures: see `../reference/cpf-rules.md` (unverified).
 
 ## Insurance
-- Free-form: user names the policy, uploads any documents (PDF/image)
-- App tracks payment history (how much paid in over time)
-- AI parses uploaded documents to extract coverage details and classify type:
-  - Integrated Shield Plan (health/hospitalisation)
-  - Life (term / whole life)
-  - Critical Illness (CI)
-  - Disability Income (DI)
-  - Investment-linked policy (ILP)
-  - General (travel / car / home)
-- Separate UI per insurance type showing what user actually has and financial impact
-- Coverage gap analysis relative to life goals and spending
+- Free-form: name policy, upload docs (PDF/image).
+- Tracks premiums paid over time.
+- AI parses docs → coverage details + type: ISP (health) · Life (term/whole) · CI · DI ·
+  ILP · General (travel/car/home).
+- Per-type UI: what user has + financial impact.
+- Coverage gap analysis vs life goals and spending.
 
-## AI / Smart Features
-- Rule-based alerts (always on): budget thresholds, large transactions, savings rate
-- BYOK (bring your own key/model): user connects OpenAI / Anthropic / Google API
-- App uses standardized system prompt injected with user's financial context (salary, goals, CPF, insurance) — consistent behavior across models
-- AI digest: user-configurable schedule (on-demand, weekly, monthly, biannual)
-- On-demand chat: ask questions against your own financial data
+## AI (ADR 0004)
+- Rule-based alerts always on, no key: budget thresholds, large txns, savings rate.
+- BYOK: OpenAI / Anthropic / Google.
+- Standardised system prompt + injected context (salary, goals, CPF, insurance) for
+  consistent behaviour across models.
+- Digest on schedule: on-demand / weekly / monthly / biannual.
+- On-demand chat over own data.
 
-## Notifications (all of the below + extensible)
-- Budget threshold alert (e.g. 80% of category spent)
-- Goal reached / CPF milestone crossed
-- Insurance premium due soon
-- Month-end budget prompt (what to do with unused balances)
+## Notifications (extensible)
+Budget threshold (e.g. 80%) · goal reached · CPF milestone · premium due · month-end
+budget prompt.
 
-## Data & Privacy
-- Local-first (SQLite on device — no data leaves phone initially)
-- Architecture must be cloud-ready: clean data/repository layer so sync can be added later
-- Preparation for future cloud backend (user-controlled server or managed service TBD)
+## Data & privacy (ADR 0003)
+- Local-first SQLite; no data leaves phone in v1 (except AI calls).
+- Repository layer so sync can be added later; future backend (self-hosted or managed) TBD.
 
-## Build Approach
-- Design phase first, then build together (user codes with AI assistance)
-- User will build it themselves with Claude Code help
+## Build approach
+Design first, then Jerry builds with Claude Code.
